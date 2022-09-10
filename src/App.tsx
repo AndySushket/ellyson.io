@@ -15,6 +15,9 @@ import {musicVisualization} from "./3D/projects/musicVisualisation/musicVisual.j
 import {akella} from "./3D/projects/Akella/akella";
 
 class App extends React.Component {
+
+    state: { isPanelOpen: boolean; };
+
 	constructor() {
 		super();
 		this.state = {
