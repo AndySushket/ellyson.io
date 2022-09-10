@@ -1,7 +1,5 @@
 {
   "projects": {
-    "default": "ellyson-project",
-  },
-  "targets": {},
-  "etags": {}
+    "default": "ellyson-project"
+  }
 }
