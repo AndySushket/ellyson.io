@@ -367,6 +367,9 @@ module.exports = function (webpackEnv) {
             // smaller than specified limit in bytes as data URLs to avoid requests.
             // A missing `test` is equivalent to a match.
             {
+              test: /\.(shader|vert|frag|glsl|fnt)$/,
+              loader: require.resolve('raw-loader')
+            },{
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
               type: 'asset',
               parser: {
@@ -374,6 +377,20 @@ module.exports = function (webpackEnv) {
                   maxSize: imageInlineSizeLimit,
                 },
               },
+            },
+            {
+              test: /\.less$/,
+              use: [
+                require.resolve('style-loader'),
+                {
+                  loader: require.resolve('css-loader'),
+                  options: {
+                    importLoaders: 1,
+                  },
+                },{
+                  loader: require.resolve('less-loader') // compiles Less to CSS
+                }
+              ],
             },
             {
               test: /\.svg$/,
