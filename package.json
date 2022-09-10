@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@tweenjs/tween.js": "^17.4.0",
     "@types/jest": "^27.5.2",
+    "@types/material-ui": "^0.21.12",
     "@types/node": "^16.11.58",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
@@ -41,6 +42,7 @@
     "jest-watch-typeahead": "^1.0.0",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
+    "material-ui": "^0.20.2",
     "mini-css-extract-plugin": "^2.4.5",
     "postcss": "^8.4.4",
     "postcss-flexbugs-fixes": "^5.0.2",
@@ -48,6 +50,7 @@
     "postcss-normalize": "^10.0.1",
     "postcss-preset-env": "^7.0.1",
     "prompts": "^2.4.2",
+    "raw-loader": "^4.0.2",
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
     "react-bootstrap": "^2.5.0",
@@ -75,8 +78,7 @@
     "webpack": "^5.64.4",
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
-    "workbox-webpack-plugin": "^6.4.1",
-    "raw-loader": "^4.0.2"
+    "workbox-webpack-plugin": "^6.4.1"
   },
   "scripts": {
     "start": "node scripts/start.js",
