@@ -1,4 +1,3 @@
-import {Component} from "react";
 import ThanosPortal from "./thanos portal/thanosPortal";
 import Rain from "./rain/Rain";
 
