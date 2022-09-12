@@ -11,7 +11,7 @@ import MainFunc from "./components/projects/baseFunc/mainFunc";
 import TestWork from "./components/projects/testWorks/testWork";
 import AsidePanel from "./components/AsidePanel.jsx"
 
-export default function () {
+export default function Routing() {
     return (<>
             <BrowserRouter>
                 <Routes>
