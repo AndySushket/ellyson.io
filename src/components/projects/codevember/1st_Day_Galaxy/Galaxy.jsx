@@ -11,16 +11,16 @@ import vertex_derbis from "./Shaders/ring.vert";
 import frag_saturn from "./Shaders/saturn.frag";
 import vertex_saturn from "./Shaders/saturn.vert";
 
-const saturn = require("../../../../3D/img/Galaxy/saturn.jpg");
-const titano = require("../../../../3D/img/Galaxy/titano2.jpg");
-const titano2 = require("../../../../3D/img/Galaxy/moon.jpg");
+const saturn = require("../../../../assets/img/Galaxy/saturn.jpg");
+const titano = require("../../../../assets/img/Galaxy/titano2.jpg");
+const titano2 = require("../../../../assets/img/Galaxy/moon.jpg");
 
-const dn = require(`../../../../3D/img/skyBox/galaxy/dn.png`);
-const up = require(`../../../../3D/img/skyBox/galaxy/up.png`);
-const lf = require(`../../../../3D/img/skyBox/galaxy/lf.png`);
-const rt = require(`../../../../3D/img/skyBox/galaxy/rt.png`);
-const ft = require(`../../../../3D/img/skyBox/galaxy/ft.png`);
-const bk = require(`../../../../3D/img/skyBox/galaxy/bk.png`);
+const dn = require(`../../../../assets/img/skyBox/galaxy/dn.png`);
+const up = require(`../../../../assets/img/skyBox/galaxy/up.png`);
+const lf = require(`../../../../assets/img/skyBox/galaxy/lf.png`);
+const rt = require(`../../../../assets/img/skyBox/galaxy/rt.png`);
+const ft = require(`../../../../assets/img/skyBox/galaxy/ft.png`);
+const bk = require(`../../../../assets/img/skyBox/galaxy/bk.png`);
 
 const textureLoader = new THREE.TextureLoader();
 

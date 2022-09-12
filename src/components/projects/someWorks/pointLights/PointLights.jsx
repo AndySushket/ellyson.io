@@ -6,7 +6,7 @@ import TemplateFor3D from '../../../templates/mainTemplate3D';
 import * as THREE from 'three';
 import vertexShader from "./shaders/vertexShader.vert";
 import fragmentShader from "./shaders/fragmentShader.frag";
-const spark = require("../../../../3D/img/spark1.png");
+const spark = require("../../../../assets/img/spark1.png");
 
 const particles = 100000;
 

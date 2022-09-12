@@ -1,18 +1,8 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
-import {BrowserRouter} from "react-router-dom";
-import AsidePanel from "./components/AsidePanel.jsx"
 import './styles/App.less';
 import Routing from "./Routing";
-import SomeWorks from "./components/projects/someWorks/Works";
-import OtherPeoplesWork from "./components/projects/otherPeoplesWork/otherPeoplesWork";
-import Codevember from "./components/projects/codevember/Codevember";
-import TestWork from "./components/projects/testWorks/testWork";
-import Shaders from "./components/projects/shaders/Shaders";
-import MainFunc from "./components/projects/baseFunc/mainFunc";
-import MusicVisualization from "./components/projects/musicVisualisation/musicVisual";
-import Akella from "./components/projects/Akella/akella";
-import TutorialWorks from "./components/projects/tutorials/tutorialWorks";
+import AsidePanel from "./components/AsidePanel.jsx"
 
 class App extends React.Component<{}, {}> {
 

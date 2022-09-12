@@ -9,10 +9,10 @@ import {Button} from 'react-bootstrap';
 import fragmentShader from './shaders/shader.frag';
 import vertexShader from './shaders/shader.vert';
 
-const trek4 = require("../../../../3D/sounds/music/music4.mp3");
-const trek2 = require("../../../../3D/sounds/music/music.mp3");
-const trek1 = require("../../../../3D/sounds/music/04_Heaven.flac");
-const trek3 = require("../../../../3D/sounds/music/Snow Patrol - What If This Storm Ends.mp3");
+const trek4 = require("../../../../assets/sounds/music/music4.mp3");
+const trek2 = require("../../../../assets/sounds/music/music.mp3");
+const trek1 = require("../../../../assets/sounds/music/04_Heaven.flac");
+const trek3 = require("../../../../assets/sounds/music/Snow Patrol - What If This Storm Ends.mp3");
 
 export default class LandSlide extends TemplateFor3D {
 

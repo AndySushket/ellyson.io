@@ -7,13 +7,13 @@ import Delaunator from 'delaunator';
 import {Button} from 'react-bootstrap';
 import * as THREE from 'three';
 import TemplateFor3D from '../../../templates/mainTemplate3D';
-import Mouse from "../../../../3D/plugins/mouse.js";
-import Particle from "../../../../3D/plugins/particles.js";
-import Perlin from "../../../../3D/plugins/perlin.js";
+import Mouse from "../../../../utils/plugins/mouse.js";
+import Particle from "../../../../utils/plugins/particles.js";
+import Perlin from "../../../../utils/plugins/perlin.js";
 import vertexShader from "./shaders/vertexShader.vert";
 import fragmentShader from "./shaders/fragmentShader.frag";
 
-const image = require('../../../../3D/img/image.jpg');
+const image = require('../../../../assets/img/image.jpg');
 
 export default class TriangleWallpaper extends TemplateFor3D {
 	constructor() {

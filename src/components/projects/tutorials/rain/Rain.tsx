@@ -5,8 +5,8 @@
 import React from 'react';
 import * as THREE from 'three';
 import TemplateFor3D from '../../../templates/mainTemplate3D';
-const smoke = require(`../../../../3D/img/smoke.png`);
-const drop = require(`../../../../3D/img/drop.png`);
+const smoke = require(`../../../../assets/img/smoke.png`);
+const drop = require(`../../../../assets/img/drop.png`);
 
 export default class Rain extends TemplateFor3D {
 

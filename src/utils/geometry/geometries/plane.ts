@@ -1,6 +1,6 @@
 import {IGeometryData} from "./interfaces/IGeometries";
 import {addFourVerticesDoubleSided} from "./baseGeometries";
-import {initGeometryData, mergeGeometryData} from "../../utils/geometries/geometry/geometryUtils";
+import {initGeometryData, mergeGeometryData} from "../../geometries/geometry/geometryUtils";
 import {Color} from "three";
 
 // horizontal // todo delete

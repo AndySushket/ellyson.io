@@ -7,13 +7,13 @@ import TemplateFor3D from '../../../templates/mainTemplate3D';
 import vertexShader from "./shaders/vertexShader.vert";
 import fragmentShader from "./shaders/fragmentShader.frag";
 
-const xpos = require(`../../../../3D/img/skyBox/planet/nebula-xpos.png`);
-const xneg = require(`../../../../3D/img/skyBox/planet/nebula-xneg.png`);
-const ypos = require(`../../../../3D/img/skyBox/planet/nebula-ypos.png`);
-const yneg = require(`../../../../3D/img/skyBox/planet/nebula-yneg.png`);
-const zpos = require(`../../../../3D/img/skyBox/planet/nebula-zpos.png`);
-const zneg = require(`../../../../3D/img/skyBox/planet/nebula-zneg.png`);
-const planet = require(`../../../../3D/img/map/planet.png`);
+const xpos = require(`../../../../assets/img/skyBox/planet/nebula-xpos.png`);
+const xneg = require(`../../../../assets/img/skyBox/planet/nebula-xneg.png`);
+const ypos = require(`../../../../assets/img/skyBox/planet/nebula-ypos.png`);
+const yneg = require(`../../../../assets/img/skyBox/planet/nebula-yneg.png`);
+const zpos = require(`../../../../assets/img/skyBox/planet/nebula-zpos.png`);
+const zneg = require(`../../../../assets/img/skyBox/planet/nebula-zneg.png`);
+const planet = require(`../../../../assets/img/map/planet.png`);
 
 export default class Planet extends TemplateFor3D {
 	initScene() {

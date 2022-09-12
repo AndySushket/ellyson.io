@@ -1,5 +1,5 @@
-import * as mergingUtils from "../../utils/geometries/merge/mergingUtils"
-import {mergeTypedArrays, spliceTypedArray, setArrayValuesXYZ} from "../../utils/arrays/arrayUtils"
+import * as mergingUtils from "../../geometries/merge/mergingUtils"
+import {mergeTypedArrays, spliceTypedArray, setArrayValuesXYZ} from "../../arrays/arrayUtils"
 
 // TODO WILL BE DELETE
 class MergedGeometry {

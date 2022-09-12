@@ -3,7 +3,7 @@ varying vec3 vColor;
 
 uniform float time;
 
-//	Simplex 3D Noise
+//	Simplex assets Noise
 //	by Ian McEwan, Ashima Arts
 //
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}

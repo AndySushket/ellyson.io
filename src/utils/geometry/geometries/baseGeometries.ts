@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {IGeometryData} from "./interfaces/IGeometries";
-import {mergeGeometryData} from "../../utils/geometries/geometry/geometryUtils";
+import {mergeGeometryData} from "../../geometries/geometry/geometryUtils";
 import {createCubeUvs, getCubeColors, getCubeIndices, indexedCube, texturedIndexedCube} from "./cube";
 
 export const CUBE_POSITIONS_QUANTITY = 72;

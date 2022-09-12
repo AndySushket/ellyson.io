@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import TemplateFor3D from '../../../templates/mainTemplate3D';
 import vertexShader from './portal.vert';
 import {InterleavedBufferAttribute} from "three";
-const smoke = require(`../../../../3D/img/smoke.png`);
+const smoke = require(`../../../../assets/img/smoke.png`);
 
 export default class thanosPortal extends TemplateFor3D {
 	private moveQ: THREE.Quaternion = new THREE.Quaternion(0., 0.0, 0.5, 0.0).normalize();
