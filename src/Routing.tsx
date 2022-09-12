@@ -9,12 +9,13 @@ import Akella from "./components/projects/Akella/akella";
 import TutorialWorks from "./components/projects/tutorials/tutorialWorks";
 import MainFunc from "./components/projects/baseFunc/mainFunc";
 import TestWork from "./components/projects/testWorks/testWork";
+import AsidePanel from "./components/AsidePanel.jsx"
 
 export default function () {
     return (<>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/">
+                    <Route path="/" element={<Codevember.Galaxy/>}>
                         <Route path="Codevember">
                             <Route index element={<Codevember.Galaxy/>}/>
                             <Route path={`Galaxy`} element={<Codevember.Galaxy/>}/>
@@ -74,6 +75,7 @@ export default function () {
                             <Route path={`thanosPortal`} element={<TestWork.House/>}/>
                         </Route>
                     </Route>
+                    <Route path={'projects'} element={<AsidePanel isPanelOpen={true}/>}/>
                 </Routes>
             </BrowserRouter>
         </>
