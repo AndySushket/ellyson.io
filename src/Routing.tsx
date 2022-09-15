@@ -1,5 +1,6 @@
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+
 import Codevember from "./components/projects/codevember/Codevember";
 import Shaders from "./components/projects/shaders/Shaders";
 import MusicVisualization from "./components/projects/musicVisualisation/musicVisual";
@@ -10,12 +11,13 @@ import TutorialWorks from "./components/projects/tutorials/tutorialWorks";
 import MainFunc from "./components/projects/baseFunc/mainFunc";
 import TestWork from "./components/projects/testWorks/testWork";
 import AsidePanel from "./components/AsidePanel.jsx"
+import Main from "./components/Main";
 
 export default function Routing() {
     return (<>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Codevember.Galaxy/>}>
+                    <Route path="/" element={<Main/>}>
                         <Route path="Codevember">
                             <Route index element={<Codevember.Galaxy/>}/>
                             <Route path={`Galaxy`} element={<Codevember.Galaxy/>}/>
