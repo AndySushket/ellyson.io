@@ -1,23 +1,24 @@
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
-import Codevember from "./components/projects/codevember/Codevember";
-import Shaders from "./components/projects/shaders/Shaders";
-import MusicVisualization from "./components/projects/musicVisualisation/musicVisual";
-import SomeWorks from "./components/projects/someWorks/Works";
-import OtherPeoplesWork from "./components/projects/otherPeoplesWork/otherPeoplesWork";
-import Akella from "./components/projects/Akella/akella";
-import TutorialWorks from "./components/projects/tutorials/tutorialWorks";
-import MainFunc from "./components/projects/baseFunc/mainFunc";
-import TestWork from "./components/projects/testWorks/testWork";
-import AsidePanel from "./components/AsidePanel.jsx"
-import Main from "./components/Main";
+import Codevember from "./projects/codevember/Codevember";
+import Shaders from "./projects/shaders/Shaders";
+import MusicVisualization from "./projects/musicVisualisation/musicVisual";
+import SomeWorks from "./projects/someWorks/Works";
+import OtherPeoplesWork from "./projects/otherPeoplesWork/otherPeoplesWork";
+import Akella from "./projects/Akella/akella";
+import TutorialWorks from "./projects/tutorials/tutorialWorks";
+import MainFunc from "./projects/baseFunc/mainFunc";
+import TestWork from "./projects/testWorks/testWork";
+import AsidePanel from "./AsidePanel.jsx"
+import Main from "./Main";
 
 export default function Routing() {
     return (<>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Main/>}>
+                    <Route path="/">
+                        <Route index element={<Main/>}/>
                         <Route path="Codevember">
                             <Route index element={<Codevember.Galaxy/>}/>
                             <Route path={`Galaxy`} element={<Codevember.Galaxy/>}/>
