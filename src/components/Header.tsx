@@ -1,5 +1,6 @@
 import {Button, IconButton} from "@material-ui/core";
 import {Facebook, Instagram, LinkedIn, Mail, Twitter} from "@material-ui/icons";
+import {Link} from "react-router-dom";
 
 export default function () {
    return <>
@@ -7,7 +8,12 @@ export default function () {
             <div className={"innerHeader"}>
                 <div>
                     <Button color="primary">
-                        <a href="/projects">Portfolio</a>
+                        <Link to={"/"}>Home</Link>
+                    </Button>
+                </div>
+                <div>
+                    <Button color="primary">
+                        <Link to={"/projects"}>Portfolio</Link>
                     </Button>
                 </div>
                 <IconButton href='https://www.instagram.com/andy_sushket/' target='_blank'>

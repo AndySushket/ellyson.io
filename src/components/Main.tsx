@@ -5,7 +5,7 @@
 import TemplateFor3D from './templates/mainTemplate3D';
 import * as THREE from 'three';
 import {ReactNode} from "react";
-import {Instagram, Facebook, Twitter, LinkedIn, Mail } from '@material-ui/icons';
+import {Instagram, Facebook, Twitter, LinkedIn, Mail} from '@material-ui/icons';
 import {Button, IconButton} from "@material-ui/core";
 
 export default class Main extends TemplateFor3D {

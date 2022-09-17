@@ -245,6 +245,9 @@ header{
 
 a {
   color: #ffddbb;
+  &:hover {
+    color: #ffddbb;
+  }
 }
 
 div.header {
@@ -270,13 +273,28 @@ div.header {
 
     >* {
       color: wheat;
+      text-decoration: none;
     }
-    .MuiIconButton-root:hover {
-      background-color: rgba(245, 222, 179, 0.14);
+    .MuiIconButton-root:hover, .MuiButton-root:hover {
+      background-color: rgba(245, 222, 179, 0.19);
+      color: rgb(245, 222, 179);
     }
     //
     >:last-child {
       margin-right: 15px;
     }
+  }
+}
+
+.project-list {
+  position: absolute;
+  top: 50px;
+  height: 100%;
+  width: 100%;
+  a {
+    color: #ffddbb;
+  }
+  .MuiButton-root:hover {
+    background-color: rgba(245, 222, 179, 0.19);
   }
 }

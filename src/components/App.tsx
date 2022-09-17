@@ -3,14 +3,17 @@ import '../styles/App.less';
 import 'react-bootstrap';
 import Routing from "./Routing";
 import Header from "./Header";
+import {BrowserRouter} from "react-router-dom";
 
 class App extends React.Component<{}, {}> {
 
     render(): React.ReactNode {
         return (
             <div className="App">
-                <Header/>
-                <Routing/>
+                <BrowserRouter>
+                    <Header/>
+                    <Routing/>
+                </BrowserRouter>
             </div>);
     }
 }
