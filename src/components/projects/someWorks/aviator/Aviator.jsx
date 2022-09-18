@@ -6,7 +6,6 @@ import React from 'react';
 import * as THREE from 'three';
 import TemplateFor3D from '../../../templates/mainTemplate3D';
 import {normalize} from "../../../../utils/mathUtils";
-import BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
 const Colors = {
 	red: 0xf25346
@@ -21,7 +20,7 @@ class Sea {
 	constructor() {
 		const geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10).rotateX(-Math.PI / 2);
 		// geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2)); //rotate the geom
-		BufferGeometryUtils.mergeVertices(geom); //important: by mergin vertices we ensure the continuty of the waves
+		// BufferGeometryUtils.mergeVertices(geom); //important: by mergin vertices we ensure the continuty of the waves
 		const l = geom.vertices.length;	//get the vertices length
 		this.waves = []; //create an array to store new data associated to each vertex
 		for (let i = 0; i < l; i++) {
