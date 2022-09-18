@@ -9,6 +9,27 @@ const OrbitControls = require('three-orbit-controls')(THREE);
 
 export default class TemplateFor3D extends Component<any, any> {
 
+	private static deleteScene(scene: THREE.Scene | undefined) {
+
+		scene?.traverse((mesh: THREE.Object3D | THREE.Mesh | undefined) => {
+			if (mesh instanceof THREE.Mesh) {
+				mesh.geometry.dispose();
+				if (mesh.material instanceof THREE.Material) {
+					mesh.material && mesh.material.dispose && mesh.material.dispose();
+				} else if (Array.isArray(mesh.material)) {
+					const length = mesh.material.length;
+					let i = -1;
+					while (++i < length) {
+						mesh.material[i] && mesh.material[i].dispose && mesh.material[i].dispose();
+					}
+				}
+			}
+			mesh = undefined;
+		});
+
+		scene = undefined;
+	}
+
 	state: {
 		checked: false;
 	}
@@ -41,6 +62,24 @@ export default class TemplateFor3D extends Component<any, any> {
 		this.resolution = new THREE.Vector2(window.innerWidth,window.innerHeight);
 		this.HEIGHT = window.innerHeight;
 		this.WIDTH = window.innerWidth;
+	}
+
+	componentWillUnmount(): void {
+		if (this.scene) {
+			TemplateFor3D.deleteScene(this.scene);
+			this.scene.children.length = 0;
+		}
+
+		if (this.renderer) {
+			this.renderer.renderLists.dispose();
+			this.renderer.forceContextLoss();
+			this.renderer = undefined;
+		}
+
+		if (this.camera) {
+			this.camera = undefined;
+		}
+		this.looped = false;
 	}
 
 	initScene(): void {
@@ -78,11 +117,6 @@ export default class TemplateFor3D extends Component<any, any> {
 		this.initCamera();
 		window.addEventListener('resize', this.handleWindowResize.bind(this), false);
 		this.looped = true;
-	}
-
-	componentWillUnmount(): void {
-		this.renderer = undefined;
-		this.looped = false;
 	}
 
 	animate(): void {
