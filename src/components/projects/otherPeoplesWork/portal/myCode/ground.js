@@ -4,7 +4,6 @@ import {
 	MeshBasicMaterial,
 	PlaneGeometry,
 	Vector3,
-	VertexColors,
 } from 'three';
 
 class Ground extends Mesh {
@@ -46,7 +45,7 @@ class Ground extends Mesh {
 
 	static setupMaterial() {
 		Ground.material = new MeshBasicMaterial({
-			vertexColors: VertexColors,
+			vertexColors: true,
 		})
 	}
 

@@ -5,7 +5,7 @@
 import {Component, ReactNode} from 'react';
 import * as THREE from 'three';
 
-const OrbitControls = require('three-orbit-controls')(THREE);
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 
 export default class TemplateFor3D extends Component<any, any> {
 
@@ -39,8 +39,8 @@ export default class TemplateFor3D extends Component<any, any> {
 	protected clock: THREE.Clock;
 	private mouse: THREE.Vector2;
 	private resolution: THREE.Vector2;
-	private HEIGHT: number;
-	private WIDTH: number;
+	protected HEIGHT: number;
+	protected WIDTH: number;
 	protected scene: THREE.Scene | undefined;
 	protected renderer: THREE.WebGLRenderer | undefined;
 	protected camera: THREE.PerspectiveCamera | undefined;
@@ -108,7 +108,9 @@ export default class TemplateFor3D extends Component<any, any> {
 	}
 
 	initControls(dom = this.renderer?.domElement): void {
-		this.controls = new OrbitControls(this.camera, dom);
+		if (this.camera) {
+			this.controls = new OrbitControls(this.camera, dom);
+		}
 	}
 
 	init3D(param: THREE.WebGLRendererParameters | undefined): void {

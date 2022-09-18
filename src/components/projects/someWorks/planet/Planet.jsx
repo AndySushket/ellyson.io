@@ -52,7 +52,7 @@ export default class Planet extends TemplateFor3D {
 	}
 
 	initSkyBox() {
-		const skyGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
+		const skyGeometry = new THREE.BoxGeometry(10000, 10000, 10000);
 		const imageURLs = [];
 
 		imageURLs.push(xpos);
@@ -62,20 +62,9 @@ export default class Planet extends TemplateFor3D {
 		imageURLs.push(zpos);
 		imageURLs.push(zneg);
 
-		const textureCube = THREE.ImageUtils.loadTextureCube(imageURLs);
-		const shader = THREE.ShaderLib["cube"];
-		shader.uniforms["tCube"].value = textureCube;
-
-		const skyMaterial = new THREE.ShaderMaterial({
-			fragmentShader: shader.fragmentShader,
-			vertexShader: shader.vertexShader,
-			uniforms: shader.uniforms,
-			depthWrite: false,
-			side: THREE.BackSide
-		});
-
-		const skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
-		this.scene.add(skyBox);
+		const textureCube = new THREE.CubeTextureLoader().load(imageURLs);
+		textureCube.mapping = THREE.CubeRefractionMapping;
+		this.scene.background = textureCube;
 	}
 
 	componentDidMount() {

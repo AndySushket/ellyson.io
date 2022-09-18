@@ -14,8 +14,8 @@ const yneg = require(`../../../../../assets/img/skyBox/planet/nebula-yneg.png`);
 const zpos = require(`../../../../../assets/img/skyBox/planet/nebula-zpos.png`);
 const zneg = require(`../../../../../assets/img/skyBox/planet/nebula-zneg.png`);
 
-const Zlib = require("three/examples/js/libs/inflate.min");
-window.Zlib = Zlib.Zlib;// for FBX Loader
+// const Zlib = require("three/examples/js/libs/inflate.min");
+// window.Zlib = Zlib.Zlib;// for FBX Loader
 
 export async function loadHouse() {
 	const FBXParser = new FBXLoader();

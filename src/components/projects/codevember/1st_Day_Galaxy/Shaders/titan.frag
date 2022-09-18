@@ -1,5 +1,5 @@
 
-	uniform sampler2D texture;
+	uniform sampler2D titanTexture;
 	uniform vec2 tile;
 	uniform sampler2D textureNormal;
 
@@ -16,7 +16,7 @@
 
 
 	//mix merge textures
-	vec4 baseColor = mix(texture2D( texture , vUv.xy ) , texture2D( textureNormal , vUv.xy ), .6);
+	vec4 baseColor = mix(texture2D( titanTexture , vUv.xy ) , texture2D( textureNormal , vUv.xy ), .6);
 
 	vec4 theColor = baseColor+ vec4(vNormal.zzz * 0.04, 1.0);
 

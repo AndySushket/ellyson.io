@@ -64,7 +64,17 @@ export default class TriangleWallpaper extends TemplateFor3D {
 	initPlateMesh() {
 		let loader = new THREE.TextureLoader();
 		loader.load(image, (texture) => {
-			this.geometry = new THREE.Geometry();
+			const position = [];
+			const indexes = [];
+			this.dots.forEach((d) => {
+				position.push(d[0], d[1], 0);
+			});
+			for (let i = 0; i < this.triangles.length; i = i + 3) {
+				indexes.push(this.triangles[i], this.triangles[i + 1], this.triangles[i + 2]);
+			}
+			this.geometry = new THREE.BufferGeometry();
+			this.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(position),3))
+			this.geometry.setIndex(indexes)
 			const material = new THREE.ShaderMaterial({
 				extensions: {
 					derivatives: "#extension GL_OES_standard_derivatives : enable"
@@ -76,14 +86,7 @@ export default class TriangleWallpaper extends TemplateFor3D {
 				fragmentShader: fragmentShader,
 				side: THREE.DoubleSide,
 			});
-
-			this.dots.forEach((d) => {
-				this.geometry.vertices.push(new THREE.Vector3(d[0], d[1], 0));
-			});
-
-			for (let i = 0; i < this.triangles.length; i = i + 3) {
-				this.geometry.faces.push(new THREE.Face3(this.triangles[i], this.triangles[i + 1], this.triangles[i + 2]));
-			}
+			
 			this.geometry.computeBoundingBox();
 			//--------------------------- for adapting image texture ------------------
 			const max = this.geometry.boundingBox.max,

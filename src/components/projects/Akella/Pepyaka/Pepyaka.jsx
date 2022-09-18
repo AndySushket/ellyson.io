@@ -30,7 +30,7 @@ export default class Pepyka extends TemplateFor3D {
 			fragmentShader
 		});
 
-		this.geometry = new THREE.SphereBufferGeometry(1,362,362);
+		this.geometry = new THREE.SphereGeometry(1,362,362);
 		this.sphere = new THREE.Mesh(this.geometry, this.material);
 
 		this.material = new THREE.ShaderMaterial({
@@ -64,7 +64,7 @@ export default class Pepyka extends TemplateFor3D {
 			positions[3*i+1] = rad * y;
 			positions[3*i+2] = rad * Math.sin(phi) * r;
 		}
-		this.particalGeometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+		this.particalGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
 		this.particles = new THREE.Points(this.particalGeometry, this.material);
 
 		this.scene.add(this.sphere, this.particles);

@@ -6,6 +6,7 @@ import React from 'react';
 import * as THREE from 'three';
 import TemplateFor3D from '../../../templates/mainTemplate3D';
 import {normalize} from "../../../../utils/mathUtils";
+import BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
 const Colors = {
 	red: 0xf25346
@@ -18,9 +19,9 @@ const Colors = {
 
 class Sea {
 	constructor() {
-		const geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10);
-		geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2)); //rotate the geom
-		geom.mergeVertices(); //important: by mergin vertices we ensure the continuty of the waves
+		const geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10).rotateX(-Math.PI / 2);
+		// geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2)); //rotate the geom
+		BufferGeometryUtils.mergeVertices(geom); //important: by mergin vertices we ensure the continuty of the waves
 		const l = geom.vertices.length;	//get the vertices length
 		this.waves = []; //create an array to store new data associated to each vertex
 		for (let i = 0; i < l; i++) {
@@ -34,7 +35,7 @@ class Sea {
 			color: "#429837",
 			transparent: true,
 			opacity: .9,
-			shading: THREE.FlatShading
+			flatShading: true
 		});
 		this.mesh = new THREE.Mesh(geom, mat);
 		this.mesh.receiveShadow = true;
@@ -108,7 +109,7 @@ class Pilot{
 
 		//body of pilot
 		const bodyGeom = new THREE.BoxGeometry(15, 15, 15);
-		const bodyMat = new THREE.MeshPhongMaterial({color: Colors.brown, shading: THREE.FlatShading});
+		const bodyMat = new THREE.MeshPhongMaterial({color: Colors.brown, flatShading: true});
 		const body = new THREE.Mesh(bodyGeom, bodyMat);
 		body.position.set(2, -12, 0);
 		this.mesh.add(body);
@@ -120,11 +121,11 @@ class Pilot{
 		this.mesh.add(face);
 
 		//hair
-		const hairGeom = new THREE.BoxGeometry(4, 4, 4);
+		const hairGeom = new THREE.BoxGeometry(4, 4, 4).translate(0, 2, 0);
 		const hairMat = new THREE.MeshPhongMaterial({color: Colors.brown});
 		const hair = new THREE.Mesh(hairGeom, hairMat);
 
-		hair.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 2, 0)); //align the shape of the hair to its bottom boundary,that will make it easier to scale
+		// hair.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 2, 0)); //align the shape of the hair to its bottom boundary,that will make it easier to scale
 		const hairs = new THREE.Object3D();	//create a container for the hair
 		this.hairsTop = new THREE.Object3D();//create acontainer for the hairs at the top of head(the ones that will animated)
 		for (let i = 0; i < 12; i++) {	//create the Hairs at the top of head and position them on 3 x 4 grid
@@ -139,8 +140,8 @@ class Pilot{
 		hairs.add(this.hairsTop);
 
 		// hairs at side face;
-		const hairSideGeom = new THREE.BoxGeometry(12, 4, 2);
-		hairSideGeom.applyMatrix(new THREE.Matrix4().makeTranslation(-6, 0, 0));
+		const hairSideGeom = new THREE.BoxGeometry(12, 4, 2).translate(-6, 0, 0);
+		// hairSideGeom.applyMatrix(new THREE.Matrix4().makeTranslation(-6, 0, 0));
 		const hairSideR = new THREE.Mesh(hairSideGeom, hairMat);
 		const hairSideL = hairSideR.clone();
 		hairSideL.position.set(8, -2, 6);
@@ -196,18 +197,20 @@ class AirPlane {
 
 		//Create the Cabin
 		const geomCockpit = new THREE.BoxGeometry(105, 50, 42, 1, 1, 1);
-		const matCockpit = new THREE.MeshPhongMaterial({color: "#3bd14c", shading: THREE.FlatShading});
+		const matCockpit = new THREE.MeshPhongMaterial({color: "#3bd14c", flatShading: true});
 
 		//we can access a specific vertex of a shape through
 		//the vertices array,and then move it's x,y,z prop
-		geomCockpit.vertices[4].y -= 10;
-		geomCockpit.vertices[4].z += 18;
-		geomCockpit.vertices[5].y -= 10;
-		geomCockpit.vertices[5].z -= 18;
-		geomCockpit.vertices[6].y += 30;
-		geomCockpit.vertices[6].z += 20;
-		geomCockpit.vertices[7].y += 30;
-		geomCockpit.vertices[7].z -= 20;
+		const position = geomCockpit.getAttribute('position');
+		position.needsUpdate = true;
+		position.array[4 * 3 + 1] -= 10;
+		position.array[4 * 3 + 2] += 18;
+		position.array[5 * 3 + 1] -= 10;
+		position.array[5* 3 + 2] -= 18;
+		position.array[6* 3 + 1] += 30;
+		position.array[6* 3 + 2] += 20;
+		position.array[7* 3 + 1] += 30;
+		position.array[7* 3 + 2] -= 20;
 
 		const cockpit = new THREE.Mesh(geomCockpit, matCockpit);
 		cockpit.position.x -= 12;
@@ -218,7 +221,7 @@ class AirPlane {
 
 		// Create the engine
 		const geomEngine = new THREE.BoxGeometry(20, 50, 50, 1, 1, 1);
-		const matEngine = new THREE.MeshPhongMaterial({color: Colors.white, shading: THREE.FlatShading});
+		const matEngine = new THREE.MeshPhongMaterial({color: Colors.white, flatShading: true});
 		const engine = new THREE.Mesh(geomEngine, matEngine);
 		engine.position.x = 40;
 		engine.castShadow = true;
@@ -227,9 +230,12 @@ class AirPlane {
 
 		//Create the wing
 		const geomSideWing = new THREE.BoxGeometry(40, 8, 150, 1, 1, 1);
-		const matSideWing = new THREE.MeshPhongMaterial({color: "#a3e240",shading: THREE.FlatShading});
-		geomSideWing.vertices[4].y -= 5;
-		geomSideWing.vertices[5].y -= 5;
+		const matSideWing = new THREE.MeshPhongMaterial({color: "#a3e240",flatShading: true});
+		const positionSideWing = geomSideWing.getAttribute('position');
+		positionSideWing.needsUpdate = true;
+		positionSideWing.array[4 * 3 + 1] -= 5;
+		positionSideWing.array[5 * 3 + 1] -= 5;
+
 		const sideWing = new THREE.Mesh(geomSideWing, matSideWing);
 		const winfTop = sideWing.clone();
 		winfTop.position.y = 45;
@@ -242,10 +248,13 @@ class AirPlane {
 		const geomPillar = new THREE.BoxGeometry(2, 45, 1);
 		const matPillar = new THREE.MeshPhongMaterial({color: "#25572a"});
 		const pillarRf = new THREE.Mesh(geomPillar, matPillar);
-		geomPillar.vertices[0].x += 4;
-		geomPillar.vertices[1].x += 4;
-		geomPillar.vertices[4].x += 4;
-		geomPillar.vertices[5].x += 4;
+		const positionPillar = geomPillar.getAttribute('position');
+		positionPillar.needsUpdate = true;
+		positionPillar.array[0 * 3] += 4;
+		positionPillar.array[1 * 3] += 4;
+		positionPillar.array[4 * 3] += 4;
+		positionPillar.array[5 * 3] += 4;
+
 		const pillarLf = pillarRf.clone();
 		const pillarRb = pillarRf.clone();
 		const pillarLb = pillarRf.clone();
@@ -266,9 +275,11 @@ class AirPlane {
 
 		// Create Tailplane
 		const geomTailPlane = new THREE.BoxGeometry(15, 17, 4, 1, 1, 1);
-		const matTailPlane = new THREE.MeshPhongMaterial({color: "#a3e240", shading: THREE.FlatShading});
-		geomTailPlane.vertices[0].y -= 8;
-		geomTailPlane.vertices[1].y -= 8;
+		const matTailPlane = new THREE.MeshPhongMaterial({color: "#a3e240", flatShading: true});
+		const positionTailPlane = geomTailPlane.getAttribute('position');
+		positionTailPlane.needsUpdate = true;
+		positionTailPlane.array[0* 3 + 1] -= 8;
+		positionTailPlane.array[1* 3 + 1] -= 8;
 		const tailPlane = new THREE.Mesh(geomTailPlane, matTailPlane);
 		tailPlane.position.set(-57, 20, 0);
 		tailPlane.castShadow = true;
@@ -277,11 +288,13 @@ class AirPlane {
 
 		//sidetail
 		const geomSideTail = new THREE.BoxGeometry(15, 5, 30, 1, 1, 1);
-		const matSideTail = new THREE.MeshPhongMaterial({color: "#a3e240", shading: THREE.FlatShading});
-		geomSideTail.vertices[0].z -= 8;
-		geomSideTail.vertices[1].z += 8;
-		geomSideTail.vertices[2].z -= 8;
-		geomSideTail.vertices[3].z += 8;
+		const matSideTail = new THREE.MeshPhongMaterial({color: "#a3e240", flatShading: true});
+		const positionSideTail = geomSideTail.getAttribute('position');
+		positionSideTail.needsUpdate = true;
+		positionSideTail.array[0* 3 +2] -= 8;
+		positionSideTail.array[1* 3 +2] += 8;
+		positionSideTail.array[2* 3 + 2] -= 8;
+		positionSideTail.array[3* 3 +2] += 8;
 		const sideTail = new THREE.Mesh(geomSideTail, matSideTail);
 		sideTail.position.set(-55, 10, 0);
 		sideTail.castShadow = true;
@@ -290,14 +303,14 @@ class AirPlane {
 
 		//propeller
 		const geomPropeller = new THREE.BoxGeometry(10, 10, 10, 1, 1, 1);
-		const matPropeller = new THREE.MeshPhongMaterial({color: Colors.brown, shading: THREE.FlatShading});
+		const matPropeller = new THREE.MeshPhongMaterial({color: Colors.brown, flatShading: true});
 		this.propeller = new THREE.Mesh(geomPropeller, matPropeller);
 		this.propeller.castShadow = true;
 		this.propeller.receiveShadow = true;
 
 		//blades
 		const geomBlade = new THREE.BoxGeometry(1, 80, 10, 1, 1, 1);
-		const matBlade = new THREE.MeshPhongMaterial({color: Colors.brownDark, shading: THREE.FlatShading});
+		const matBlade = new THREE.MeshPhongMaterial({color: Colors.brownDark, flatShading: true});
 		const blade1 = new THREE.Mesh(geomBlade, matBlade);
 		blade1.position.set(0,0,0);
 		blade1.castShadow = true;
@@ -315,18 +328,18 @@ class AirPlane {
 
 		//Wheels
 		const wheelProtecGeom = new THREE.BoxGeometry(30, 15, 10, 1, 1, 1);
-		const wheelProtecMat = new THREE.MeshPhongMaterial({color: "#a3e240", shading: THREE.FlatShading});
+		const wheelProtecMat = new THREE.MeshPhongMaterial({color: "#a3e240", flatShading: true});
 		const wheelProtecR = new THREE.Mesh(wheelProtecGeom, wheelProtecMat);
 		wheelProtecR.position.set(25, -20, 25);
 		this.mesh.add(wheelProtecR);
 
 		const wheelTireGeom = new THREE.BoxGeometry(24, 24, 4);
-		const wheelTireMat = new THREE.MeshPhongMaterial({color: Colors.brownDark, shading: THREE.FlatShading});
+		const wheelTireMat = new THREE.MeshPhongMaterial({color: Colors.brownDark, flatShading: true});
 		const wheelTireR = new THREE.Mesh(wheelTireGeom, wheelTireMat);
 		wheelTireR.position.set(25, -28, 25);
 
 		const wheelAxisGeom = new THREE.BoxGeometry(10, 10, 6);
-		const wheelAxisMat = new THREE.MeshPhongMaterial({color: Colors.brown, shading: THREE.FlatShading});
+		const wheelAxisMat = new THREE.MeshPhongMaterial({color: Colors.brown, flatShading: true});
 		const wheelAxis = new THREE.Mesh(wheelAxisGeom, wheelAxisMat);
 		wheelTireR.add(wheelAxis);
 		this.mesh.add(wheelTireR);
@@ -345,8 +358,8 @@ class AirPlane {
 		this.mesh.add(wheelTireB);
 
 		const suspensionGeom = new THREE.BoxGeometry(4, 20, 4);
-		suspensionGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0,10,0));
-		const suspensionMat = new THREE.MeshPhongMaterial({color: "#a3e240", shading: THREE.FlatShading});
+		suspensionGeom.translate(0,10,0);
+		const suspensionMat = new THREE.MeshPhongMaterial({color: "#a3e240", flatShading: true});
 		const suspension = new THREE.Mesh(suspensionGeom, suspensionMat);
 		suspension.position.set(-45, -3, 0);
 		suspension.rotation.z = -.3;

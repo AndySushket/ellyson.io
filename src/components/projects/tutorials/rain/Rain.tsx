@@ -16,11 +16,11 @@ export default class Rain extends TemplateFor3D {
 	private ambient: THREE.AmbientLight | undefined;
 	private directionalLight: THREE.DirectionalLight | undefined;
 	private portalLight: THREE.PointLight | undefined;
-	private rainGeo: THREE.Geometry | undefined;
+	private rainGeo: THREE.BufferGeometry | undefined;
 	private rainDrop: THREE.Vector3 | undefined;
 	private rainMaterial: THREE.PointsMaterial | undefined;
 	private rain: THREE.Points | undefined;
-	private cloudGeo: THREE.PlaneBufferGeometry| undefined;
+	private cloudGeo: THREE.PlaneGeometry| undefined;
 	private cloudMaterial: THREE.MeshLambertMaterial | undefined;
 
 	constructor(props : any){
@@ -75,22 +75,23 @@ export default class Rain extends TemplateFor3D {
 
 	initRain() {
 		let loader = new THREE.TextureLoader();
-		loader.load(drop, (texture)=>{
-			this.rainGeo = new THREE.Geometry();
+		loader.load(drop, (texture: any)=>{
+			const position = [];
+			const originalPosition = [];
+			const velocity = [];
+			this.rainGeo = new THREE.BufferGeometry();
 			for(let i=0;i < Rain.rainCount;i++) {
 				let tmp =  Math.random() * 400 -200;
 				let tmp2 =  Math.random() * 400 -300;
-				this.rainDrop = new THREE.Vector3(
-					tmp,
+				position.push(tmp,
 					Math.random() * 500 - 250,
-					tmp2
-				);
-				this.rainDrop.originalX = tmp;
-				this.rainDrop.originalZ = tmp2;
-				this.rainDrop.velocity = {};
-				this.rainDrop.velocity = 0;
-				this.rainGeo.vertices.push(this.rainDrop);
+					tmp2);
+				originalPosition.push(tmp, tmp2);
+				velocity.push(0);
 			}
+			this.rainGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(position), 3));
+			this.rainGeo.setAttribute('originalPosition', new THREE.BufferAttribute(new Float32Array(originalPosition), 2));
+			this.rainGeo.setAttribute('velocity', new THREE.BufferAttribute(new Float32Array(velocity), 1));
 			this.rainMaterial = new THREE.PointsMaterial({
 				color: 0xaaaaaa,
 				size: 1,
@@ -107,7 +108,7 @@ export default class Rain extends TemplateFor3D {
 
 
 		loader.load(smoke, (texture) => {
-			this.cloudGeo = new THREE.PlaneBufferGeometry(400,400);
+			this.cloudGeo = new THREE.PlaneGeometry(400,400);
 			this.cloudMaterial = new THREE.MeshLambertMaterial({
 				map: texture,
 				transparent: true,
@@ -134,31 +135,51 @@ export default class Rain extends TemplateFor3D {
 		this.cloudParticles.forEach(p => {
 			p.rotation.z -=0.001;
 		});
-		if(this.rainGeo && this.rain){
-			this.rainGeo && this.rainGeo.vertices.forEach(p => {
-				p.velocity -= Math.random() * 0.05;
-				p.y += p.velocity;
-				if(p.originalZ < 10 && p.originalZ >-50)
-					p.y += p.velocity/2;
-				else
-					p.y += p.velocity;
+		if(this.rainGeo && this.rainGeo && this.rain){
 
-				if (p.y < -200) {
-					p.y = 200;
-					p.velocity = 0;
+			const position = this.rainGeo.getAttribute('position');
+			const originalP = this.rainGeo.getAttribute('originalPosition');
+			const velocity = this.rainGeo.getAttribute('velocity');
+
+			position.needsUpdate = true;
+			velocity.needsUpdate = true;
+
+			const positionArray = position.array;
+			const originalPArray = originalP.array;
+			const velocityArray = velocity.array;
+
+
+			for (let i = 0, length = velocityArray.length; i < length; i++ ) {
+				velocityArray[i] -= Math.random() * 0.05;
+				positionArray[i * 3 + 1] += velocityArray[i];
+
+				if(originalPArray[i * 2 + 1] < 10 && originalPArray[i * 2 + 1] >-50) {
+					positionArray[i * 3 + 1] += velocityArray[i] / 2;
+				} else {
+					positionArray[i * 3 + 1] += velocityArray[i];
 				}
-				if(p.originalZ < 10 && p.originalZ >-50 && p.originalX < 30 && p.originalX >-30) {
-					if(p.x < 0)
-						p.x -= 0.2;
-					else
-						p.x += 0.2;
+				if (positionArray[i * 3 + 1] < -200) {
+					positionArray[i * 3 + 1] = 200;
+					velocityArray[i] = 0;
 				}
-				if(p.originalZ < 10 && p.originalZ >-50) {
-					if(p.x > 30) p.x = p.originalX;
-					else if (p.x < -30) p.x = p.originalX;
+				if(originalPArray[i * 2 + 1] < 10 && originalPArray[i * 2 + 1] >-50 && originalPArray[i * 2] < 30 && originalPArray[i * 2] >-30) {
+					if(positionArray[i * 3] < 0) {
+						positionArray[i * 3] -= 0.2;
+					} else {
+						positionArray[i * 3] += 0.2;
+					}
+
 				}
-			});
-			this.rainGeo.verticesNeedUpdate = true;
+				if(originalPArray[i * 2 + 1] < 10 && originalPArray[i * 2 + 1] >-50) {
+					if(positionArray[i * 3] > 30) {
+						positionArray[i * 3] = originalPArray[i * 2];
+					}
+					else if (positionArray[i * 3] < -30) {
+						positionArray[i * 3] = originalPArray[i * 2];
+					}
+				}
+			}
+
 			this.rain.rotation.y +=0.002;
 		}
 

@@ -20,7 +20,7 @@ export default class Shader4 extends TemplateFor3D {
 		for (let v = 0; v < geometry.attributes.position.array.length / 3; v++) {
 			array.push(Math.random() * 3);
 		}
-		geometry.addAttribute("displacement", new THREE.Float32BufferAttribute(array, 1).setDynamic(true));
+		geometry.setAttribute("displacement", new THREE.Float32BufferAttribute(array, 1));
 		const customMaterial = new THREE.ShaderMaterial({
 			uniforms: {
 				amplitude: {

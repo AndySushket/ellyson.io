@@ -7,6 +7,12 @@ import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
 export default class Matrix extends TemplateFor3D {
+
+	componentWillUnmount() {
+		super.componentWillUnmount();
+		this.gui.destroy();
+	}
+
 	initControls() {
 		super.initControls();
 		this.camera.position.set(0, 0, 10);
@@ -18,8 +24,8 @@ export default class Matrix extends TemplateFor3D {
 		this.cube = new THREE.Mesh(geometry, material);
 		this.scene.add(this.cube);
 
-		const gui = new dat.GUI();
-		const positionFolder = gui.addFolder('position');
+		this.gui = new dat.GUI();
+		const positionFolder = this.gui.addFolder('position');
 
 		this.Matrix = this.cube.matrix.clone();
 		this.cube.matrixAutoUpdate = false;

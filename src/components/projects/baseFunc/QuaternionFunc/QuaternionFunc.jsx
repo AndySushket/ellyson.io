@@ -7,6 +7,12 @@ import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
 export default class Quaternion extends TemplateFor3D {
+
+	componentWillUnmount() {
+		super.componentWillUnmount();
+		this.gui.destroy();
+	}
+
 	initControls() {
 		super.initControls();
 		this.camera.position.set(0, 0, 10);
@@ -24,7 +30,7 @@ export default class Quaternion extends TemplateFor3D {
 
 		const gridHelper = new THREE.GridHelper(100, 10);
 		this.scene.add(gridHelper);
-		const axisHelper = new THREE.AxisHelper(5);
+		const axisHelper = new THREE.AxesHelper(5);
 		this.scene.add(axisHelper);
 
 		const beforeArrow = new THREE.ArrowHelper(beforeVector.clone().normalize(), origin, beforeVector.length(), 0xffff00);
@@ -33,9 +39,9 @@ export default class Quaternion extends TemplateFor3D {
 		this.afterArrow = new THREE.ArrowHelper(this.afterVector.clone().normalize(), origin, this.afterVector.length() * 2, 0xffffff);
 		this.cube.add(this.afterArrow);
 
-		const gui = new dat.GUI();
-		this.positionFolder = gui.addFolder('QuaternionFunc');
-		this.rotationFolder = gui.addFolder('rotationFunc');
+		this.gui = new dat.GUI();
+		this.positionFolder = this.gui.addFolder('QuaternionFunc');
+		this.rotationFolder = this.gui.addFolder('rotationFunc');
 		this.positionFolder.add(this.cube.quaternion, "x", -1,1, 0.01);
 		this.positionFolder.add(this.cube.quaternion, "y", -1,1, 0.01);
 		this.positionFolder.add(this.cube.quaternion, "z", -1,1, 0.01);

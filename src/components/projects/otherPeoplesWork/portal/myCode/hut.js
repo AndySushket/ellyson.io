@@ -6,7 +6,6 @@ import {
 	MeshBasicMaterial,
 	PlaneGeometry,
 	Vector2,
-	VertexColors,
 } from 'three';
 
 class Hut extends Mesh {
@@ -78,7 +77,7 @@ class Hut extends Mesh {
 
 	static setupMaterial() {
 		Hut.material = new MeshBasicMaterial({
-			vertexColors: VertexColors,
+			vertexColors: true,
 			side: DoubleSide,
 		})
 	}
@@ -93,7 +92,7 @@ class Hut extends Mesh {
 		if (!Hut.material) {
 			Hut.setupMaterial();
 		}
-		const geometry = new Geometry();
+		const geometry = new THREE.BufferGeometry();
 		Hut.walls.forEach(wall => geometry.merge(wall));
 		if (north) {
 			geometry.merge(Hut.northWall);

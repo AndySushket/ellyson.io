@@ -1,13 +1,13 @@
 
-	uniform sampler2D texture;
+	uniform sampler2D saturnTexture;
 
 	varying vec2 vUv;
 	varying vec4 currentPostion;
 
 	void main() {
-	vec4 baseColor = texture2D( texture, vUv.xy );
+	vec4 texture = texture2D( saturnTexture, vUv.xy );
 
-	vec4 theColor = baseColor ;
+	vec4 theColor = texture ;
 	theColor.a = 1.0;
 	if(currentPostion.z > 0.0){
 	theColor.x -= currentPostion.z/80.0;

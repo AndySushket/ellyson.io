@@ -6,7 +6,6 @@ import TemplateFor3D from '../../../templates/mainTemplate3D';
 import * as THREE from 'three';
 import vertexShader from './vertexShader.vert';
 import fragmentShader from './fragmentShader.frag';
-const OrbitControls = require('three-orbit-controls')(THREE);
 
 const image2 = require("./image.png");
 const image = require("./image2.png");
@@ -24,7 +23,7 @@ export default class DisplacedBox extends TemplateFor3D {
 		// const frustumSize = 10;
 		// const aspect = this.WIDTH / this.HEIGHT;
 		this.camera.position.set(0, 0, 4);
-		this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+		super.initControls();
 	}
 
 	mouseVel(){
@@ -71,7 +70,7 @@ export default class DisplacedBox extends TemplateFor3D {
 			fragmentShader,
 		});
 
-		this.geometry = new THREE.BoxBufferGeometry(1, 1, 1, 200, 1, 200);
+		this.geometry = new THREE.BoxGeometry(1, 1, 1, 200, 1, 200);
 		const mesh = new THREE.Mesh(this.geometry, this.material);
 		this.scene.add(mesh);
 	}

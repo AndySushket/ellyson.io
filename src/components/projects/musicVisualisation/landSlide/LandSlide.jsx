@@ -63,7 +63,7 @@ export default class LandSlide extends TemplateFor3D {
 		let x = 0, z = 0;
 
 		const instancedBoxGeo = new THREE.InstancedBufferGeometry().copy(new THREE.BoxBufferGeometry(2, 1, 2));
-		instancedBoxGeo.maxInstancedCount = 0;
+		instancedBoxGeo.instanceCount = 0;
 
 		const position = new Float32Array(LandSlide.CUBE_COUNT * 3);
 		const index = new Float32Array(LandSlide.CUBE_COUNT);
@@ -80,11 +80,11 @@ export default class LandSlide extends TemplateFor3D {
 				z += 5;
 				x = 0
 			}
-			instancedBoxGeo.maxInstancedCount++;
+			instancedBoxGeo.instanceCount++;
 		}
 
-		instancedBoxGeo.addAttribute("boxPosition", new THREE.InstancedBufferAttribute(position, 3));
-		instancedBoxGeo.addAttribute("boxIndex", new THREE.InstancedBufferAttribute(index, 1));
+		instancedBoxGeo.setAttribute("boxPosition", new THREE.InstancedBufferAttribute(position, 3));
+		instancedBoxGeo.setAttribute("boxIndex", new THREE.InstancedBufferAttribute(index, 1));
 
 		const shaderMaterial = new THREE.ShaderMaterial( {
 			uniforms: {freqData: new THREE.Uniform(this.dataArray)},

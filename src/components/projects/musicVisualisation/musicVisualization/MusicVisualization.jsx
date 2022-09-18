@@ -69,8 +69,8 @@ export default class MusicVisualization extends TemplateFor3D {
 
 		let x = 0, z = 0;
 
-		const instancedBoxGeo = new THREE.InstancedBufferGeometry().copy(new THREE.BoxBufferGeometry(2, 1, 2));
-		instancedBoxGeo.maxInstancedCount = 0;
+		const instancedBoxGeo = new THREE.InstancedBufferGeometry().copy(new THREE.BoxGeometry(2, 1, 2));
+		instancedBoxGeo.instanceCount = 0;
 
 		const position = new Float32Array(MusicVisualization.CUBE_COUNT * 3);
 		const index = new Float32Array(MusicVisualization.CUBE_COUNT);
@@ -87,25 +87,26 @@ export default class MusicVisualization extends TemplateFor3D {
 				z += 5;
 				x = 0
 			}
-			instancedBoxGeo.maxInstancedCount++;
+			instancedBoxGeo.instanceCount++;
 		}
-
-		instancedBoxGeo.addAttribute("boxPosition", new THREE.InstancedBufferAttribute(position, 3));
-		instancedBoxGeo.addAttribute("boxIndex", new THREE.InstancedBufferAttribute(index, 1));
-		instancedBoxGeo.addAttribute("frequencyData", new THREE.InstancedBufferAttribute(this.dataArray, 1));
+		instancedBoxGeo.setAttribute("boxPosition", new THREE.InstancedBufferAttribute(position, 3));
+		instancedBoxGeo.setAttribute("boxIndex", new THREE.InstancedBufferAttribute(index, 1));
+		instancedBoxGeo.setAttribute("frequencyData", new THREE.InstancedBufferAttribute(this.dataArray, 1));
 
 		const shaderMaterial = new THREE.ShaderMaterial( {
 			vertexShader: vertexShader,
 			fragmentShader: fragmentShader,
+			side: THREE.DoubleSide,
 		});
 
 		this.waveFormMesh = new THREE.Mesh(instancedBoxGeo, shaderMaterial);
-		this.scene.add(this.waveFormMesh);
+		this.scene?.add(this.waveFormMesh);
 	}
 
 	async componentDidMount() {
-		await this.init3D();
+		await this.init3D(undefined);
 		await this.initObjects();
+		await super.initControls();
 		await this.camera.position.set(86 / 2, 88 / 3, 84 * 1.2);
 		await this.camera.lookAt(new THREE.Vector3(86/ 2, 0, 88/2));
 		await this.animate();
@@ -122,6 +123,7 @@ export default class MusicVisualization extends TemplateFor3D {
 		super.animate();
 		this.analyser && this.analyser.getByteFrequencyData(this.dataArray);// frequency
 		this.analyser && this.analyser.getByteTimeDomainData(this.timeByteData);// waveform
+
 		if(this.waveFormMesh && this.waveFormMesh.geometry) {
 			this.waveFormMesh.geometry.attributes.frequencyData.needsUpdate = true;
 		}

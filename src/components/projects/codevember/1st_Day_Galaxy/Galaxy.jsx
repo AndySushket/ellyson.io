@@ -43,27 +43,27 @@ export default class Galaxy extends TemplateFor3D {
 	initSaturn() {
 		const saturnMaterial = new THREE.ShaderMaterial({
 			uniforms: {
-				texture: {type: 't', value: textureLoader.load(saturn)},
+				saturnTexture: {type: 't', value: textureLoader.load(saturn)},
 				time: {value: 1.0}
 			},
 			vertexShader: vertex_saturn,
 			fragmentShader: frag_saturn,
 		});
-		this.saturn = new THREE.Mesh( new THREE.SphereBufferGeometry(100, 64, 64), saturnMaterial);
+		this.saturn = new THREE.Mesh( new THREE.SphereGeometry(100, 64, 64), saturnMaterial);
 		this.scene.add(this.saturn);
 	}
 
 	initTitano() {
 		const titanoMaterial = new THREE.ShaderMaterial({
 			uniforms: {
-				texture: {type: 't', value: textureLoader.load(titano)},
+				titanTexture: {type: 't', value: textureLoader.load(titano)},
 				textureNormal: {type: 't', value: textureLoader.load(titano2)},
 				time: {value: 1.0}
 			},
 			vertexShader: vert_titan,
 			fragmentShader: frag_titan,
 		});
-		this.titano = new THREE.Mesh(new THREE.SphereBufferGeometry(20, 64, 64), titanoMaterial);
+		this.titano = new THREE.Mesh(new THREE.SphereGeometry(20, 64, 64), titanoMaterial);
 		this.scene.add(this.titano);
 	}
 
@@ -101,10 +101,10 @@ export default class Galaxy extends TemplateFor3D {
 			delayZ[i] = (Math.random()-0.5)*30;
 		}
 
-		internalRingGeometry.addAttribute('base_angle', new THREE.BufferAttribute(thetas, 1))
-			.addAttribute('offsetX', new THREE.BufferAttribute(delayX, 1))
-			.addAttribute('offsetZ', new THREE.BufferAttribute(delayZ, 1))
-			.addAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
+		internalRingGeometry.setAttribute('base_angle', new THREE.BufferAttribute(thetas, 1))
+			.setAttribute('offsetX', new THREE.BufferAttribute(delayX, 1))
+			.setAttribute('offsetZ', new THREE.BufferAttribute(delayZ, 1))
+			.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
 
 		this.externalRing = new THREE.Points(internalRingGeometry, externalRingMaterial);
 		this.internalRing = new THREE.Points(internalRingGeometry.clone(), internalRingMaterial);
@@ -120,21 +120,10 @@ export default class Galaxy extends TemplateFor3D {
 	}
 
 	initSkyBox() {
-		const skyGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
 		const imageURLs = [lf,rt, dn,up,bk,ft];
-		const textureCube = THREE.ImageUtils.loadTextureCube( imageURLs );
-		const shader = THREE.ShaderLib["cube"];
-		shader.uniforms["tCube"] = {};
-		shader.uniforms["tCube"].value = textureCube;
-		const skyMaterial = new THREE.ShaderMaterial({
-			fragmentShader: shader.fragmentShader,
-			vertexShader: shader.vertexShader,
-			uniforms: shader.uniforms,
-			depthWrite: false,
-			side: THREE.BackSide
-		});
-		const skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
-		this.scene.add( skyBox )
+		const textureCube = new THREE.CubeTextureLoader().load(imageURLs);
+		textureCube.mapping = THREE.CubeRefractionMapping;
+		this.scene.background = textureCube;
 	}
 
 	componentDidMount() {

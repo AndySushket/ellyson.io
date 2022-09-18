@@ -45,9 +45,9 @@ export default class PointLights extends TemplateFor3D {
 			colors.push(color.r, color.g, color.b);
 			sizes.push(20);
 		}
-		this.geometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-		this.geometry.addAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-		this.geometry.addAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
+		this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+		this.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+		this.geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
 		this.particleSystem = new THREE.Points(this.geometry, shaderMaterial);
 		this.scene.add(this.particleSystem);
 		this.initControls();

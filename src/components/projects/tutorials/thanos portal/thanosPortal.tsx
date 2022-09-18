@@ -43,9 +43,9 @@ export default class thanosPortal extends TemplateFor3D {
 	initPortal() {
 		let loader = new THREE.TextureLoader();
 		loader.load(smoke, (texture) => {
-			const starsGeometry = new THREE.PlaneBufferGeometry(350,350,1,1);
+			const starsGeometry = new THREE.PlaneGeometry(350,350,1,1);
 			this.instancedPortalGeo = new THREE.InstancedBufferGeometry().copy(starsGeometry);
-			this.instancedPortalGeo.maxInstancedCount = 0;
+			this.instancedPortalGeo.instanceCount = 0;
 			const orientations = [];
 			const position = new Float32Array(1323);
 			for(let i = 1322; i > 0; i -=3) {
@@ -55,7 +55,7 @@ export default class thanosPortal extends TemplateFor3D {
 				this.currentQ = new THREE.Quaternion();
 				this.currentQ.setFromEuler(new THREE.Euler(0, 0, (Math.random() * 360)));
 				orientations.push(this.currentQ.x, this.currentQ.y, this.currentQ.z, this.currentQ.w);
-				this.instancedPortalGeo.maxInstancedCount++;
+				this.instancedPortalGeo.instanceCount++;
 			}
 
 			this.instancedPortalGeo.setAttribute("instanceOffset", new THREE.InstancedBufferAttribute(position, 3));

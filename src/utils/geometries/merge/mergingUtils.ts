@@ -104,11 +104,11 @@ function initBufferGeometryFromData(geometryData) {
 
     }
 
-    BUFFER_GEOMETRY.addAttribute('position', new THREE.BufferAttribute(POSITIONS, 3));
+    BUFFER_GEOMETRY.setAttribute('position', new THREE.BufferAttribute(POSITIONS, 3));
 
     BUFFER_GEOMETRY.setIndex(new THREE.BufferAttribute(INDEXES, 1));
 
-    BUFFER_GEOMETRY.addAttribute('color', new THREE.BufferAttribute(COLORS, 3));
+    BUFFER_GEOMETRY.setAttribute('color', new THREE.BufferAttribute(COLORS, 3));
 
     if (geometryData.normal && NORMALS) {
         BUFFER_GEOMETRY.addAttribute('normal', new THREE.BufferAttribute(NORMALS, 3));

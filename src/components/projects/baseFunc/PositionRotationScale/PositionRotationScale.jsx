@@ -7,6 +7,15 @@ import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
 export default class PositionRotationScale extends TemplateFor3D {
+
+	componentWillUnmount() {
+		super.componentWillUnmount();
+		this.gui.destroy();
+	}
+	componentWillUnmount() {
+		super.componentWillUnmount();
+		this.gui.destroy();
+	}
 	initControls() {
 		super.initControls();
 		this.camera.position.set(0, 0, 10);
@@ -18,10 +27,10 @@ export default class PositionRotationScale extends TemplateFor3D {
 		this.cube = new THREE.Mesh(geometry, material);
 		this.scene.add(this.cube);
 
-		const gui = new dat.GUI();
-		const positionFolder = gui.addFolder('position');
-		const rotationFolder = gui.addFolder('rotation');
-		const scaleFolder = gui.addFolder('scale');
+		this.gui = new dat.GUI();
+		const positionFolder = this.gui.addFolder('position');
+		const rotationFolder = this.gui.addFolder('rotation');
+		const scaleFolder = this.gui.addFolder('scale');
 		positionFolder.add(this.cube.position, "x", -5,5);
 		positionFolder.add(this.cube.position, "y", -5,5);
 		positionFolder.add(this.cube.position, "z", -5,5);

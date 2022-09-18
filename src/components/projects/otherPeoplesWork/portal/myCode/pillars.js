@@ -4,7 +4,6 @@ import {
 	Mesh,
 	MeshBasicMaterial,
 	Object3D,
-	VertexColors,
 } from 'three';
 
 class Pillars extends Object3D {
@@ -22,7 +21,7 @@ class Pillars extends Object3D {
 
 	static setupMaterial() {
 		Pillars.material = new MeshBasicMaterial({
-			vertexColors: VertexColors,
+			vertexColors: true,
 		})
 	}
 
