@@ -10,7 +10,7 @@ import Akella from "./projects/Akella/akella";
 import TutorialWorks from "./projects/tutorials/tutorialWorks";
 import MainFunc from "./projects/baseFunc/mainFunc";
 import TestWork from "./projects/testWorks/testWork";
-import Main from "./Main";
+import Main from "./MainPage/Main";
 import Projects from "./Projects";
 
 export default function Routing() {
