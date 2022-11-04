@@ -34,7 +34,7 @@ export default class TemplateFor3D extends Component<any, any> {
 		checked: false;
 	}
 
-	private time: number;
+	protected time: number;
 	protected looped: boolean;
 	protected clock: THREE.Clock;
 	private mouse: THREE.Vector2;
@@ -97,8 +97,8 @@ export default class TemplateFor3D extends Component<any, any> {
 		this.refs?.anchor?.appendChild(this.renderer.domElement);
 	}
 
-	initCamera(): void {
-		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000000);
+	initCamera(cameraParam: any): void {
+		this.camera = new THREE.PerspectiveCamera(cameraParam?.fov || 75, window.innerWidth / window.innerHeight, 0.1, 1000000);
 	}
 
 	initLight(): void {
@@ -113,10 +113,10 @@ export default class TemplateFor3D extends Component<any, any> {
 		}
 	}
 
-	init3D(param: THREE.WebGLRendererParameters | undefined): void {
+	init3D(param: THREE.WebGLRendererParameters | undefined, cameraParam: any): void {
 		this.initRenderer(param);
 		this.initScene();
-		this.initCamera();
+		this.initCamera(cameraParam);
 		window.addEventListener('resize', this.handleWindowResize.bind(this), false);
 		this.looped = true;
 	}
