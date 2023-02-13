@@ -142,6 +142,13 @@ export default class Projects extends TemplateFor3D {
                             </Button>
                         </div>
                     </Row>
+                    <Row>
+                        <div>
+                            <Button>
+                                <Link to={"/ThreeJsJourney/Texture"}>Texture</Link>
+                            </Button>
+                        </div>
+                    </Row>
                 </Col>
             </div>
         )

@@ -10,6 +10,7 @@ import Akella from "./projects/Akella/akella";
 import TutorialWorks from "./projects/tutorials/tutorialWorks";
 import MainFunc from "./projects/baseFunc/mainFunc";
 import TestWork from "./projects/testWorks/testWork";
+import ThreeJsJourney from "./projects/threeJsJourney/threeJsJourney";
 import Main from "./MainPage/Main";
 import Projects from "./Projects";
 
@@ -73,8 +74,13 @@ export default function Routing() {
                     </Route>
 
                     <Route path="TestWork">
-                        <Route index element={<TestWork/>}/>
-                        <Route path={`thanosPortal`} element={<TestWork.House/>}/>
+                        <Route index element={<TestWork.House/>}/>
+                        <Route path={`House`} element={<TestWork.House/>}/>
+                    </Route>
+
+                    <Route path="ThreeJsJourney">
+                        <Route index element={<ThreeJsJourney.Texture/>}/>
+                        <Route path={`Texture`} element={<ThreeJsJourney.Texture/>}/>
                     </Route>
                 </Route>
                 <Route path={'projects'} element={<Projects/>}/>
