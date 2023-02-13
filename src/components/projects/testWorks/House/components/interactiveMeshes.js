@@ -11,7 +11,11 @@ export function getInterectiveMeshes(){
 
 	const greenGeometry = new THREE.BoxGeometry(79.6, 75.0, 30.0);
 	const greenStairs = new THREE.BoxGeometry(30.0, 35.0, 30.0);
-	greenStairs.vertices[0].y = greenStairs.vertices[1].y = -10.0;
+	const greenStairsArray = greenStairs.getAttribute('position');
+	greenStairsArray.set([-10], 1);
+	greenStairsArray.set([-10], 4);
+	greenStairsArray.needsUpdate = true;
+
 	greenGeometry.merge(greenStairs.translate(55.0, -20.0, 0));
 	const greenMesh = new THREE.Mesh(greenGeometry.translate(-15.0, -2.0, -22.0),
 		new THREE.MeshBasicMaterial({color: new THREE.Color("green"),transparent: true, opacity: 0}));

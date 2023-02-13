@@ -44,7 +44,7 @@ export default class TemplateFor3D extends Component<any, any> {
 	protected scene: THREE.Scene | undefined;
 	protected renderer: THREE.WebGLRenderer | undefined;
 	protected camera: THREE.PerspectiveCamera | undefined;
-	private light: THREE.DirectionalLight | undefined;
+	protected light: THREE.DirectionalLight | undefined;
 	private ambientLight: THREE.AmbientLight | undefined;
 	private controls: any;
 	private rayCaster: THREE.Raycaster | undefined;

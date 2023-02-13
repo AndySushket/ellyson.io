@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import {Line2} from 'three/examples/jsm/lines/Line2.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
-import map2 from "./displaceMap2.png";
+import map2 from "./textures/earth/displaceMap2.png";
 
-import geoLineVert from "./geoLineVert.vert"
-import geoLineFrag from './geoLineFrag.frag';
+import geoLineVert from "./Shaders/geoLineVert.vert"
+import geoLineFrag from './Shaders/geoLineFrag.frag';
 /* Draw GeoJSON
 Iterates through the latitude and longitude values, converts the values to XYZ coordinates,
 and draws the geoJSON geometries.

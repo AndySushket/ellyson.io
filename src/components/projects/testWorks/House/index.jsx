@@ -125,15 +125,16 @@ export default class House extends TemplateFor3D {
 	async componentDidMount() {
 		this.init3D({alpha: true,antialias: true, preserveDrawingBuffer: true});
 		this.cssRenderer = new CssRenderer(this.renderer, this.refs.anchor);
+		this.initControls(this.cssRenderer.renderer.domElement);
 		super.initRaycaster();
 		this.attachMouseMoveEvent();
 		this.attachMouseClickEvent();
-		this.attachKeydownEvent();
+		this.attachKeydownEvent.bind(this);
 		this.loadModals();
 		this.initLight();
 		this.initDoorLight();
 		this.initRaycaster();
-		this.initControls(this.cssRenderer.renderer.domElement);
+
 		this.animate();
 	}
 

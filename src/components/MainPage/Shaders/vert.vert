@@ -38,11 +38,6 @@ vec4 getHeight(vec2 uv) {
     return texture;
 }
 
-//vec3 orthogonal(vec3 v) {
-//    return normalize(abs(v.x) > abs(v.z) ? vec3(-v.y, v.x, 0.0)
-//    : vec3(0.0, -v.z, v.y));
-//}
-
 vec3 displace(vec3 point) {
 //    float x2 =  point.x * point.x;
 //    float y2 =  point.y * point.y;
@@ -51,7 +46,8 @@ vec3 displace(vec3 point) {
 //    float newX = point.x * sqrt(1. - (y2 + z2) / 2. + y2 * z2 / 3.);
 //    float newY = point.y * sqrt(1. - (z2 + x2) / 2. + z2 * x2 / 3.);
 //    float newZ = point.z * sqrt(1. - (x2 + y2) / 2. + x2 * y2 / 3.);
-    return normalize(point);
+    return normalize(point) ;
+//    return vec3(newX, newY, newZ);
 }
 
 vec3 orthogonal(vec3 v) {
@@ -63,13 +59,13 @@ float map(float value, float min1, float max1, float min2, float max2) {
     return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
 }
 
-float normalize(float v) {
+float normalized(float v) {
     return map(v, -1.0, 1.0, 0.0, 1.0);
 }
 
 void main() {
     vvNormal = normal;
-    if (cube > 0.) {
+
         vec3 displacedPosition = displace(position);
 //        vUv = PointToCoordinate(displacedPosition);
         float r = length (displacedPosition);
@@ -92,8 +88,8 @@ void main() {
         vec4 noiseTex = getHeight(vUv);
         float noise = noiseTex.r ;
         vec3 newPosition2 = displacedPosition + displacedNormal;
-        vNormal = normalize(normalMatrix * displacedNormal);
-//        vNormal = normal;
+//        vNormal = normalize(normalMatrix * displacedNormal);
+        vNormal = displacedNormal;
 
         float seam =
                 max (0.0, 1.0 - abs (displacedPosition.x / r) / 0.01) *
@@ -129,18 +125,17 @@ void main() {
         newPosition2.xyz += (displaceFactor * heightMeters - displaceBias) * displacedNormal;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition2 , 1.);
 
-        vDist = clamp(pow(normalize(dot(normalize(uLight) * vec3(1.,1.,1.) , newPosition2) * 2.), 1.), 0., 1.) ;
+        vDist = clamp(pow(normalized(dot(normalize(uLight) * vec3(1.,1.,1.) , newPosition2) * 2.), 1.), 0., 1.) ;
 
-    } else {
-        vec3 displacedPosition = position;
-        vUv = uv;
-        vec4 noiseTex = getHeight(vUv);
-        float noise = noiseTex.r ;
-        vec3 newPosition2 = displacedPosition;
-        vNormal = normal;
-        worldHeight = texture2D(displacementMap, uv).r;
+//        vec3 displacedPosition = position;
+//        vUv = uv;
+//        vec4 noiseTex = getHeight(vUv);
+//        float noise = noiseTex.r ;
+//        vec3 newPosition2 = displacedPosition;
+//        vNormal = normal;
+//        worldHeight = texture2D(displacementMap, uv).r;
 //        vDist = clamp(pow(normalize(dot(normalize(uLight) * vec3(-1.,1.,-1.) , newPosition2 + normal * worldHeight) * 2.), 2.), 0., 1.);
-        vDist = clamp(pow(normalize(dot(normalize(uLight) * vec3(-1.,1.,-1.) , displacedPosition) * 1.5), 1.), 0., 1.);
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition , 1.);
-    }
+////        vDist = clamp(pow(normalize(dot(normalize(uLight) * vec3(-1.,1.,-1.) , displacedPosition) * 1.5), 1.), 0., 1.);
+//        gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition , 1.);
+
 }
