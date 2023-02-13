@@ -68,13 +68,13 @@ void main() {
 //        float c = vDist;
 //        vec3 d = dayTimeFragColor.xyz * dayTimeFragColor.a + nightTimeFragColor.rgb * nightTimeFragColor.a * (0.5 - dayTimeFragColor.a);
 
-        float intensity = 1.05 - dot(vNormal, vec3(0.,0.,1.));
-//        vec3 atmpsphere = vec3(.3,.6,1.) * pow(intensity, 5.5);
+        float intensity = 1.05 - dot(vvNormal, vec3(0.,0.,1.));
+        vec3 atmpsphere = vec3(.3,.6,1.) * pow(intensity, 1.5);
         vec4 mixed = mix(nightTimeFragColor, dayTimeFragColor, vDist);
 //        gl_FragColor = nightTimeFragColor + dayTimeFragColor;
 //        gl_FragColor = vec4(vDist,0.,0.,1.);
 //        gl_FragColor = vec4(d,1.);
-        gl_FragColor = vec4(mixed.xyz, mixed.w);
+        gl_FragColor = vec4(atmpsphere + mixed.xyz, mixed.w);
 //
 ////        gl_FragColor = vec4( texture2D (map, vUv));
 ////        gl_FragColor = vec4(vDist,0.,0.,1.);

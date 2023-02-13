@@ -64,7 +64,7 @@ float normalized(float v) {
 }
 
 void main() {
-    vvNormal = normal;
+
 
         vec3 displacedPosition = displace(position);
 //        vUv = PointToCoordinate(displacedPosition);
@@ -90,7 +90,7 @@ void main() {
         vec3 newPosition2 = displacedPosition + displacedNormal;
 //        vNormal = normalize(normalMatrix * displacedNormal);
         vNormal = displacedNormal;
-
+    vvNormal = normalize(normalMatrix * displacedNormal);
         float seam =
                 max (0.0, 1.0 - abs (displacedPosition.x / r) / 0.01) *
                 clamp (1.0 + (displacedPosition.z / r) / 0.01, 0.0, 1.0);

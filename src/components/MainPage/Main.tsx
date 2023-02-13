@@ -23,6 +23,7 @@ const map = require('./textures/earth/img.png');
 const map2 = require('./textures/earth/displaceMap2.png');
 const map3 = require('./textures/earth/image.png');
 const map4 = require('./textures/earth/waternormals.png');
+const map5 = require('./textures/earth/8k_earth_clouds.jpg');
 
 export default class Main extends TemplateFor3D {
     static EarthRadiusKM: number = 6371;
@@ -70,9 +71,17 @@ export default class Main extends TemplateFor3D {
             const geometry = new THREE.BoxGeometry( 1, 1, 1, 1000, 1000, 1000);
             const textureLoader = new THREE.TextureLoader();
 
+
+
             const texture = textureLoader.load(map);
             const texture2 = textureLoader.load(map3);
             const displacementMap = textureLoader.load(map2);
+
+            const cloudsMap = textureLoader.load(map5);
+
+            const geometryCloud = new THREE.IcosahedronGeometry( 2.02, 500);
+            const matCloud = new THREE.MeshBasicMaterial({map: cloudsMap, alphaMap: cloudsMap, alphaTest:.2, transparent:true, side: THREE.FrontSide})
+            const cloudMesh = new THREE.Mesh(geometryCloud,matCloud)
 
             // texture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
             texture.minFilter = THREE.NearestFilter;
@@ -174,7 +183,7 @@ export default class Main extends TemplateFor3D {
 
             this.waterMesh = new THREE.Mesh(waterGeometry, this.getCustomMaterial(this.light, map4, waterFrag, 2.00975));
 
-            this.scene?.add( mesh, /*this.waterMesh ,*/ mesh4);
+            this.scene?.add( mesh, /*this.waterMesh ,*/ mesh4, cloudMesh);
 
             if (this.light) {
 
@@ -276,10 +285,10 @@ export default class Main extends TemplateFor3D {
             if(children.material && children.material.uniforms?.uLight) {
                 // console.log( children.material.uniforms.uLight)
                 children.material.uniforms.uLight.value = this.light.position;
-                children.rotation.y += .0001;
+
 
             }
-
+            children.rotation.y += .0001;
             if (this.waterMesh && this.waterMesh.material.uniforms.lightPosition) {
                 // this.waterMesh.rotation.y += .000005;
                 // this.waterMesh.rotation.y = (this.time / 500) - Math.PI /4;
