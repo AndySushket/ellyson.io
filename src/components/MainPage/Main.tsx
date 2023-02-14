@@ -5,11 +5,17 @@
 import TemplateFor3D from '../templates/mainTemplate3D';
 import * as THREE from 'three';
 import {ReactNode} from "react";
+// @ts-ignore
 import vert from "./Shaders/vert.vert"
+// @ts-ignore
 import waterVert from "./Shaders/water.vert"
+// @ts-ignore
 import atmosphereVert from "./Shaders/atmosphereVert.vert"
+// @ts-ignore
 import frag from './Shaders/frag.frag';
+// @ts-ignore
 import waterFrag from './Shaders/water.frag';
+// @ts-ignore
 import atmosphereFrag from './Shaders/atmosphereFrag.frag';
 // const OrbitControls = require('./components/controls')(THREE);
 const dn = require('./textures/skybox/space_10dn.png');
@@ -19,11 +25,11 @@ const rt = require('./textures/skybox/space_10rt.png');
 const ft = require('./textures/skybox/space_10ft.png');
 const bk = require('./textures/skybox/space_10bk.png');
 
-const map = require('./textures/earth/img.png');
-const map2 = require('./textures/earth/displaceMap2.png');
-const map3 = require('./textures/earth/image.png');
+const earthMap = require('./textures/earth/earthMap.png');
+const displaceMap = require('./textures/earth/displaceMap.png');
+const nightEarthMap = require('./textures/earth/nightEarthMap.png');
 const map4 = require('./textures/earth/waternormals.png');
-const map5 = require('./textures/earth/8k_earth_clouds.jpg');
+const earthCloudMap = require('./textures/earth/earthCloudsMap.jpg');
 
 export default class Main extends TemplateFor3D {
     static EarthRadiusKM: number = 6371;
@@ -35,9 +41,11 @@ export default class Main extends TemplateFor3D {
     private waterMesh: any;
 
     initControls(): void {
-        super.initControls();
-        this.camera?.position.set(7, 0, 0);
-        this.camera.lookAt(new THREE.Vector3(-3, 1, 0))
+        if(this.camera) {
+            this.camera?.position.set(7, 0, 0);
+            this.camera.lookAt(new THREE.Vector3(-3, 1, 0))
+            super.initControls();
+        }
     }
 
     initShader(): void {
@@ -55,15 +63,18 @@ export default class Main extends TemplateFor3D {
         this.initShader();
         this.initControls();
         this.initCubeSphere();
+        this.initSkyBox();
 
-        const imageURLs = [ ft, bk, up, dn, rt, lf ];
-        const textureCube = new THREE.CubeTextureLoader().load(imageURLs);
-        // textureCube.minFilter = THREE.NearestFilter;
-        // textureCube.magFilter = THREE.NearestFilter;
-        textureCube.mapping = THREE.CubeRefractionMapping;
-        this.scene.background = textureCube;
-        console.log(textureCube);
         this.animate();
+    }
+
+    initSkyBox() {
+        if (this.scene) {
+            const imageURLs = [ ft, bk, up, dn, rt, lf ];
+            const textureCube = new THREE.CubeTextureLoader().load(imageURLs);
+            textureCube.mapping = THREE.CubeRefractionMapping;
+            this.scene.background = textureCube;
+        }
     }
 
     initCubeSphere() {
@@ -73,22 +84,24 @@ export default class Main extends TemplateFor3D {
 
 
 
-            const texture = textureLoader.load(map);
-            const texture2 = textureLoader.load(map3);
-            const displacementMap = textureLoader.load(map2);
+            const texture = textureLoader.load(earthMap);
+            const texture2 = textureLoader.load(nightEarthMap);
+            const displacementMap = textureLoader.load(displaceMap);
 
-            const cloudsMap = textureLoader.load(map5);
-
+            const cloudsMap = textureLoader.load(earthCloudMap);
+            cloudsMap.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
+            cloudsMap.minFilter = THREE.NearestFilter;
             const geometryCloud = new THREE.IcosahedronGeometry( 2.02, 500);
             const matCloud = new THREE.MeshBasicMaterial({map: cloudsMap, alphaMap: cloudsMap, alphaTest:.2, transparent:true, side: THREE.FrontSide})
             const cloudMesh = new THREE.Mesh(geometryCloud,matCloud)
 
-            // texture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
+            texture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
             texture.minFilter = THREE.NearestFilter;
-            // texture.anisotropy = this.renderer.getMaxAnisotropy();
-            // texture2.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
+
+            texture2.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
             texture2.minFilter = THREE.NearestFilter;
-            // displacementMap.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
+
+            displacementMap.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
             displacementMap.minFilter = THREE.NearestFilter;
 
             const material: THREE.ShaderMaterial = new THREE.ShaderMaterial({
@@ -97,19 +110,15 @@ export default class Main extends TemplateFor3D {
                 blending: THREE.NormalBlending,
                 uniforms: {
                     map: {
-                        type: "t",
                         value: texture
                     },
                     nightMap: {
-                        type: "t",
                         value: texture2
                     },
                     displacementMap: {
-                        type: "t",
                         value: displacementMap
                     },
-                    uLight: { value: this.light.position}
-
+                    uLight: { value: this.light?.position}
                 },
                 // wireframe: true
             });
@@ -202,7 +211,7 @@ export default class Main extends TemplateFor3D {
         }
     }
 
-    calcPosFromLatLonRad(lat, lon, radius) {
+    calcPosFromLatLonRad(lat: number, lon: number, radius: number) {
         let x, y, z;
 
         let phi = (90 - lat) * (Math.PI / 180);
@@ -226,8 +235,8 @@ export default class Main extends TemplateFor3D {
         return [x, y, z];
     }
 
-    getCustomMaterial(light: THREE.Light, tex: THREE.Texture, frag: string, radius: number){
-        const lightColor = light.color.clone();
+    getCustomMaterial(light: THREE.DirectionalLight | undefined, tex: THREE.Texture, frag: string, radius: number){
+        const lightColor = light?.color.clone();
         const vertShader = waterVert;
         const fragShader = frag;
 
@@ -240,13 +249,13 @@ export default class Main extends TemplateFor3D {
             tex: { type: "t", value: texture },
             time: {type: 'f', value: this.time},
 
-            eye: {type: 'v3', value: this.camera.position },
+            eye: {type: 'v3', value: this.camera?.position },
 
             vRadius: {type: "f", value: radius},
 
-            lightPosition: {type: 'v3', value: light.position.clone()},
-            lightColor: {type: 'v4', value: new THREE.Vector4(lightColor.r, lightColor.g, lightColor.b, 1.0)},
-            lightIntensity: {type: 'f', value: light.intensity}
+            lightPosition: {type: 'v3', value: light?.position.clone()},
+            lightColor: {type: 'v4', value: new THREE.Vector4(lightColor?.r, lightColor?.g, lightColor?.b, 1.0)},
+            lightIntensity: {type: 'f', value: light?.intensity}
 
         };
         const meshFaceMaterial = new THREE.ShaderMaterial({
@@ -284,7 +293,7 @@ export default class Main extends TemplateFor3D {
         this.scene?.children.forEach((children: any) => {
             if(children.material && children.material.uniforms?.uLight) {
                 // console.log( children.material.uniforms.uLight)
-                children.material.uniforms.uLight.value = this.light.position;
+                children.material.uniforms.uLight.value = this.light?.position;
 
 
             }
