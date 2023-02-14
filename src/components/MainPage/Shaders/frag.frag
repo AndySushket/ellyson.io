@@ -55,7 +55,6 @@ void main() {
 
         vec4 dayTimeFragColor = texture2D (map, UV, -2.0 * log2(1.0 + c * c) -12.3 * seam);
         vec4 nightTimeFragColor = texture2D (nightMap, UV, -2.0 * log2(1.0 + c * c) -12.3 * seam);
-        vec4 countriesFragColor = texture2D (countriesMap, UV, -2.0 * log2(1.0 + c * c) -12.3 * seam);
 
 //        if (sqrt(worldHeight) < 0.05) {
 //            discard;
