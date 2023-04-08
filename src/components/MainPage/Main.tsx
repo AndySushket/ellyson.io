@@ -17,6 +17,7 @@ import frag from './Shaders/frag.frag';
 import waterFrag from './Shaders/water.frag';
 // @ts-ignore
 import atmosphereFrag from './Shaders/atmosphereFrag.frag';
+import {Box, LinearProgress} from "@material-ui/core";
 // const OrbitControls = require('./components/controls')(THREE);
 const dn = require('./textures/skybox/space_10dn.png');
 const up = require('./textures/skybox/space_10up.png');
@@ -39,6 +40,17 @@ export default class Main extends TemplateFor3D {
     private depthMaterial: any;
     private renderTarget: THREE.WebGLRenderTarget | undefined;
     private waterMesh: any;
+    private loadingManager: THREE.LoadingManager | undefined;
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            // @ts-ignore
+            progress: 0,
+            buffer: 10
+        }
+    }
 
     initControls(): void {
         if(this.camera) {
@@ -49,10 +61,26 @@ export default class Main extends TemplateFor3D {
     }
 
     initShader(): void {
-        // const geometry = new THREE.SphereBufferGeometry(4, 30, 30);
-        // const customMaterial = new THREE.ShaderMaterial();
-        // this.sphere = new THREE.Mesh(geometry, customMaterial);
-        // this.scene?.add(this.sphere);
+        const {progress, buffer} = this.state;
+        this.loadingManager = new THREE.LoadingManager();
+
+        this.loadingManager.onStart = (e) => {
+            console.log("onStart", e);
+        }
+
+        this.loadingManager.onLoad = (e) => {
+            console.log("onLoad", e);
+            this.setState({progress: 100, buffer: 100})
+        }
+
+        this.loadingManager.onProgress = (e) => {
+            console.log("onProgress", e);
+            this.setState({progress: progress + 15, buffer: buffer + 15})
+        }
+
+        this.loadingManager.onError = (e) => {
+            console.log("onError", e);
+        }
     }
 
     componentDidMount(): void {
@@ -80,7 +108,7 @@ export default class Main extends TemplateFor3D {
     initCubeSphere() {
         if(this.renderer) {
             const geometry = new THREE.BoxGeometry( 1, 1, 1, 1000, 1000, 1000);
-            const textureLoader = new THREE.TextureLoader();
+            const textureLoader = new THREE.TextureLoader(this.loadingManager);
 
 
 
@@ -319,8 +347,13 @@ export default class Main extends TemplateFor3D {
     }
 
     render(): ReactNode {
+        const {progress, buffer} = this.state;
+
         return <div>
             {this.navigationPanel()}
+            <Box sx={{ width: '100%' }} style={{transition: '1s', position: 'absolute', opacity: progress === 100 ? 0 : 1}}>
+                <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
+            </Box>
             <div ref="anchor" className="canvasDiv"/>
         </div>
     }
