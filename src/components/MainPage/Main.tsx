@@ -17,7 +17,10 @@ import frag from './Shaders/frag.frag';
 import waterFrag from './Shaders/water.frag';
 // @ts-ignore
 import atmosphereFrag from './Shaders/atmosphereFrag.frag';
-import {Box, LinearProgress} from "@material-ui/core";
+import {Box, Container, Grid, LinearProgress, styled} from "@material-ui/core";
+import {Avatar, Paper} from "material-ui";
+
+
 // const OrbitControls = require('./components/controls')(THREE);
 const dn = require('./textures/skybox/space_10dn.png');
 const up = require('./textures/skybox/space_10up.png');
@@ -26,11 +29,11 @@ const rt = require('./textures/skybox/space_10rt.png');
 const ft = require('./textures/skybox/space_10ft.png');
 const bk = require('./textures/skybox/space_10bk.png');
 
-const earthMap = require('./textures/earth/earthMap.png');
-const displaceMap = require('./textures/earth/displaceMap.png');
-const nightEarthMap = require('./textures/earth/nightEarthMap.png');
-const map4 = require('./textures/earth/waternormals.png');
-const earthCloudMap = require('./textures/earth/earthCloudsMap.jpg');
+const earthMap = require('./textures/earth/earthMap.webp');
+const displaceMap = require('./textures/earth/displaceMap.webp');
+const nightEarthMap = require('./textures/earth/nightEarthMap.webp');
+const map4 = require('./textures/earth/waternormals.webp');
+const earthCloudMap = require('./textures/earth/earthCloudsMap.webp');
 
 export default class Main extends TemplateFor3D {
     static EarthRadiusKM: number = 6371;
@@ -57,10 +60,15 @@ export default class Main extends TemplateFor3D {
             this.camera?.position.set(7, 0, 0);
             this.camera.lookAt(new THREE.Vector3(-3, 1, 0))
             super.initControls();
+            if (this.controls) {
+                this.controls.maxDistance = 70;
+                this.controls.minDistance = 3;
+            }
         }
     }
 
     initShader(): void {
+
         const {progress, buffer} = this.state;
         this.loadingManager = new THREE.LoadingManager();
 
@@ -234,12 +242,12 @@ export default class Main extends TemplateFor3D {
                 this.light.position.y = 0
             }
 
-            this.calcPosFromLatLonRad(49.8153, 6.1296, 2);
-            this.calcPosFromLatLonRad(49.8397, 24.0297, 2);
+            this.calcPosFromLatLonRad(49.8153, 6.1296, 2 , mesh);
+            this.calcPosFromLatLonRad(49.8397, 24.0297, 2, mesh);
         }
     }
 
-    calcPosFromLatLonRad(lat: number, lon: number, radius: number) {
+    calcPosFromLatLonRad(lat: number, lon: number, radius: number, mesh: THREE.Mesh) {
         let x, y, z;
 
         let phi = (90 - lat) * (Math.PI / 180);
@@ -258,7 +266,7 @@ export default class Main extends TemplateFor3D {
 
         const earth2 = new THREE.Mesh(geometry2, material2);
         earth2.position.set(x, y, z);
-        this.scene?.add(earth2);
+        mesh.add(earth2);
         console.log(x, y, z);
         return [x, y, z];
     }
@@ -309,12 +317,12 @@ export default class Main extends TemplateFor3D {
         //
 
         if (this.light) {
-            this.light.position.x = 200 * Math.sin(this.time / 500);
-            this.light.position.z = 200 * Math.cos(this.time / 500);
-            this.light.position.y = 0;
+            this.light.position.x = 200 * Math.sin(this.time / 1500);
+            this.light.position.z = 200 * Math.cos(this.time / 1500);
+            this.light.position.y = 200 * Math.sin(this.time / 1500);
 
             // this.camera.position.set(200 * Math.sin(this.time / 500), 0, 200 * Math.cos(this.time / 500))
-            // this.camera.lookAt(this.waterMesh)
+            // this.camera.lookAt(this.light.position)
         }
 
         // this.light.lookAt(new THREE.Vector3(0, 1, 0));
@@ -346,14 +354,20 @@ export default class Main extends TemplateFor3D {
         return
     }
 
+
+
     render(): ReactNode {
         const {progress, buffer} = this.state;
 
-        return <div>
+
+
+        return <div >
             {this.navigationPanel()}
-            <Box sx={{ width: '100%' }} style={{transition: '1s', position: 'absolute', opacity: progress === 100 ? 0 : 1}}>
+
+            <Box sx={{ width: '100%' }} style={{transition: '1s', position: 'absolute', top: '47px',  opacity: progress === 100 ? 0 : 1}}>
                 <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
             </Box>
+
             <div ref="anchor" className="canvasDiv"/>
         </div>
     }

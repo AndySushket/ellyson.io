@@ -13,6 +13,8 @@ import TestWork from "./projects/testWorks/testWork";
 import ThreeJsJourney from "./projects/threeJsJourney/threeJsJourney";
 import Main from "./MainPage/Main";
 import Projects from "./Projects";
+import Music from "./Music";
+import About from "./About";
 
 export default function Routing() {
     return (<>
@@ -83,7 +85,9 @@ export default function Routing() {
                         <Route path={`Texture`} element={<ThreeJsJourney.Texture/>}/>
                     </Route>
                 </Route>
-                <Route path={'projects'} element={<Projects/>}/>
+                <Route path={'gallery'} element={<Projects/>}/>
+                <Route path={'music'} element={<Music/>}/>
+                <Route path={'about'} element={<About/>}/>
             </Routes>
         </>
     )
