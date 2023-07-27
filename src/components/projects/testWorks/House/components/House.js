@@ -41,7 +41,7 @@ function addGrass(){
 	texture.wrapS = THREE.RepeatWrapping;
 	texture.wrapT = THREE.RepeatWrapping;
 	texture.repeat.set(2, 2);
-	const geometry = new THREE.BoxBufferGeometry(1200, 50, 1200).translate(0, -420, -50);
+	const geometry = new THREE.BoxGeometry(1200, 50, 1200).translate(0, -420, -50);
 	const material = new THREE.MeshLambertMaterial({map: texture});
 	return new THREE.Mesh(geometry, material)
 }

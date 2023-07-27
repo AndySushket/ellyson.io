@@ -62,7 +62,7 @@ export default class LandSlide extends TemplateFor3D {
 
 		let x = 0, z = 0;
 
-		const instancedBoxGeo = new THREE.InstancedBufferGeometry().copy(new THREE.BoxBufferGeometry(2, 1, 2));
+		const instancedBoxGeo = new THREE.InstancedBufferGeometry().copy(new THREE.BoxGeometry(2, 1, 2));
 		instancedBoxGeo.instanceCount = 0;
 
 		const position = new Float32Array(LandSlide.CUBE_COUNT * 3);

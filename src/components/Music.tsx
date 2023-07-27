@@ -21,7 +21,7 @@ export default class Projects extends TemplateFor3D {
     }
 
     initShader(): void {
-        const geometry = new THREE.SphereBufferGeometry(4, 30, 30);
+        const geometry = new THREE.SphereGeometry(4, 30, 30);
         const customMaterial = new THREE.ShaderMaterial();
         this.sphere = new THREE.Mesh(geometry, customMaterial);
         this.scene?.add(this.sphere);

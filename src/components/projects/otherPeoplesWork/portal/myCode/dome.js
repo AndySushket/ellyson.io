@@ -5,13 +5,13 @@ import {
 	BackSide,
 	Color,
 	Mesh,
-	SphereBufferGeometry,
+	SphereGeometry,
 	RawShaderMaterial,
 } from 'three';
 
 class Dome extends Mesh {
 	static setupGeometry() {
-		Dome.geometry = new SphereBufferGeometry(512, 32, 32);
+		Dome.geometry = new SphereGeometry(512, 32, 32);
 	}
 
 	static setupMaterial() {

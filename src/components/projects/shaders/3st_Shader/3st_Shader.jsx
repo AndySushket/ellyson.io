@@ -14,7 +14,7 @@ export default class Shader3 extends TemplateFor3D {
 	}
 
 	initShader() {
-		const geometry = new THREE.SphereBufferGeometry(4, 30, 30);
+		const geometry = new THREE.SphereGeometry(4, 30, 30);
 		let array = [];
 
 		for (let v = 0; v < geometry.attributes.position.array.length / 3; v++) {

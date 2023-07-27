@@ -3,14 +3,14 @@ import {
 	Mesh,
 	MeshBasicMaterial,
 	NearestFilter,
-	PlaneBufferGeometry,
-	RGBFormat,
+	RGBAFormat,
+	PlaneGeometry,
 	WebGLRenderTarget,
 } from 'three';
 
 class Portal extends Mesh {
 	static setupGeometry() {
-		Portal.geometry = new PlaneBufferGeometry(1, 1, 1, 1);
+		Portal.geometry = new PlaneGeometry(1, 1, 1, 1);
 	}
 
 	constructor({
@@ -33,7 +33,7 @@ class Portal extends Mesh {
 				{
 					minFilter: LinearFilter,
 					magFilter: NearestFilter,
-					format: RGBFormat,
+					format: RGBAFormat,
 				}
 			);
 		}

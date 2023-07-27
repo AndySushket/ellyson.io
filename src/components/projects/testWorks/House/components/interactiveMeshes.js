@@ -16,7 +16,7 @@ export function getInterectiveMeshes(){
 	greenStairsArray.set([-10], 4);
 	greenStairsArray.needsUpdate = true;
 
-	greenGeometry.merge(greenStairs.translate(55.0, -20.0, 0));
+	// greenGeometry.merge(greenStairs.translate(55.0, -20.0, 0)); //todo fix merge
 	const greenMesh = new THREE.Mesh(greenGeometry.translate(-15.0, -2.0, -22.0),
 		new THREE.MeshBasicMaterial({color: new THREE.Color("green"),transparent: true, opacity: 0}));
 	greenMesh.name = "green";

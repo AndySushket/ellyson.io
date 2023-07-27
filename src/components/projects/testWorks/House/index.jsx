@@ -8,7 +8,7 @@ import {Button, ProgressBar} from "react-bootstrap";
 import TemplateFor3D from '../../../templates/mainTemplate3D';
 import {getInterectiveMeshes} from './components/interactiveMeshes';
 import {loadHouse, addSkyBox} from './components/House';
-import {onMouseMove, onKeydown, onClick, addFloor, deleteFloor} from './components/events';
+import {mouseMove, keydown, click, addFloor, deleteFloor} from './components/events';
 import flyingText from './components/flyingText';
 import Light from './components/light';
 import CssRenderer from './components/CSS3DRenderer';
@@ -87,7 +87,7 @@ export default class House extends TemplateFor3D {
 	}
 
 	onClick(e){
-		onClick.call(this, e);
+		click.call(this, e);
 	}
 
 	handleWindowResize(){
@@ -106,11 +106,11 @@ export default class House extends TemplateFor3D {
 
 	onMouseMove(e){
 		super.onMouseMove(e);
-		onMouseMove.call(this);
+		mouseMove.call(this);
 	}
 
 	async onKeydown(e) {
-		await onKeydown.call(this, e);
+		await keydown.call(this, e);
 	}
 
 	changeLight(color) {
@@ -133,7 +133,6 @@ export default class House extends TemplateFor3D {
 		this.loadModals();
 		this.initLight();
 		this.initDoorLight();
-		this.initRaycaster();
 
 		this.animate();
 	}

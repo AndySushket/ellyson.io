@@ -14,7 +14,7 @@ export default class Shader2 extends TemplateFor3D {
 	}
 
 	initShader() {
-		const geometry = new THREE.SphereBufferGeometry(4, 30, 30);
+		const geometry = new THREE.SphereGeometry(4, 30, 30);
 		const customMaterial = new THREE.ShaderMaterial({
 			uniforms: {},
 			vertexShader: vertexShader,

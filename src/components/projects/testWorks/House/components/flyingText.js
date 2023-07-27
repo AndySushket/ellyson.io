@@ -84,7 +84,7 @@ export default class flyingText {
 			blending: THREE.NoBlending,
 		});
 
-		const geometry = new THREE.PlaneBufferGeometry(w, h);
+		const geometry = new THREE.PlaneGeometry(w, h);
 		const mesh = new THREE.Mesh(geometry, material);
 		mesh.position.copy(position);
 		mesh.quaternion.copy(new THREE.Quaternion().setFromEuler(rotation));

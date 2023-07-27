@@ -1,9 +1,9 @@
 import {colorsArray, FLOOR_POSITION, FLOOR_SIZE} from "./constants";
 
-export function onMouseMove(){
-	if(this.raycaster && this.interectiveMeshes && this.interectiveMeshes.length){
-		this.raycaster.setFromCamera( this.mouse, this.camera );
-		const intersects = this.raycaster.intersectObjects([...this.interectiveMeshes, this.linkObject.plane, this.saveScreen.plane]);
+export function mouseMove(){
+	if(this.rayCaster && this.interectiveMeshes && this.interectiveMeshes.length){
+		this.rayCaster.setFromCamera( this.mouse, this.camera );
+		const intersects = this.rayCaster.intersectObjects([...this.interectiveMeshes, this.linkObject.plane, this.saveScreen.plane]);
 		if(intersects[0] && intersects[0].object.name && this.state.loaded){
 			this.cssRenderer.renderer.domElement.style.cursor = "pointer";
 			this.aimedObjectName = intersects[0].object.name;
@@ -51,7 +51,7 @@ export async function deleteFloor() {
 	await this.additinalFloorArray.splice(this.additinalFloor + 1, 1);
 }
 
-export async function onKeydown(e) {
+export async function keydown(e) {
 	if(Object.keys(this.floors).length){
 		switch (e.keyCode){
 			case 38: {
@@ -68,7 +68,7 @@ export async function onKeydown(e) {
 	}
 }
 
-export function onClick(e) {
+export function click(e) {
 	if(!this.controls.moving && this.state.loaded && e.which === 1){
 		switch (this.aimedObjectName) {
 			case "green": {

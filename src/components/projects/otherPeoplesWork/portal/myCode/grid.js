@@ -2,13 +2,13 @@ import {
 	Color,
 	Mesh,
 	RawShaderMaterial,
-	PlaneBufferGeometry,
+	PlaneGeometry,
 } from 'three';
 
 class Grid extends Mesh {
 	static setupGeometry() {
 		const { size } = Grid;
-		const geometry = new PlaneBufferGeometry(size, size, 1, 1);
+		const geometry = new PlaneGeometry(size, size, 1, 1);
 		delete geometry.attributes.normal;
 		delete geometry.attributes.uv;
 		geometry.rotateX(Math.PI * -0.5);
