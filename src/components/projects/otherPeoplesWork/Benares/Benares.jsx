@@ -3,8 +3,8 @@
  */
 
 import React from 'react';
-import * as THREE from '../../../../utils/libs/threejs/three_v0.120';
-import TemplateFor3D from "../../../templates/mainTemplate3D";
+import * as THREE from 'utils/libs/threejs/three_v0.120';
+import TemplateFor3D from "components/templates/mainTemplate3D";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import fragmentShader from './Shaders/shader.frag';
 import vertexShader from './Shaders/shader.vert';
