@@ -1,4 +1,4 @@
-import { Vector3 } from './three.js';
+import { Vector3 } from '../../../../../../utils/libs/threejs/three_v0.106.js';
 
 class Input {
 	constructor({

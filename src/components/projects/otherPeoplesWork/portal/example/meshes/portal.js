@@ -9,7 +9,7 @@ import {
 	RGBAFormat,
 	VertexColors,
 	WebGLRenderTarget,
-} from '../lib/three.js';
+} from '../../../../../../utils/libs/threejs/three_v0.106.js';
 
 class Portal extends Mesh {
 	static setupGeometry() {

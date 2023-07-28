@@ -1,4 +1,4 @@
-import {Clock, PerspectiveCamera, Vector3, WebGLRenderer, EffectComposer, RenderPass, ShaderPass, FXAAShader} from '../example/lib/three.js';
+import {Clock, PerspectiveCamera, Vector3, WebGLRenderer, EffectComposer, RenderPass, ShaderPass, FXAAShader} from '../../../../../utils/libs/threejs/three_v0.106.js';
 // console.log(EffectComposer)
 class Renderer {
 	constructor({debug, mount, scene}) {

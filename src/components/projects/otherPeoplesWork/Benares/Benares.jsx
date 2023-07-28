@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import * as THREE from 'three';
+import * as THREE from '../../../../utils/libs/threejs/three_v0.120';
 import TemplateFor3D from "../../../templates/mainTemplate3D";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import fragmentShader from './Shaders/shader.frag';
@@ -122,7 +122,7 @@ export default class Benares extends TemplateFor3D {
 //#region Back
 		const cameraBack = new THREE.Camera();
 		const sceneBack = new THREE.Scene();
-		const backPlaneGeom = new THREE.PlaneGeometry(2, 2);
+		const backPlaneGeom = new THREE.PlaneBufferGeometry(2, 2);
 
 		const backUniforms = {
 			texBenares: {
@@ -177,7 +177,7 @@ export default class Benares extends TemplateFor3D {
 		const corpuscules = [];
 
 		const sphereColor = 0xff5527; //0x884444;
-		const sGeom = new THREE.SphereGeometry(0.075, 16, 16);
+		const sGeom = new THREE.SphereBufferGeometry(0.075, 16, 16);
 		const sMat = new THREE.MeshLambertMaterial({
 			color: sphereColor,
 			envMap: reflectionCube,
@@ -195,7 +195,7 @@ export default class Benares extends TemplateFor3D {
 		}
 
 //const mainSphereGeom = new THREE.SphereBufferGeometry(1.25, 144, 144).toNonIndexed();
-		const mainSphereGeom = new THREE.BoxGeometry(2, 2, 2, 50, 50, 50);
+		const mainSphereGeom = new THREE.BoxBufferGeometry(2, 2, 2, 50, 50, 50);
 // make a sphere from the box
 		const sPos = mainSphereGeom.attributes.position;
 		const sNorm = mainSphereGeom.attributes.normal;

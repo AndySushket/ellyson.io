@@ -1,6 +1,6 @@
 import Input from './lib/input.js';
 import Renderer from './lib/renderer.js';
-import { Color, FogExp2, Scene } from './lib/three.js';
+import { Color, FogExp2, Scene } from '../../../../../utils/libs/threejs/three_v0.106.js';
 import Dome from './meshes/dome.js';
 import Ground from './meshes/ground.js';
 import Grid from './meshes/grid.js';

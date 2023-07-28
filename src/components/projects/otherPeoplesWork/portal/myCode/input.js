@@ -1,4 +1,4 @@
-import { Vector3 } from '../example/lib/three.js';
+import { Vector3 } from '../../../../../utils/libs/threejs/three_v0.106.js';
 
 class Input {
 	constructor({limits = {min: { x: -16, z: -16 }, max: { x: 16, z: 16 }}, mount}) {

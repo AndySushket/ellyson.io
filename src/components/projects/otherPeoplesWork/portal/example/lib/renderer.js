@@ -7,7 +7,7 @@ import {
 	ShaderPass,
 	Vector3,
 	WebGLRenderer,
-} from './three.js';
+} from '../../../../../../utils/libs/threejs/three_v0.106.js';
 
 class Renderer {
 	constructor({

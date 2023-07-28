@@ -3,7 +3,7 @@
  */
 
 import {Component, ReactNode} from 'react';
-import * as THREE from '../example/lib/three';
+import * as THREE from '../../../../../utils/libs/threejs/three_v0.106';
 
 // import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 

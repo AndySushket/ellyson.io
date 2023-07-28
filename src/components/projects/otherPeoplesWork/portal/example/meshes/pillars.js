@@ -5,7 +5,7 @@ import {
 	MeshBasicMaterial,
 	Object3D,
 	VertexColors,
-} from '../lib/three.js';
+} from '../../../../../../utils/libs/threejs/three_v0.106.js';
 
 class Pillars extends Object3D {
 	static setupGeometry() {

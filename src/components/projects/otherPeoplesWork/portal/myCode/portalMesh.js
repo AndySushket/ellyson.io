@@ -6,7 +6,7 @@ import {
 	RGBAFormat,
 	PlaneGeometry,
 	WebGLRenderTarget,
-} from '../example/lib/three.js';
+} from '../../../../../utils/libs/threejs/three_v0.106.js';
 
 class Portal extends Mesh {
 	static setupGeometry() {
