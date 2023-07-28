@@ -4,7 +4,7 @@ import {
 	Mesh,
 	MeshBasicMaterial,
 	Object3D,
-} from 'three';
+} from '../example/lib/three.js';
 
 class Pillars extends Object3D {
 	static setupGeometry() {

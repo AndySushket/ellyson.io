@@ -3,8 +3,9 @@
  */
 
 import React from 'react';
-import * as THREE from 'three';
-import TemplateFor3D from "../../../../templates/mainTemplate3D";
+
+import TemplateFor3D from "./mainTemplate";
+import * as THREE from '../example/lib/three.js';
 // import Mouse from "../../../../plugins/mouse.js";
 import Portal from "./portalMesh";
 import Ground from "./ground"

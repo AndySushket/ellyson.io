@@ -6,7 +6,7 @@ import {
 	MeshBasicMaterial,
 	PlaneGeometry,
 	Vector2,
-} from 'three';
+} from '../example/lib/three.js';
 
 class Hut extends Mesh {
 	static setupGeometry() {
@@ -92,7 +92,7 @@ class Hut extends Mesh {
 		if (!Hut.material) {
 			Hut.setupMaterial();
 		}
-		const geometry = new THREE.BufferGeometry();
+		const geometry = new Geometry();
 		Hut.walls.forEach(wall => geometry.merge(wall));
 		if (north) {
 			geometry.merge(Hut.northWall);

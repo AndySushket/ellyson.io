@@ -4,7 +4,7 @@ import {
 	MeshBasicMaterial,
 	PlaneGeometry,
 	Vector3,
-} from 'three';
+} from '../example/lib/three.js';
 
 class Ground extends Mesh {
 	static setupGeometry() {

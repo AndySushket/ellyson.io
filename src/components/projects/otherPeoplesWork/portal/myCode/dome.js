@@ -7,7 +7,7 @@ import {
 	Mesh,
 	SphereGeometry,
 	RawShaderMaterial,
-} from 'three';
+} from '../example/lib/three.js';
 
 class Dome extends Mesh {
 	static setupGeometry() {
