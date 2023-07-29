@@ -10,9 +10,10 @@ import {
   Grid,
   LinearProgress,
   styled,
-} from "@material-ui/core";
-import { Avatar, Paper } from "material-ui";
-import TemplateFor3D from "../templates/mainTemplate3D";
+  Avatar, Paper
+} from "@mui/material";
+
+import TemplateFor3D from "components/templates/mainTemplate3D";
 // @ts-ignore
 import vert from "./Shaders/vert.vert";
 // @ts-ignore

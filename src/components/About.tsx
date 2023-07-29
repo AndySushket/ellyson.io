@@ -4,15 +4,14 @@
 
 import * as THREE from "three";
 import React from "react";
-import { Container, Grid, IconButton, styled } from "@material-ui/core";
-import { Avatar, Paper } from "material-ui";
+import { Container, Grid, IconButton, styled, Avatar, Paper } from "@mui/material";
 import {
   Facebook,
   Instagram,
   LinkedIn,
   Mail,
   Twitter,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 // eslint-disable-next-line import/extensions
 import TemplateFor3D from "./templates/mainTemplate3D";
 
@@ -122,7 +121,7 @@ export default class Projects extends TemplateFor3D {
           }}
         >
           <Grid item xs={4}>
-            <Avatar src={avatar} size={300} />
+            <Avatar alt={"Hi"} src={avatar} sx={{ width: 300, height: 300 }}/>
 
             <h1 style={{ textAlign: "left", color: "white" }}>Skills:</h1>
 

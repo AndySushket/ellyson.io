@@ -1,5 +1,5 @@
-import {Button, IconButton} from "@material-ui/core";
-import {Facebook, Instagram, LinkedIn, Mail, Twitter} from "@material-ui/icons";
+import {Button, IconButton} from "@mui/material";
+import {Facebook, Instagram, LinkedIn, Mail, Twitter} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 
 export default function () {

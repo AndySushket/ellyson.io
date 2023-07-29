@@ -4,7 +4,7 @@
 
 import * as THREE from "three";
 import React, { ReactNode } from "react";
-import { Button, IconButton } from "@material-ui/core";
+import { Button, IconButton } from "@mui/material";
 import { Col, Collapse, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import TemplateFor3D from "./templates/mainTemplate3D";

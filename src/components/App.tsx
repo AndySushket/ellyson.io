@@ -4,20 +4,24 @@ import 'react-bootstrap';
 import Routing from "./Routing";
 import Header from "./Header";
 import {BrowserRouter} from "react-router-dom";
-import {StylesProvider} from '@material-ui/core';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+// import {StylesProvider} from '@mui/material';
+import { ThemeProvider } from "@mui/material/styles";
+import {createTheme} from "@mui/material";
+
+const theme = createTheme({
+});
 
 class App extends React.Component<{}, {}> {
 
     render(): React.ReactNode {
         return (
                 <div className="App">
-                    <MuiThemeProvider>
+                    <ThemeProvider theme={theme}>
                         <BrowserRouter>
                             <Header/>
                             <Routing/>
                         </BrowserRouter>
-                    </MuiThemeProvider>
+                    </ThemeProvider>
                 </div>
     );
     }

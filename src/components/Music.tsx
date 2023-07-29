@@ -4,17 +4,17 @@
 
 import * as THREE from "three";
 import React, { ReactNode } from "react";
-import { Button, Container, Grid, IconButton, styled } from "@material-ui/core";
+import { Button, Container, Grid, IconButton, styled, Avatar, Paper } from "@mui/material";
 import { Col, Collapse, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Avatar, Paper } from "material-ui";
+
 import {
   Facebook,
   Instagram,
   LinkedIn,
   Mail,
   Twitter,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import TemplateFor3D from "./templates/mainTemplate3D";
 
 const avatar = require("./MainPage/avatar.jpg");

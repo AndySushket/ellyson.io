@@ -13,9 +13,9 @@ import flyingText from './components/flyingText';
 import Light from './components/light';
 import CssRenderer from './components/CSS3DRenderer';
 import {COLORS, colorsArray} from './components/constants';
+import * as TWEEN from '@tweenjs/tween.js';
 
 const OrbitControls = require('./components/controls')(THREE);
-const TWEEN = require('@tweenjs/tween.js');
 
 export default class House extends TemplateFor3D {
 	constructor(){
