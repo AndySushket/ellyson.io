@@ -72,6 +72,9 @@
       "last 1 safari version"
     ]
   },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
   "jest": {
     "roots": [
       "<rootDir>/src"

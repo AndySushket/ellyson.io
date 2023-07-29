@@ -1,13 +1,8 @@
 const path = require("path");
 
 module.exports = {
-  extends: [
-    "airbnb",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended",
-    "plugin:react-hooks/recommended",
-  ],
-  plugins: ["react", "prettier", "only-warn", "react", "import", "react-hooks"],
+  extends: ["airbnb", "prettier"],
+  plugins: ["react", "prettier", "only-warn"],
   settings: {
     "import/resolver": {
       node: {
