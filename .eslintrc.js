@@ -1,34 +1,34 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
   extends: [
-    'airbnb',
-    'plugin:react/recommended',
-    'plugin:prettier/recommended',
-    'plugin:react-hooks/recommended',
+    "airbnb",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended",
   ],
-  plugins: ['react', 'prettier', 'only-warn', 'react', 'import', 'react-hooks'],
+  plugins: ["react", "prettier", "only-warn", "react", "import", "react-hooks"],
   settings: {
-    'import/resolver': {
+    "import/resolver": {
       node: {
-        paths: [path.resolve(__dirname, 'src')],
+        paths: [path.resolve(__dirname, "src")],
       },
     },
   },
-  parser: '@babel/eslint-parser',
+  parser: "@babel/eslint-parser",
   parserOptions: {
     babelOptions: {
       presets: [
-        ['babel-preset-react-app', false],
-        process.env.NODE_ENV === 'production'
-          ? 'babel-preset-react-app/prod'
-          : process.env.NODE_ENV === 'test'
-          ? 'babel-preset-react-app/test'
-          : 'babel-preset-react-app/dev',
+        ["babel-preset-react-app", false],
+        process.env.NODE_ENV === "production"
+          ? "babel-preset-react-app/prod"
+          : process.env.NODE_ENV === "test"
+          ? "babel-preset-react-app/test"
+          : "babel-preset-react-app/dev",
       ],
     },
     ecmaVersion: 2018,
-    sourceType: 'module',
+    sourceType: "module",
     ecmaFeatures: {
       jsx: true,
     },
@@ -39,9 +39,10 @@ module.exports = {
     jest: true,
   },
   rules: {
-    'react/jsx-filename-extension': 'off',
-    'no-underscore-dangle': 'off',
-    'import/first': 'error',
-    'linebreak-style': 'off',
+    'prettier/prettier': 0,
+    "react/jsx-filename-extension": "off",
+    "no-underscore-dangle": "off",
+    "import/first": "error",
+    "linebreak-style": "off",
   },
 };
