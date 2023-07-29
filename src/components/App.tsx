@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/App.less';
+import '../styles/App.scss';
 import 'react-bootstrap';
 import Routing from "./Routing";
 import Header from "./Header";
