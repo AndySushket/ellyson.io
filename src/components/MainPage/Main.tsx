@@ -84,25 +84,29 @@ export default class Main extends TemplateFor3D {
 
   initShader(): void {
     const { progress, buffer } = this.state;
-    this.loadingManager = new THREE.LoadingManager();
 
-    this.loadingManager.onStart = (e) => {
-      console.log("onStart", e);
+
+    const onStart = (url: string, loaded: number, total: number) => {
+      console.log("onStart", url, loaded, total);
     };
 
-    this.loadingManager.onLoad = (e) => {
-      console.log("onLoad", e);
+    const onLoad = () => {
+      console.log("onLoad");
       this.setState({ progress: 100, buffer: 100 });
     };
 
-    this.loadingManager.onProgress = (e) => {
-      console.log("onProgress", e);
+    const onProgress = (url: string, loaded: number, total: number) => {
+      console.log("onProgress", url, loaded, total);
       this.setState({ progress: progress + 15, buffer: buffer + 15 });
     };
 
-    this.loadingManager.onError = (e) => {
-      console.log("onError", e);
+    const onError = (url: string) => {
+      console.log("onError", url);
     };
+
+    this.loadingManager = new THREE.LoadingManager(onLoad, onProgress, onError);
+
+    this.loadingManager.onStart = onStart;
   }
 
   componentDidMount(): void {
