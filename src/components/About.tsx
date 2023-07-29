@@ -3,10 +3,8 @@
  */
 
 import * as THREE from "three";
-import React, { ReactNode } from "react";
-import { Button, Container, Grid, IconButton, styled } from "@material-ui/core";
-import { Col, Collapse, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Container, Grid, IconButton, styled } from "@material-ui/core";
 import { Avatar, Paper } from "material-ui";
 import {
   Facebook,
@@ -15,6 +13,7 @@ import {
   Mail,
   Twitter,
 } from "@material-ui/icons";
+// eslint-disable-next-line import/extensions
 import TemplateFor3D from "./templates/mainTemplate3D";
 
 const avatar = require("./MainPage/avatar.jpg");
@@ -46,7 +45,7 @@ export default class Projects extends TemplateFor3D {
     super.animate();
   }
 
-  skillList(): ReactNode {
+  skillList(): React.ReactNode {
     const list = [
       "JavaScript",
       "TypeScript",
@@ -91,7 +90,7 @@ export default class Projects extends TemplateFor3D {
     );
   }
 
-  projectsList(): ReactNode {
+  projectsList(): React.ReactNode {
     const Item = styled(Paper)(({ theme }) => ({
       backgroundColor: "#1A2027",
       ...theme.typography.body2,
@@ -190,7 +189,7 @@ export default class Projects extends TemplateFor3D {
     );
   }
 
-  render(): ReactNode {
+  render(): React.ReactNode {
     return (
       <div>
         {this.projectsList()}
