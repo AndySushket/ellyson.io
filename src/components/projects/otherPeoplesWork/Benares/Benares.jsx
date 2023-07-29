@@ -13,14 +13,15 @@ const mp3 = require("./sound/holbaumannbenares.mp3");
 
 const prefix = ``; // `dark-s_`;
 const format = `.jpg`;
-const urls = [
-  require(`./textures/cube/${prefix}posx${format}`),
-  require(`./textures/cube/${prefix}negx${format}`),
-  require(`./textures/cube/${prefix}posy${format}`),
-  require(`./textures/cube/${prefix}negy${format}`),
-  require(`./textures/cube/${prefix}posz${format}`),
-  require(`./textures/cube/${prefix}negz${format}`),
-];
+
+const posx = require(`./textures/cube/${prefix}posx${format}`);
+const negx = require(`./textures/cube/${prefix}negx${format}`);
+const posy = require(`./textures/cube/${prefix}posy${format}`);
+const negy = require(`./textures/cube/${prefix}negy${format}`);
+const posz = require(`./textures/cube/${prefix}posz${format}`);
+const negz = require(`./textures/cube/${prefix}negz${format}`);
+
+const urls = [posx, negx, posy, negy, posz, negz];
 
 const aum = require("./textures/aum.png");
 const benares = require("./textures/benares.png");
@@ -81,40 +82,6 @@ export default class Benares extends TemplateFor3D {
 
     let dataTexture = null;
     let analyser;
-    function startPlayback() {
-      const fftSize = 128;
-
-      const listener = new THREE.AudioListener();
-
-      const audio = new THREE.Audio(listener);
-
-      const mediaElement = new Audio(mp3);
-      mediaElement.loop = true;
-
-      audio.setMediaElementSource(mediaElement);
-
-      analyser = new THREE.AudioAnalyser(audio, fftSize);
-
-      dataTexture = new THREE.DataTexture(
-        analyser.data,
-        fftSize / 2,
-        1,
-        THREE.LuminanceFormat
-      );
-
-      backUniforms.soundData.value = dataTexture;
-
-      renderer.render(sceneBack, cameraBack);
-      renderer.render(sceneFront, cameraFront);
-      renderer.clear();
-
-      mediaElement.play();
-
-      renderer.setAnimationLoop(AnimationLoop);
-
-      const overlay = document.getElementById("overlay");
-      overlay.remove();
-    }
 
     const cubeTextureLoader = new THREE.CubeTextureLoader(manager);
 
@@ -374,6 +341,41 @@ export default class Benares extends TemplateFor3D {
       backUniforms.screenRatio.value = innerWidth / innerHeight;
 
       renderer.setSize(innerWidth, innerHeight);
+    }
+
+    function startPlayback() {
+      const fftSize = 128;
+
+      const listener = new THREE.AudioListener();
+
+      const audio = new THREE.Audio(listener);
+
+      const mediaElement = new Audio(mp3);
+      mediaElement.loop = true;
+
+      audio.setMediaElementSource(mediaElement);
+
+      analyser = new THREE.AudioAnalyser(audio, fftSize);
+
+      dataTexture = new THREE.DataTexture(
+        analyser.data,
+        fftSize / 2,
+        1,
+        THREE.LuminanceFormat
+      );
+
+      backUniforms.soundData.value = dataTexture;
+
+      renderer.render(sceneBack, cameraBack);
+      renderer.render(sceneFront, cameraFront);
+      renderer.clear();
+
+      mediaElement.play();
+
+      renderer.setAnimationLoop(AnimationLoop);
+
+      const overlay = document.getElementById("overlay");
+      overlay.remove();
     }
   }
 
