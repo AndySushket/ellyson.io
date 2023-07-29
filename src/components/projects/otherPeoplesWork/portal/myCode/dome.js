@@ -7,7 +7,7 @@ import {
   Mesh,
   SphereGeometry,
   RawShaderMaterial,
-} from "../../../../../utils/libs/threejs/three_v0.106.js";
+} from "utils/libs/threejs/three_v0.106.js";
 
 class Dome extends Mesh {
   static setupGeometry() {
