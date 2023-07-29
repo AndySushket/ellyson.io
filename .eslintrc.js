@@ -39,7 +39,6 @@ module.exports = {
     jest: true,
   },
   rules: {
-    'prettier/prettier': 0,
     "react/jsx-filename-extension": "off",
     "no-underscore-dangle": "off",
     "import/first": "error",
