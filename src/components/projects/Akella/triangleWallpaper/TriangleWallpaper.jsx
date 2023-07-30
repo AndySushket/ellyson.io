@@ -40,7 +40,8 @@ export default class TriangleWallpaper extends TemplateFor3D {
       // dots with physics
       this.myDots.push(new Particle(d[0], d[1], 0));
     });
-    const delaunay = new Delaunator(this.dots);
+
+    const delaunay = Delaunator.from(this.dots);
     return delaunay.triangles;
   }
 
@@ -48,9 +49,11 @@ export default class TriangleWallpaper extends TemplateFor3D {
     const mouse = new THREE.Vector2();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    this.raycaster.setFromCamera(mouse, this.camera.clone());
-    if (this.state.checked)
-      this.intersects = this.raycaster.intersectObject(this.planeMesh);
+    if (this.camera ) {
+      this.raycaster.setFromCamera(mouse, this.camera.clone());
+      if (this.state.checked)
+        this.intersects = this.raycaster.intersectObject(this.planeMesh);
+    }
   }
 
   initScene() {
@@ -103,30 +106,19 @@ export default class TriangleWallpaper extends TemplateFor3D {
       const { min } = this.geometry.boundingBox;
       const offset = new THREE.Vector2(0 - min.x, 0 - min.y);
       const range = new THREE.Vector2(max.x - min.x, max.y - min.y);
-      const { faces } = this.geometry;
+      const posArray = this.geometry.getAttribute('position').array;
+      const uv = [];
 
-      this.geometry.faceVertexUvs[0] = [];
-
-      for (let i = 0; i < faces.length; i++) {
-        const v1 = this.geometry.vertices[faces[i].a];
-        const v2 = this.geometry.vertices[faces[i].b];
-        const v3 = this.geometry.vertices[faces[i].c];
-        this.geometry.faceVertexUvs[0].push([
-          new THREE.Vector2(
-            (v1.x + offset.x) / range.x,
-            (v1.y + offset.y) / range.y
-          ),
-          new THREE.Vector2(
-            (v2.x + offset.x) / range.x,
-            (v2.y + offset.y) / range.y
-          ),
-          new THREE.Vector2(
-            (v3.x + offset.x) / range.x,
-            (v3.y + offset.y) / range.y
-          ),
-        ]);
+      for (let i = 0; i < posArray.length; i+= 3) {
+        const v = new THREE.Vector3(posArray[i],
+            posArray[i + 1],
+            posArray[i + 2]);
+        uv.push(
+            (v.x + offset.x) / range.x,
+            (v.y + offset.y) / range.y,
+        );
       }
-      this.geometry.uvsNeedUpdate = true;
+      this.geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
       // --------------------------- end  ------------------------
       this.planeMesh = new THREE.Mesh(this.geometry, material);
       this.scene.add(this.planeMesh);
@@ -137,8 +129,10 @@ export default class TriangleWallpaper extends TemplateFor3D {
     this.HEIGHT = window.innerHeight;
     this.WIDTH = window.innerWidth;
     this.renderer?.setSize(this.WIDTH, this.HEIGHT);
-    this.camera.aspect = this.WIDTH / this.HEIGHT;
-    this.camera.updateProjectionMatrix();
+    if (this.camera) {
+      this.camera.aspect = this.WIDTH / this.HEIGHT;
+      this.camera.updateProjectionMatrix();
+    }
   }
 
   componentDidMount() {
@@ -163,16 +157,17 @@ export default class TriangleWallpaper extends TemplateFor3D {
     if (!this.looped) return;
     super.animate();
     if (this.geometry) {
+      const  position = this.geometry.getAttribute("position");
       this.myDots.forEach((d, i) => {
         if (this.state.checked) {
           if (this.intersects && this.intersects.length > 0)
             d.think(this.intersects[0].point);
-          this.geometry.vertices[i].z = d.z;
+          position.array[i * 3 + 2] = d.z;
         } else
-          this.geometry.vertices[i].z =
+          position.array[i * 3 + 2] =
             60 * Perlin(d.x / 50, d.y / 50, this.time / 100);
       });
-      this.geometry.verticesNeedUpdate = true;
+      position.needsUpdate = true;
     }
   }
 
