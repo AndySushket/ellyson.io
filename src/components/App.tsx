@@ -1,12 +1,12 @@
 import React from 'react';
 import '../styles/App.scss';
 import 'react-bootstrap';
-import Routing from "./Routing";
-import Header from "./Header";
 import {BrowserRouter} from "react-router-dom";
 // import {StylesProvider} from '@mui/material';
 import { ThemeProvider } from "@mui/material/styles";
 import {createTheme} from "@mui/material";
+import Header from "./Header";
+import Routing from './Routing';
 
 const theme = createTheme({
 });

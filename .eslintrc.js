@@ -7,6 +7,7 @@ module.exports = {
     "import/resolver": {
       node: {
         paths: [path.resolve(__dirname, "src")],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
       },
     },
   },
@@ -38,5 +39,15 @@ module.exports = {
     "no-underscore-dangle": "off",
     "import/first": "error",
     "linebreak-style": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   },
 };

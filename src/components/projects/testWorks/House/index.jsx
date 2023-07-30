@@ -5,7 +5,8 @@ import React from 'react';
 import * as THREE from 'three';
 import {Button, ProgressBar} from "react-bootstrap";
 
-import TemplateFor3D from '../../../templates/mainTemplate3D';
+import * as TWEEN from '@tweenjs/tween.js';
+import TemplateFor3D from 'components/templates/mainTemplate3D';
 import {getInterectiveMeshes} from './components/interactiveMeshes';
 import {loadHouse, addSkyBox} from './components/House';
 import {mouseMove, keydown, click, addFloor, deleteFloor} from './components/events';
@@ -13,7 +14,6 @@ import flyingText from './components/flyingText';
 import Light from './components/light';
 import CssRenderer from './components/CSS3DRenderer';
 import {COLORS, colorsArray} from './components/constants';
-import * as TWEEN from '@tweenjs/tween.js';
 
 const OrbitControls = require('./components/controls')(THREE);
 
@@ -158,8 +158,8 @@ export default class House extends TemplateFor3D {
 			<ProgressBar style={{height: (progress === 100 ? "0" : "9px")}} now={this.state.progress} />
 			<header className={!this.state.loaded ? "buttonInCenter" : ""}
 					  style={{
-						  right: (!this.state.loaded ? (width / 2 + 150)+"px" : "15px"),
-						  top: (!this.state.loaded ? (height / 2 - 75)+"px" : "15px")
+						  right: (!this.state.loaded ? `${width / 2 + 150}px` : "15px"),
+						  top: (!this.state.loaded ? `${height / 2 - 75}px` : "15px")
 					  }}>
 				<div className="buttons">
 					<Button className={!loaded && "buttonInCenter"} onClick={() => this.loadOrDeleteHouse()}>
