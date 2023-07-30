@@ -5,14 +5,14 @@
 import React from "react";
 import * as THREE from "three";
 import { Button } from "react-bootstrap";
-import TemplateFor3D from "../../../templates/mainTemplate3D";
+import TemplateFor3D from "components/templates/mainTemplate3D";
 import fragmentShader from "./shaders/shader.frag";
 import vertexShader from "./shaders/shader.vert";
 
-const trek4 = require("../../../../assets/sounds/music/music4.mp3");
-const trek2 = require("../../../../assets/sounds/music/music.mp3");
-const trek1 = require("../../../../assets/sounds/music/04_Heaven.flac");
-const trek3 = require("../../../../assets/sounds/music/Snow Patrol - What If This Storm Ends.mp3");
+const trek4 = require("assets/sounds/music/music4.mp3");
+const trek2 = require("assets/sounds/music/music.mp3");
+const trek1 = require("assets/sounds/music/04_Heaven.flac");
+const trek3 = require("assets/sounds/music/Snow Patrol - What If This Storm Ends.mp3");
 
 export default class MusicVisualization extends TemplateFor3D {
   static CUBE_COUNT = 464;
@@ -28,16 +28,16 @@ export default class MusicVisualization extends TemplateFor3D {
   async initObjects() {
     this.scene.background = await new THREE.Color(0x121212);
 
-    this.initControls();
+    // this.initControls();
     this.initAudioObject();
     this.initCubes();
   }
 
-  initControls() {
+  // initControls() {
     // super.initControls();
     //
     // this.camera.position.set(0, 4, 1);
-  }
+  // }
 
   initAudioObject(trek) {
     if (this.audio && this.audioCtx && this.audioSrc) {
@@ -132,8 +132,8 @@ export default class MusicVisualization extends TemplateFor3D {
   animate() {
     if (!this.looped) return;
     super.animate();
-    this.analyser && this.analyser.getByteFrequencyData(this.dataArray); // frequency
-    this.analyser && this.analyser.getByteTimeDomainData(this.timeByteData); // waveform
+    this.analyser?.getByteFrequencyData(this.dataArray); // frequency
+    this.analyser?.getByteTimeDomainData(this.timeByteData); // waveform
 
     if (this.waveFormMesh && this.waveFormMesh.geometry) {
       this.waveFormMesh.geometry.attributes.frequencyData.needsUpdate = true;
@@ -141,7 +141,9 @@ export default class MusicVisualization extends TemplateFor3D {
   }
 
   async playTrack(trackNumber) {
-    this.audio && (await this.audio.pause());
+    if (this.audio) {
+      await this.audio.pause()
+    }
     await this.initAudioObject(trackNumber);
     const promise = this.audio.play();
     if (promise !== undefined) {
@@ -169,7 +171,7 @@ export default class MusicVisualization extends TemplateFor3D {
             Daft Punk - too Long
           </Button>
         </header>
-        <div ref="anchor" className="canvasDiv" />
+        <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

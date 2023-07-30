@@ -2,8 +2,8 @@
  * Created by Ellyson on 5/11/2018.
  */
 
-import TemplateFor3D from '../../../templates/mainTemplate3D';
 import * as THREE from 'three';
+import TemplateFor3D from 'components/templates/mainTemplate3D';
 import vertexShader from './vertexShader.vert';
 import fragmentShader from './fragmentShader.frag';
 
@@ -15,7 +15,7 @@ export default class DisplacedBox extends TemplateFor3D {
 	constructor(){
 		super();
 		this.speedX = 0;
-		this.speedY = 0;
+		// this.speedY = 0;
 		this.fimalSpeed = 0;
 	}
 
@@ -39,10 +39,10 @@ export default class DisplacedBox extends TemplateFor3D {
 				return;
 			}
 
-			let now = Date.now();
-			let dt =  now - timestamp > 0 ? now - timestamp : 0.1;
-			let dx = e.screenX - lastMouseX;
-			let dy = e.screenY - lastMouseY;
+			const now = Date.now();
+			const dt =  now - timestamp > 0 ? now - timestamp : 0.1;
+			const dx = e.screenX - lastMouseX;
+			const dy = e.screenY - lastMouseY;
 			this.speedX = Math.round(dx / dt * 100);
 			this.speedY = Math.round(dy / dt * 100);
 
@@ -57,6 +57,7 @@ export default class DisplacedBox extends TemplateFor3D {
 
 		const t1 =  new THREE.TextureLoader().load(image);
 		const t2 =  new THREE.TextureLoader().load(image2);
+		// eslint-disable-next-line no-multi-assign
 		t1.wrapS = t1.wrapT = t2.wrapS = t2.wrapT = THREE.MirroredRepeatWrapping;
 
 		this.material = new THREE.ShaderMaterial({

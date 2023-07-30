@@ -1,6 +1,5 @@
 import {
 	BoxGeometry,
-	BufferGeometry,
 	DoubleSide,
 	Geometry,
 	Mesh,
@@ -8,7 +7,7 @@ import {
 	PlaneGeometry,
 	Vector2,
 	VertexColors,
-} from '../../../../../../utils/libs/threejs/three_v0.106.js';
+} from 'utils/libs/threejs/three_v0.106';
 
 class Hut extends Mesh {
 	static setupGeometry() {

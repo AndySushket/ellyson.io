@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import fragmentShader from './shader.frag';
 import vertexShader from './shader.vert';
-import TemplateFor3D from '../../../templates/mainTemplate3D';
+import TemplateFor3D from 'components/templates/mainTemplate3D';
 
 export default class Shader3 extends TemplateFor3D {
 	initControls() {
@@ -15,7 +15,7 @@ export default class Shader3 extends TemplateFor3D {
 
 	initShader() {
 		const geometry = new THREE.SphereGeometry(4, 30, 30);
-		let array = [];
+		const array = [];
 
 		for (let v = 0; v < geometry.attributes.position.array.length / 3; v++) {
 			array.push(Math.random() * 3);
@@ -23,8 +23,8 @@ export default class Shader3 extends TemplateFor3D {
 		geometry.setAttribute("displacement", new THREE.Float32BufferAttribute(array, 1));
 		const customMaterial = new THREE.ShaderMaterial({
 			uniforms: {},
-			vertexShader: vertexShader,
-			fragmentShader: fragmentShader
+			vertexShader,
+			fragmentShader
 		});
 		this.sphere = new THREE.Mesh(geometry, customMaterial);
 		this.scene.add(this.sphere);

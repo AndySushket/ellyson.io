@@ -3,7 +3,7 @@ import {
 	Mesh,
 	RawShaderMaterial,
 	PlaneGeometry,
-} from '../../../../../../utils/libs/threejs/three_v0.106.js';
+} from 'utils/libs/threejs/three_v0.106';
 
 class Grid extends Mesh {
 	static setupGeometry() {

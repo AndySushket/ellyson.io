@@ -1,8 +1,9 @@
-import React from "react";
 import MusicEqualizer from "./musicVisualization/MusicVisualization";
 import LandSlide from "./landSlide/LandSlide";
 
-const MusicVisualization = ({ children }: any): JSX.Element => <>{children}</>;
+function MusicVisualization({ children }: any): JSX.Element {
+  return children;
+}
 MusicVisualization.MusicEqualizer = MusicEqualizer;
 MusicVisualization.LandSlide = LandSlide;
 

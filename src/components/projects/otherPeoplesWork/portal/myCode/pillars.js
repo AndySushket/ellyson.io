@@ -4,7 +4,7 @@ import {
 	Mesh,
 	MeshBasicMaterial,
 	Object3D,
-} from '../../../../../utils/libs/threejs/three_v0.106.js';
+} from 'utils/libs/threejs/three_v0.106';
 
 class Pillars extends Object3D {
 	static setupGeometry() {
@@ -48,7 +48,7 @@ class Pillars extends Object3D {
 					Math.sin(angle) * distance
 				);
 			const speed = Math.random() * 2 - 1;
-			mesh.onBeforeRender = ({ animation: { delta, time } }) => {
+			mesh.onBeforeRender = ({ animation: { delta } }) => {
 				mesh.rotation.y += delta * speed;
 			};
 			this.add(mesh);

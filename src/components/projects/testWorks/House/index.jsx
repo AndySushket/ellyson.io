@@ -6,18 +6,26 @@ import * as THREE from 'three';
 import {Button, ProgressBar} from "react-bootstrap";
 
 import * as TWEEN from '@tweenjs/tween.js';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import TemplateFor3D from 'components/templates/mainTemplate3D';
-import {getInterectiveMeshes} from './components/interactiveMeshes';
+import getInterectiveMeshes from './components/interactiveMeshes';
 import {loadHouse, addSkyBox} from './components/House';
 import {mouseMove, keydown, click, addFloor, deleteFloor} from './components/events';
-import flyingText from './components/flyingText';
+import FlyingText from './components/flyingText';
 import Light from './components/light';
 import CssRenderer from './components/CSS3DRenderer';
 import {COLORS, colorsArray} from './components/constants';
 
-const OrbitControls = require('./components/controls')(THREE);
-
 export default class House extends TemplateFor3D {
+
+	state = {
+		progress: 0,
+		loaded: false,
+		width: window.innerWidth,
+		height: window.innerHeight,
+		showSkyBox: false
+	}
+
 	constructor(){
 		super();
 		this.interectiveMeshes = getInterectiveMeshes();
@@ -28,13 +36,6 @@ export default class House extends TemplateFor3D {
 		this.additinalFloorArray = [];
 		this.doorLight = new Light(this.currentColor);
 		this.cssScene = new THREE.Scene();
-		this.state = {
-			progress: 0,
-			loaded: false,
-			width: window.innerWidth,
-			height: window.innerHeight,
-			showSkyBox: false
-		};
 	}
 
 	initCamera() {
@@ -69,7 +70,8 @@ export default class House extends TemplateFor3D {
 			this.currentColor.index = 0;
 			this.interectiveMeshes[2].position.y = 0;
 			this.setState({loaded: false, progress: 0});
-			this.linkObject.show = this.saveScreen.show = false;
+			this.linkObject.show = false;
+			this.saveScreen.show = false;
 			this.changeLight(colorsArray[this.currentColor.index]);
 			this.resetCamera();
 			this.scene.background = null;
@@ -92,7 +94,7 @@ export default class House extends TemplateFor3D {
 
 	handleWindowResize(){
 		super.handleWindowResize();
-		this.cssRenderer && this.cssRenderer.renderer.setSize(this.WIDTH, this.HEIGHT);
+		this.cssRenderer?.renderer.setSize(this.WIDTH, this.HEIGHT);
 		this.setState({width: window.innerWidth, height: window.innerHeight})
 	}
 
@@ -118,13 +120,13 @@ export default class House extends TemplateFor3D {
 	}
 
 	loadModals(){
-		this.linkObject = new flyingText(50.0, 30.0, new THREE.Vector3(20.0, 0, 60.0), new THREE.Euler(0, Math.PI / 2, 0), "link", this);
-		this.saveScreen = new flyingText(80.0, 25.0, new THREE.Vector3(20.0, 150, 0.0), new THREE.Euler(0, Math.PI / 2, 0), "screen", this);
+		this.linkObject = new FlyingText(50.0, 30.0, new THREE.Vector3(20.0, 0, 60.0), new THREE.Euler(0, Math.PI / 2, 0), "link", this);
+		this.saveScreen = new FlyingText(80.0, 25.0, new THREE.Vector3(20.0, 150, 0.0), new THREE.Euler(0, Math.PI / 2, 0), "screen", this);
 	}
 
 	async componentDidMount() {
 		this.init3D({alpha: true,antialias: true, preserveDrawingBuffer: true});
-		this.cssRenderer = new CssRenderer(this.renderer, this.refs.anchor);
+		this.cssRenderer = new CssRenderer(this.renderer, this.canvasDiv);
 		this.initControls(this.cssRenderer.renderer.domElement);
 		super.initRaycaster();
 		this.attachMouseMoveEvent();
@@ -145,8 +147,8 @@ export default class House extends TemplateFor3D {
 	animate() {
 		if (!this.looped) return;
 		this.controls.update();
-		this.linkObject && this.linkObject.animate(this.time);
-		this.saveScreen && this.saveScreen.animate(this.time);
+		this.linkObject?.animate(this.time);
+		this.saveScreen?.animate(this.time);
 		TWEEN.update();
 		super.animate();
 		this.cssRenderer.renderer.render(this.cssScene, this.camera);
@@ -178,7 +180,7 @@ export default class House extends TemplateFor3D {
 					</div>}
 				</div>
 			</header>
-			<div ref="anchor" className="canvasDiv"/>
+			<div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv"/>
 		</div>
 	}
 }

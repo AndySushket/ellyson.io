@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import {Line2} from 'three/examples/jsm/lines/Line2.js';
-import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
-import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+import {Line2} from 'three/examples/jsm/lines/Line2';
+import { LineMaterial } from 'three/addons/lines/LineMaterial';
+import { LineGeometry } from 'three/addons/lines/LineGeometry';
 import map2 from "./textures/earth/displaceMap.png";
 
 import geoLineVert from "./Shaders/geoLineVert.vert"
@@ -14,17 +14,17 @@ and draws the geoJSON geometries.
 export default function drawThreeGeo(json, radius, shape, materalOptions, container, map) {
     container = container || window.scene;
 
-    let x_values = [];
-    let y_values = [];
-    let z_values = [];
+    const x_values = [];
+    const y_values = [];
+    const z_values = [];
 
-    let json_geom = createGeometryArray(json);
-    //An array to hold the feature geometries.
-    let convertCoordinates = getConversionFunctionName(shape);
-    //Whether you want to convert to spherical or planar coordinates.
+    const json_geom = createGeometryArray(json);
+    // An array to hold the feature geometries.
+    const convertCoordinates = getConversionFunctionName(shape);
+    // Whether you want to convert to spherical or planar coordinates.
     let coordinate_array = [];
-    //Re-usable array to hold coordinate values. This is necessary so that you can add
-    //interpolated coordinates. Otherwise, lines go through the sphere instead of wrapping around.
+    // Re-usable array to hold coordinate values. This is necessary so that you can add
+    // interpolated coordinates. Otherwise, lines go through the sphere instead of wrapping around.
 
     for (let geom_num = 0; geom_num < json_geom.length; geom_num++) {
 
@@ -83,7 +83,7 @@ export default function drawThreeGeo(json, radius, shape, materalOptions, contai
     }
 
     function createGeometryArray(json) {
-        let geometry_array = [];
+        const geometry_array = [];
 
         if (json.type === 'Feature') {
             geometry_array.push(json.geometry);
@@ -98,7 +98,7 @@ export default function drawThreeGeo(json, radius, shape, materalOptions, contai
         } else {
             throw new Error('The geoJSON is not valid.');
         }
-        //alert(geometry_array.length);
+        // alert(geometry_array.length);
         return geometry_array;
     }
 
@@ -116,13 +116,13 @@ export default function drawThreeGeo(json, radius, shape, materalOptions, contai
     }
 
     function createCoordinateArray(feature) {
-        //Loop through the coordinates and figure out if the points need interpolation.
-        let temp_array = [];
+        // Loop through the coordinates and figure out if the points need interpolation.
+        const temp_array = [];
         let interpolation_array = [];
 
         for (let point_num = 0; point_num < feature.length; point_num++) {
-            let point1 = feature[point_num];
-            let point2 = feature[point_num - 1];
+            const point1 = feature[point_num];
+            const point2 = feature[point_num - 1];
 
             if (point_num > 0) {
                 if (needsInterpolation(point2, point1)) {
@@ -143,23 +143,23 @@ export default function drawThreeGeo(json, radius, shape, materalOptions, contai
     }
 
     function needsInterpolation(point2, point1) {
-        //If the distance between two latitude and longitude values is
-        //greater than five degrees, return true.
-        let lon1 = point1[0];
-        let lat1 = point1[1];
-        let lon2 = point2[0];
-        let lat2 = point2[1];
-        let lon_distance = Math.abs(lon1 - lon2);
-        let lat_distance = Math.abs(lat1 - lat2);
+        // If the distance between two latitude and longitude values is
+        // greater than five degrees, return true.
+        const lon1 = point1[0];
+        const lat1 = point1[1];
+        const lon2 = point2[0];
+        const lat2 = point2[1];
+        const lon_distance = Math.abs(lon1 - lon2);
+        const lat_distance = Math.abs(lat1 - lat2);
 
         return lon_distance > 5 || lat_distance > 5;
     }
 
     function interpolatePoints(interpolation_array) {
-        //This function is recursive. It will continue to add midpoints to the
-        //interpolation array until needsInterpolation() returns false.
+        // This function is recursive. It will continue to add midpoints to the
+        // interpolation array until needsInterpolation() returns false.
         let temp_array = [];
-        let point1, point2;
+        let point1; let point2;
 
         for (let point_num = 0; point_num < interpolation_array.length - 1; point_num++) {
             point1 = interpolation_array[point_num];
@@ -184,7 +184,7 @@ export default function drawThreeGeo(json, radius, shape, materalOptions, contai
     }
 
     function getMidpoint(point1, point2) {
-        let midpoint_lon = (point1[0] + point2[0]) / 2;
+        const midpoint_lon = (point1[0] + point2[0]) / 2;
         const midpoint_lat = (point1[1] + point2[1]) / 2;
         return [midpoint_lon, midpoint_lat];
     }
@@ -200,7 +200,7 @@ export default function drawThreeGeo(json, radius, shape, materalOptions, contai
 
     function convertToPlaneCoords(coordinates_array, radius) {
         const lon = coordinates_array[0];
-        let lat = coordinates_array[1];
+        const lat = coordinates_array[1];
 
         z_values.push((lat / 180) * radius);
         y_values.push((lon / 180) * radius);
@@ -224,7 +224,7 @@ export default function drawThreeGeo(json, radius, shape, materalOptions, contai
 
         createVertexForEachPoint(line_geom, x_values, y_values, z_values);
         // const displacementMap = textureLoader.load(map2);
-        let line_material = new LineMaterial({
+        const line_material = new LineMaterial({
             color: 0xffffff,
             // linewidth: 5, //
             lineWidth: 5,
@@ -242,7 +242,7 @@ export default function drawThreeGeo(json, radius, shape, materalOptions, contai
             // wireframe: true,
             // wireframeLinewidth : 5
         });
-        let line = new Line2(line_geom, line_material);
+        const line = new Line2(line_geom, line_material);
         line.rotateZ(Math.PI / 2)
         line.rotateY(Math.PI / 2)
         // line.rotation.x = Math.PI ;

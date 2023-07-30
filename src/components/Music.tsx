@@ -3,23 +3,41 @@
  */
 
 import * as THREE from "three";
-import React, { ReactNode } from "react";
-import { Button, Container, Grid, IconButton, styled, Avatar, Paper } from "@mui/material";
-import { Col, Collapse, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-
-import {
-  Facebook,
-  Instagram,
-  LinkedIn,
-  Mail,
-  Twitter,
-} from "@mui/icons-material";
+import React from "react";
+import { Container } from "@mui/material";
 import TemplateFor3D from "./templates/mainTemplate3D";
 
-const avatar = require("./MainPage/avatar.jpg");
+export default class Music extends TemplateFor3D {
 
-export default class Projects extends TemplateFor3D {
+  private static projectsList(): React.ReactNode {
+
+    return (
+        <Container
+            className="about"
+            style={{
+              position: "absolute",
+              top: "200px",
+              left: "0",
+              right: "0",
+              margin: "0 auto",
+            }}
+            maxWidth="lg"
+        >
+          <h1 style={{ textAlign: "left", color: "white" }}>About me:</h1>
+          <iframe
+              title="spotify"
+              style={{ borderRadius: "12px" }}
+              src="https://open.spotify.com/embed/playlist/1I3XZ25iBe7CtQK3I3oj86?utm_source=generator"
+              width="100%"
+              height="352"
+              frameBorder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+          />
+        </Container>
+    );
+  }
+
   private sphere: THREE.Mesh | undefined;
 
   initControls(): void {
@@ -46,93 +64,11 @@ export default class Projects extends TemplateFor3D {
     super.animate();
   }
 
-  skillList(): ReactNode {
-    const list = [
-      "JavaScript",
-      "TypeScript",
-      "React",
-      "Redux",
-      "Three.js",
-      "React",
-      "Redux",
-      "Saga",
-      "Reflux",
-      "3D",
-      "Node.js",
-      "MongoDB",
-      "GIT",
-      "HTML",
-      "CSS",
-      "Backbone",
-      "SQL",
-      "Agile",
-      "Jira",
-      "Blender",
-    ];
+  render(): React.ReactNode {
     return (
       <div>
-        {list.map((el) => (
-          <div
-            style={{
-              margin: "5px",
-              borderRadius: "10px",
-              border: "1px solid white",
-              padding: "20px",
-              width: "auto",
-              height: "40px",
-              color: "white",
-              float: "left",
-            }}
-          >
-            {el}
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  projectsList(): ReactNode {
-    const Item = styled(Paper)(({ theme }) => ({
-      backgroundColor: "#1A2027",
-      ...theme.typography.body2,
-      padding: theme.spacing(1),
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-    }));
-
-    return (
-      // <div className='project-list'>
-      <Container
-        className="about"
-        style={{
-          position: "absolute",
-          top: "200px",
-          left: "0",
-          right: "0",
-          margin: "0 auto",
-        }}
-        maxWidth="lg"
-      >
-        <h1 style={{ textAlign: "left", color: "white" }}>About me:</h1>
-        <iframe
-          style={{ borderRadius: "12px" }}
-          src="https://open.spotify.com/embed/playlist/1I3XZ25iBe7CtQK3I3oj86?utm_source=generator"
-          width="100%"
-          height="352"
-          frameBorder="0"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"
-        />
-      </Container>
-      // </div>
-    );
-  }
-
-  render(): ReactNode {
-    return (
-      <div>
-        {this.projectsList()}
-        <div ref="anchor" className="canvasDiv" />
+        {Music.projectsList()}
+        <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

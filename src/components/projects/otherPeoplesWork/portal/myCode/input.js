@@ -1,11 +1,10 @@
-import { Vector3 } from "../../../../../utils/libs/threejs/three_v0.106.js";
+import { Vector3 } from "utils/libs/threejs/three_v0.106";
 
 class Input {
   constructor({
     limits = { min: { x: -16, z: -16 }, max: { x: 16, z: 16 } },
     mount,
   }) {
-    console.log(mount);
     this.keyboard = {};
     this.limits = limits;
     this.mouse = { x: 0, y: 0 };
@@ -20,8 +19,7 @@ class Input {
       this.onLockChange.bind(this),
       false
     );
-    mount &&
-      mount.addEventListener("mousedown", this.onMouseDown.bind(this), false);
+    mount?.addEventListener("mousedown", this.onMouseDown.bind(this), false);
     window.addEventListener("mousemove", this.onMouseMove.bind(this), false);
     window.addEventListener("keydown", this.onKeyDown.bind(this), false);
     window.addEventListener("keyup", this.onKeyUp.bind(this), false);

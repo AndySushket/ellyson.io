@@ -7,9 +7,9 @@ import Delaunator from "delaunator";
 import { Button } from "react-bootstrap";
 import * as THREE from "three";
 import TemplateFor3D from "components/templates/mainTemplate3D";
-import Mouse from "utils/plugins/mouse.js";
-import Particle from "utils/plugins/particles.js";
-import Perlin from "utils/plugins/perlin.js";
+// import Mouse from "utils/plugins/mouse";
+import Particle from "utils/plugins/particles";
+import Perlin from "utils/plugins/perlin";
 import vertexShader from "./shaders/vertexShader.vert";
 import fragmentShader from "./shaders/fragmentShader.frag";
 
@@ -136,7 +136,7 @@ export default class TriangleWallpaper extends TemplateFor3D {
   handleWindowResize() {
     this.HEIGHT = window.innerHeight;
     this.WIDTH = window.innerWidth;
-    this.renderer && this.renderer.setSize(this.WIDTH, this.HEIGHT);
+    this.renderer?.setSize(this.WIDTH, this.HEIGHT);
     this.camera.aspect = this.WIDTH / this.HEIGHT;
     this.camera.updateProjectionMatrix();
   }
@@ -145,7 +145,7 @@ export default class TriangleWallpaper extends TemplateFor3D {
     this.init3D();
     this.initControls();
     this.initPlateMesh();
-    this.pos = new Mouse(this.renderer.domElement);
+    // this.pos = new Mouse(this.renderer.domElement);
     window.addEventListener(
       "mousemove",
       this.onDocumentMouseDown.bind(this),
@@ -186,7 +186,7 @@ export default class TriangleWallpaper extends TemplateFor3D {
             {!this.state.checked ? "MouseMod" : "Perlin Noise"}
           </Button>
         </header>
-        <div ref="anchor" className="canvasDiv" />
+        <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

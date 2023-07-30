@@ -4,10 +4,10 @@
 
 import React from "react";
 import * as THREE from "three";
-import TemplateFor3D from "../../../templates/mainTemplate3D";
+import TemplateFor3D from "components/templates/mainTemplate3D";
 
-const smoke = require(`../../../../assets/img/smoke.png`);
-const drop = require(`../../../../assets/img/drop.png`);
+const smoke = require(`assets/img/smoke.png`);
+const drop = require(`assets/img/drop.png`);
 
 export default class Rain extends TemplateFor3D {
   static rainCount = 15000;
@@ -25,11 +25,11 @@ export default class Rain extends TemplateFor3D {
 
   private directionalLight: THREE.DirectionalLight | undefined;
 
-  private portalLight: THREE.PointLight | undefined;
+  // private portalLight: THREE.PointLight | undefined;
 
   private rainGeo: THREE.BufferGeometry | undefined;
 
-  private rainDrop: THREE.Vector3 | undefined;
+  // private rainDrop: THREE.Vector3 | undefined;
 
   private rainMaterial: THREE.PointsMaterial | undefined;
 
@@ -82,12 +82,12 @@ export default class Rain extends TemplateFor3D {
     this.animate();
   }
 
-  initPointLight() {
-    this.portalLight = new THREE.PointLight(0x062d89, 30, 600, 1.7);
-    this.portalLight.position.set(0, 0, 0);
-    this.portalLight.power = 0;
-    this.scene?.add(this.portalLight);
-  }
+  // initPointLight() {
+  //   this.portalLight = new THREE.PointLight(0x062d89, 30, 600, 1.7);
+  //   this.portalLight.position.set(0, 0, 0);
+  //   this.portalLight.power = 0;
+  //   this.scene?.add(this.portalLight);
+  // }
 
   initRain() {
     const loader = new THREE.TextureLoader();
@@ -154,7 +154,8 @@ export default class Rain extends TemplateFor3D {
   animate() {
     if (!this.looped) return;
     this.cloudParticles.forEach((p) => {
-      p.rotation.z -= 0.001;
+      const { rotation } = p;
+      rotation.z -= 0.001;
     });
     if (this.rainGeo && this.rainGeo && this.rain) {
       const position = this.rainGeo.getAttribute("position");
@@ -221,7 +222,7 @@ export default class Rain extends TemplateFor3D {
     return (
       <div>
         <header id="sky" style={{ width: "auto" }} />
-        <div ref="anchor" className="canvasDiv" />
+        <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

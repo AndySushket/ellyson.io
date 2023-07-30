@@ -3,7 +3,7 @@
  */
 
 import * as THREE from "three";
-import TemplateFor3D from "../../../templates/mainTemplate3D";
+import TemplateFor3D from "components/templates/mainTemplate3D";
 import vertexShader from "./vertexShader.vert";
 import fragmentShader from "./fragmentShader.frag";
 import particalFragmentShader from "./particalFragmentShader.frag";

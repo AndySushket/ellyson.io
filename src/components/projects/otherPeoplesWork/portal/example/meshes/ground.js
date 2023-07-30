@@ -2,11 +2,10 @@ import {
 	BufferGeometry,
 	Mesh,
 	MeshBasicMaterial,
-	Object3D,
 	PlaneGeometry,
 	Vector3,
 	VertexColors,
-} from '../../../../../../utils/libs/threejs/three_v0.106.js';
+} from 'utils/libs/threejs/three_v0.106';
 
 class Ground extends Mesh {
 	static setupGeometry() {
@@ -27,11 +26,11 @@ class Ground extends Mesh {
 				const v = [
 					face.a, face.b, face.c,
 					p.a, p.b, p.c,
-				].map(v => geometry.vertices[v]);
-				const height = v.reduce((avg, v) => (
-						avg + v.y
+				].map(vert => geometry.vertices[vert]);
+				const height = v.reduce((avg, vert) => (
+						avg + vert.y
 					), 0) / v.length;
-				v.forEach((v) => { v.y = height; });
+				v.forEach((vert) => { vert.y = height; });
 				const factor = Math.min(height / 40 + 0.25, 1);
 				face.color.setRGB(factor * 0.5, factor, factor * 0.75);
 				face.color.offsetHSL(

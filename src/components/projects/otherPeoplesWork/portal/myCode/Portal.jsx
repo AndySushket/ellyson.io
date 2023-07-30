@@ -5,7 +5,7 @@
 import React from "react";
 
 import TemplateFor3D from "components/templates/mainTemplate3D";
-import * as THREE from "utils/libs/threejs/three_v0.106.js";
+import * as THREE from "utils/libs/threejs/three_v0.106";
 // import Mouse from "../../../../plugins/mouse.js";
 import Portal from "./portalMesh";
 import Ground from "./ground";
@@ -89,11 +89,10 @@ export default class TriangleWallpaper extends TemplateFor3D {
     this.interior.add(new Grid({ color: new THREE.Color(0x09020f) }));
     this.interior.add(new Dome({ color: this.interior.fog.color }));
     // Setup renderer
-    const mount = this.refs.anchor;
-    console.log(this.refs);
+    const mount = this.canvasDiv;
     const input = new Input({ mount });
     const renderer = new Renderer({
-      debug: this.refs.debug,
+      debug: this.debug,
       mount,
       scene: this.exterior,
     });
@@ -158,8 +157,8 @@ export default class TriangleWallpaper extends TemplateFor3D {
   render() {
     return (
       <div>
-        <header ref="debug" />
-        <div ref="anchor" className="canvasDiv" />
+        <header ref={ (ref)=> {this.debug = ref}} />
+        <div ref={ (ref)=> {this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

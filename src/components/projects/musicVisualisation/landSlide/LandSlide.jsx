@@ -29,20 +29,19 @@ export default class LandSlide extends TemplateFor3D {
   async initObjects() {
     this.scene.background = await new THREE.Color(0x121212);
 
-    this.initControls();
+    // this.initControls();
     this.initAudioObject();
     this.initCubes();
   }
 
-  initControls() {
+  // initControls() {
     // super.initControls();
     //
     // this.camera.position.set(0, 4, 1);
-  }
+  // }
 
   initAudioObject() {
-    this.audio = new Audio();
-    this.audio.src = this.state.treks[0];
+    this.audio = new Audio(this.state.treks[0]);
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const audioSrc = this.audioCtx.createMediaElementSource(this.audio);
     this.analyser = this.audioCtx.createAnalyser();
@@ -123,8 +122,8 @@ export default class LandSlide extends TemplateFor3D {
   animate() {
     if (!this.looped) return;
     super.animate();
-    this.analyser && this.analyser.getByteFrequencyData(this.dataArray); // frequency
-    this.analyser && this.analyser.getByteTimeDomainData(this.timeByteData); // waveform
+    this.analyser?.getByteFrequencyData(this.dataArray); // frequency
+    this.analyser?.getByteTimeDomainData(this.timeByteData); // waveform
   }
 
   async playTrack(trackNumber) {
@@ -149,7 +148,7 @@ export default class LandSlide extends TemplateFor3D {
             Daft Punk - too Long
           </Button>
         </header>
-        <div ref="anchor" className="canvasDiv" />
+        <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

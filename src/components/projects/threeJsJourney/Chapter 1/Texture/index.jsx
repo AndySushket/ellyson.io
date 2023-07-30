@@ -2,8 +2,8 @@
  * Created by Ellyson on 5/11/2018.
  */
 
-import TemplateFor3D from '../../../../templates/mainTemplate3D';
 import * as THREE from 'three';
+import TemplateFor3D from 'components/templates/mainTemplate3D';
 import AmbientOcclusionMap from './maps/Door_Wood_001_ambientOcclusion.jpg'
 import baseColorMap from './maps/Door_Wood_001_basecolor.jpg'
 import heightMap from './maps/Door_Wood_001_height.png'
@@ -20,7 +20,7 @@ export default class Shader1 extends TemplateFor3D {
 	}
 
 	initProject() {
-		//first solution
+		// first solution
 		// const image = new Image();
 		// const texture = new THREE.Texture(image);
 		// image.onload = () => {
@@ -82,7 +82,7 @@ export default class Shader1 extends TemplateFor3D {
 
 		// testTexture.minFilter = THREE.NearestFilter;
 		testTexture.magFilter = THREE.NearestFilter;
-		testTexture.generateMipmaps = false; //better perfomance if nearestFilter
+		testTexture.generateMipmaps = false; // better perfomance if nearestFilter
 
 		const geometry = new THREE.PlaneGeometry(4, 4);
 

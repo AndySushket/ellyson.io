@@ -1,15 +1,12 @@
 import {
-	BoxGeometry,
-	BufferGeometry,
 	LinearFilter,
 	Mesh,
 	MeshBasicMaterial,
 	NearestFilter,
 	PlaneGeometry,
 	RGBAFormat,
-	VertexColors,
 	WebGLRenderTarget,
-} from '../../../../../../utils/libs/threejs/three_v0.106.js';
+} from 'utils/libs/threejs/three_v0.106';
 
 class Portal extends Mesh {
 	static setupGeometry() {

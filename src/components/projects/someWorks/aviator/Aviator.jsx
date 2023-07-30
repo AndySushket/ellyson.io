@@ -3,9 +3,9 @@
  */
 
 import React from 'react';
-import * as THREE from 'three';
-import TemplateFor3D from '../../../templates/mainTemplate3D';
-import {normalize} from "../../../../utils/mathUtils";
+import * as THREE from "three";
+import {normalize} from "utils/mathUtils";
+import TemplateFor3D from 'components/templates/mainTemplate3D';
 
 const Colors = {
 	red: 0xf25346
@@ -21,14 +21,15 @@ class Sea {
 		const geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10).rotateX(-Math.PI / 2);
 		// geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2)); //rotate the geom
 		// BufferGeometryUtils.mergeVertices(geom); //important: by mergin vertices we ensure the continuty of the waves
-		const l = geom.vertices.length;	//get the vertices length
-		this.waves = []; //create an array to store new data associated to each vertex
-		for (let i = 0; i < l; i++) {
-			let v = geom.vertices[i];
-			this.waves.push({y: v.y, x: v.x, z: v.z,
-				ang: Math.random() * Math.PI * 2, //random angle
-				amp: 5 + Math.random() * 15, //random distance
-				speed: 0.016 + Math.random() * 0.032}); //random speed between 0.016 and 0.048 radians/frame
+		const posArray = geom.getAttribute('position').array;
+		const l = posArray.length;	// get the vertices length
+		this.waves = []; // create an array to store new data associated to each vertex
+		for (let i = 0; i < l; i+=3) {
+			// const v = new THREE.Vector3(posArray[i]);
+			this.waves.push({y: posArray[i+1], x: posArray[i], z: posArray[i+2],
+				ang: Math.random() * Math.PI * 2, // random angle
+				amp: 5 + Math.random() * 15, // random distance
+				speed: 0.016 + Math.random() * 0.032}); // random speed between 0.016 and 0.048 radians/frame
 		}
 		const mat = new THREE.MeshPhongMaterial({
 			color: "#429837",
@@ -41,16 +42,15 @@ class Sea {
 	}
 
 	moveWaves() {
-		const verts = this.mesh.geometry.vertices; //get the vertices
-		const l = verts.length;
-		for (let i = 0; i < l; i++) {
-			let v = verts[i];
-			const vProps = this.waves[i];	//get the data assiciated to it
-			v.x= vProps.x + Math.cos(vProps.ang) * vProps.amp;	//update the position
-			v.y= vProps.y + Math.sin(vProps.ang) * vProps.amp;
-			vProps.ang += vProps.speed; //increment the angle for the next frame
+		const position = this.mesh.geometry.getAttribute('position'); // get the vertices
+		const l = position.array.length;
+		for (let i = 0; i < l; i+=3) {
+			const vProps = this.waves[i / 3];	// get the data assiciated to it
+			position.array[i]= vProps.x + Math.cos(vProps.ang) * vProps.amp;	// update the position
+			position.array[i+1]= vProps.y + Math.sin(vProps.ang) * vProps.amp;
+			vProps.ang += vProps.speed; // increment the angle for the next frame
 		}
-		this.mesh.geometry.verticesNeedUpdate = true;
+		position.needsUpdate = true;
 	}
 }
 
@@ -61,14 +61,14 @@ class Cloud {
 		const mat = new THREE.MeshPhongMaterial({
 			color: Colors.white,
 		});
-		const nBlocs = 3 + Math.floor(Math.random() * 3); //duplicate meshes a random number of time
+		const nBlocs = 3 + Math.floor(Math.random() * 3); // duplicate meshes a random number of time
 		for (let i = 0; i < nBlocs; i++) {
 			const childMesh = new THREE.Mesh(geom, mat);
 			childMesh.position.x = i * 15;
 			childMesh.position.y = Math.random() * 10;
 			childMesh.position.z = Math.random() * 10;
 			childMesh.rotation.z = Math.random() * Math.PI * 2;
-			childMesh.rotation.y = Math.random() * Math.PI * 2; //set the size of cube randomly
+			childMesh.rotation.y = Math.random() * Math.PI * 2; // set the size of cube randomly
 			const size = .1 + Math.random() * .9;
 			childMesh.scale.set(size, size, size);
 			childMesh.castShadow = true;
@@ -81,17 +81,17 @@ class Cloud {
 class Sky {
 	constructor() {
 		this.mesh = new THREE.Object3D();
-		this.nClouds = 20; //chose a number of clouds to be scattered in the thanos portal
-		const stepAngle = Math.PI * 2 / this.nClouds;//To distribute the clouds consistently, we need to place the according to a uniform anle
-		for (let i = 0; i < this.nClouds; i++) {	//create the clouds
+		this.nClouds = 20; // chose a number of clouds to be scattered in the thanos portal
+		const stepAngle = Math.PI * 2 / this.nClouds;// To distribute the clouds consistently, we need to place the according to a uniform anle
+		for (let i = 0; i < this.nClouds; i++) {	// create the clouds
 			const c = new Cloud();
-			const angle = stepAngle * i; //this is final angle of cloud
-			const height = 780 + Math.random() * 200; //this is the distance between the center of the axis and the cloud itself
-			//we are simply converting polar coordinates(angle,distance) into Cartesian coordinates (x,y)
+			const angle = stepAngle * i; // this is final angle of cloud
+			const height = 780 + Math.random() * 200; // this is the distance between the center of the axis and the cloud itself
+			// we are simply converting polar coordinates(angle,distance) into Cartesian coordinates (x,y)
 			c.mesh.position.y = Math.sin(angle) * height;
 			c.mesh.position.x = Math.cos(angle) * height;
 			c.mesh.position.z = -400 - Math.random() * 400;
-			c.mesh.rotation.z = angle * Math.PI / 2;	//rotate the cloud according to its position
+			c.mesh.rotation.z = angle * Math.PI / 2;	// rotate the cloud according to its position
 			const scale = 1 + Math.random() * 2;
 			c.mesh.scale.set(scale, scale, scale);
 			this.mesh.add(c.mesh);
@@ -104,30 +104,30 @@ class Pilot{
 	constructor() {
 		this.mesh = new THREE.Object3D();
 		this.mesh.name = "pilot";
-		this.angleHairs = 0; //anglesHairs is a prop used to animate the hair later
+		this.angleHairs = 0; // anglesHairs is a prop used to animate the hair later
 
-		//body of pilot
+		// body of pilot
 		const bodyGeom = new THREE.BoxGeometry(15, 15, 15);
 		const bodyMat = new THREE.MeshPhongMaterial({color: Colors.brown, flatShading: true});
 		const body = new THREE.Mesh(bodyGeom, bodyMat);
 		body.position.set(2, -12, 0);
 		this.mesh.add(body);
 
-		//face
+		// face
 		const faceGeom= new THREE.BoxGeometry(10,10,10);
 		const faceMat= new THREE.MeshPhongMaterial({color: Colors.pink});
 		const face = new THREE.Mesh(faceGeom, faceMat);
 		this.mesh.add(face);
 
-		//hair
+		// hair
 		const hairGeom = new THREE.BoxGeometry(4, 4, 4).translate(0, 2, 0);
 		const hairMat = new THREE.MeshPhongMaterial({color: Colors.brown});
 		const hair = new THREE.Mesh(hairGeom, hairMat);
 
 		// hair.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 2, 0)); //align the shape of the hair to its bottom boundary,that will make it easier to scale
-		const hairs = new THREE.Object3D();	//create a container for the hair
-		this.hairsTop = new THREE.Object3D();//create acontainer for the hairs at the top of head(the ones that will animated)
-		for (let i = 0; i < 12; i++) {	//create the Hairs at the top of head and position them on 3 x 4 grid
+		const hairs = new THREE.Object3D();	// create a container for the hair
+		this.hairsTop = new THREE.Object3D();// create acontainer for the hairs at the top of head(the ones that will animated)
+		for (let i = 0; i < 12; i++) {	// create the Hairs at the top of head and position them on 3 x 4 grid
 			const h = hair.clone();
 			const col= i % 3;
 			const row = Math.floor(i / 3);
@@ -148,7 +148,7 @@ class Pilot{
 		hairs.add(hairSideR);
 		hairs.add(hairSideL);
 
-		//create the hairs at back of the head
+		// create the hairs at back of the head
 		const hairBackGeom = new THREE.BoxGeometry(2, 8, 10);
 		const hairback = new THREE.Mesh(hairBackGeom,hairMat);
 		hairback.position.set(-1, -4, 0);
@@ -157,7 +157,7 @@ class Pilot{
 
 		this.mesh.add(hairs);
 
-		//glasses
+		// glasses
 		const glassGeom = new THREE.BoxGeometry(5, 5, 5);
 		const glassMat = new THREE.MeshPhongMaterial({color: Colors.brown});
 		const glassR = new THREE.Mesh(glassGeom, glassMat);
@@ -182,11 +182,11 @@ class Pilot{
 
 	updateHairs(){
 		const hairs = this.hairsTop.children;
-		for (let i = 0; i < hairs.length; i++) {	//update the according to the angle
+		for (let i = 0; i < hairs.length; i++) {	// update the according to the angle
 			const hair = hairs[i];
-			hair.scale.y = 0.75 + Math.cos(this.angleHairs + i / 3) * 0.25;//each hair element will scale on cyclical basic between 75% and 100% of it's origin size
+			hair.scale.y = 0.75 + Math.cos(this.angleHairs + i / 3) * 0.25;// each hair element will scale on cyclical basic between 75% and 100% of it's origin size
 		}
-		this.angleHairs += 0.16;		//increment angle for the next frame
+		this.angleHairs += 0.16;		// increment angle for the next frame
 	}
 }
 
@@ -194,12 +194,12 @@ class AirPlane {
 	constructor() {
 		this.mesh = new THREE.Object3D();
 
-		//Create the Cabin
+		// Create the Cabin
 		const geomCockpit = new THREE.BoxGeometry(105, 50, 42, 1, 1, 1);
 		const matCockpit = new THREE.MeshPhongMaterial({color: "#3bd14c", flatShading: true});
 
-		//we can access a specific vertex of a shape through
-		//the vertices array,and then move it's x,y,z prop
+		// we can access a specific vertex of a shape through
+		// the vertices array,and then move it's x,y,z prop
 		const position = geomCockpit.getAttribute('position');
 		position.needsUpdate = true;
 		position.array[4 * 3 + 1] -= 10;
@@ -227,7 +227,7 @@ class AirPlane {
 		engine.receiveShadow = true;
 		this.mesh.add(engine);
 
-		//Create the wing
+		// Create the wing
 		const geomSideWing = new THREE.BoxGeometry(40, 8, 150, 1, 1, 1);
 		const matSideWing = new THREE.MeshPhongMaterial({color: "#a3e240",flatShading: true});
 		const positionSideWing = geomSideWing.getAttribute('position');
@@ -243,14 +243,14 @@ class AirPlane {
 		this.mesh.add(sideWing);
 		this.mesh.add(winfTop);
 
-		//pillars
+		// pillars
 		const geomPillar = new THREE.BoxGeometry(2, 45, 1);
 		const matPillar = new THREE.MeshPhongMaterial({color: "#25572a"});
 		const pillarRf = new THREE.Mesh(geomPillar, matPillar);
 		const positionPillar = geomPillar.getAttribute('position');
 		positionPillar.needsUpdate = true;
-		positionPillar.array[0 * 3] += 4;
-		positionPillar.array[1 * 3] += 4;
+		positionPillar.array[0] += 4;
+		positionPillar.array[3] += 4;
 		positionPillar.array[4 * 3] += 4;
 		positionPillar.array[5 * 3] += 4;
 
@@ -277,37 +277,37 @@ class AirPlane {
 		const matTailPlane = new THREE.MeshPhongMaterial({color: "#a3e240", flatShading: true});
 		const positionTailPlane = geomTailPlane.getAttribute('position');
 		positionTailPlane.needsUpdate = true;
-		positionTailPlane.array[0* 3 + 1] -= 8;
-		positionTailPlane.array[1* 3 + 1] -= 8;
+		positionTailPlane.array[1] -= 8;
+		positionTailPlane.array[4] -= 8;
 		const tailPlane = new THREE.Mesh(geomTailPlane, matTailPlane);
 		tailPlane.position.set(-57, 20, 0);
 		tailPlane.castShadow = true;
 		tailPlane.receiveShadow = true;
 		this.mesh.add(tailPlane);
 
-		//sidetail
+		// sidetail
 		const geomSideTail = new THREE.BoxGeometry(15, 5, 30, 1, 1, 1);
 		const matSideTail = new THREE.MeshPhongMaterial({color: "#a3e240", flatShading: true});
 		const positionSideTail = geomSideTail.getAttribute('position');
 		positionSideTail.needsUpdate = true;
-		positionSideTail.array[0* 3 +2] -= 8;
-		positionSideTail.array[1* 3 +2] += 8;
-		positionSideTail.array[2* 3 + 2] -= 8;
-		positionSideTail.array[3* 3 +2] += 8;
+		positionSideTail.array[2] -= 8;
+		positionSideTail.array[5] += 8;
+		positionSideTail.array[8] -= 8;
+		positionSideTail.array[11] += 8;
 		const sideTail = new THREE.Mesh(geomSideTail, matSideTail);
 		sideTail.position.set(-55, 10, 0);
 		sideTail.castShadow = true;
 		sideTail.receiveShadow = true;
 		this.mesh.add(sideTail);
 
-		//propeller
+		// propeller
 		const geomPropeller = new THREE.BoxGeometry(10, 10, 10, 1, 1, 1);
 		const matPropeller = new THREE.MeshPhongMaterial({color: Colors.brown, flatShading: true});
 		this.propeller = new THREE.Mesh(geomPropeller, matPropeller);
 		this.propeller.castShadow = true;
 		this.propeller.receiveShadow = true;
 
-		//blades
+		// blades
 		const geomBlade = new THREE.BoxGeometry(1, 80, 10, 1, 1, 1);
 		const matBlade = new THREE.MeshPhongMaterial({color: Colors.brownDark, flatShading: true});
 		const blade1 = new THREE.Mesh(geomBlade, matBlade);
@@ -325,7 +325,7 @@ class AirPlane {
 		this.propeller.position.set(55, 0, 0);
 		this.mesh.add(this.propeller);
 
-		//Wheels
+		// Wheels
 		const wheelProtecGeom = new THREE.BoxGeometry(30, 15, 10, 1, 1, 1);
 		const wheelProtecMat = new THREE.MeshPhongMaterial({color: "#a3e240", flatShading: true});
 		const wheelProtecR = new THREE.Mesh(wheelProtecGeom, wheelProtecMat);
@@ -374,8 +374,8 @@ class AirPlane {
 export default class Aviator extends TemplateFor3D {
 	createSea() {
 		this.sea = new Sea();
-		this.sea.mesh.position.y = -600;	//push it a little bit at the botom of th scene
-		this.scene.add(this.sea.mesh); //add the mesh of the sea to the scene
+		this.sea.mesh.position.y = -600;	// push it a little bit at the botom of th scene
+		this.scene.add(this.sea.mesh); // add the mesh of the sea to the scene
 	}
 
 	createPlane() {
@@ -388,15 +388,15 @@ export default class Aviator extends TemplateFor3D {
 
 	createScene() {
 		super.initScene();
-		super.initCamera();		//creating the camera
-		this.scene.fog = new THREE.Fog("#d1be9a", 500, 850); //fog
+		super.initCamera();		// creating the camera
+		this.scene.fog = new THREE.Fog("#d1be9a", 500, 850); // fog
 
-		//seting the position of camera;
+		// seting the position of camera;
 		this.camera.position.x = 0;
 		this.camera.position.z = 200;
 		this.camera.position.y = 100;
 
-		//creating the renderer;
+		// creating the renderer;
 		super.initRenderer({
 			// Allow transparency to show the gradient background
 			// we defined in the CSS
@@ -414,11 +414,11 @@ export default class Aviator extends TemplateFor3D {
 		// A directional light shines from a specific direction.
 		// It acts like the sun, that means that all the rays produced are parallel.
 		this.shadowLight = new THREE.DirectionalLight("#efb59c", .9);
-		//set the directional light
+		// set the directional light
 		this.shadowLight.position.set(150, 350, 350);
-		//Alow shadow casting
+		// Alow shadow casting
 		this.shadowLight.castShadow = true;
-		//define the visible area of the project shadow
+		// define the visible area of the project shadow
 		this.shadowLight.shadow.camera.left = -400;
 		this.shadowLight.shadow.camera.right = 400;
 		this.shadowLight.shadow.camera.top = 400;
@@ -426,8 +426,8 @@ export default class Aviator extends TemplateFor3D {
 		this.shadowLight.shadow.camera.near = 1;
 		this.shadowLight.shadow.camera.far = 1000;
 
-		//define the resolution of the shadow;the higher the better,
-		//but also the more expensive and less performant
+		// define the resolution of the shadow;the higher the better,
+		// but also the more expensive and less performant
 		this.shadowLight.shadow.mapSize.width = 2048;
 		this.shadowLight.shadow.mapSize.height = 2048;
 
@@ -435,7 +435,7 @@ export default class Aviator extends TemplateFor3D {
 		this.ambientLight = new THREE.AmbientLight("#063f69", .5);
 		this.scene.add(this.ambientLight);
 
-		//to activate the light just add to scene
+		// to activate the light just add to scene
 		this.scene.add(this.hemisphereLight);
 		this.scene.add(this.shadowLight);
 	}
@@ -447,26 +447,26 @@ export default class Aviator extends TemplateFor3D {
 	}
 
 	componentDidMount() {
-		this.createScene(); //set up camera and thr render
-		this.createLights(); //add lights
-		this.createPlane();//plane
-		this.createSea(); //sea
-		this.createSky();//thanos portal
+		this.createScene(); // set up camera and thr render
+		this.createLights(); // add lights
+		this.createPlane();// plane
+		this.createSea(); // sea
+		this.createSky();// thanos portal
 		window.addEventListener('resize', this.handleWindowResize.bind(this), false);
 		this.looped = true;
 
-		//add the listener
+		// add the listener
 		this.renderer.domElement.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
-		this.animate();//update the object's
+		this.animate();// update the object's
 
 	}
 
 	handleMouseMove(event) {
-		//here we converting mouse pos val recived
-		//to a normalized value varying between -1 and 1;
-		//this is the formula for the horizontall axis;
+		// here we converting mouse pos val recived
+		// to a normalized value varying between -1 and 1;
+		// this is the formula for the horizontall axis;
 		const x = -1 + (event.clientX / this.WIDTH) * 2;
-		//for the vertical (becouse the 2d y goes the opposite direction of the 3d y)
+		// for the vertical (becouse the 2d y goes the opposite direction of the 3d y)
 		const y = 1 - (event.clientY / this.HEIGHT) * 2;
 		this.mousePos = {x, y};
 	}
@@ -482,7 +482,7 @@ export default class Aviator extends TemplateFor3D {
 		this.airplane.mesh.rotation.z = (targetY - this.airplane.mesh.position.y) * 0.0128;
 		this.airplane.mesh.rotation.x = (this.airplane.mesh.position.y - targetY) * 0.0064;
 
-		//update the plane position
+		// update the plane position
 		this.airplane.propeller.rotation.x += 0.5;
 //    airplane.mesh.position.y=targetY;
 		this.airplane.mesh.position.x = targetX;
@@ -495,7 +495,9 @@ export default class Aviator extends TemplateFor3D {
 		super.animate();
 		this.sea.mesh.rotation.z += .01;
 		this.sky.mesh.rotation.z += .01;
-		this.mousePos && this.mousePos.x && this.updatePlane();
+		if (this.mousePos?.x) {
+			this.updatePlane();
+		}
 		this.airplane.pilot.updateHairs();
 		this.sea.moveWaves();
 	}
@@ -503,7 +505,7 @@ export default class Aviator extends TemplateFor3D {
 	render() {
 		return <div>
 			<header/>
-			<div className="canvasDiv airplane" ref="anchor"/>
+			<div className="canvasDiv airplane" ref={ (ref) => {this.canvasDiv = ref}}/>
 		</div>
 	}
 }

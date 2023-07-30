@@ -2,24 +2,22 @@
  * Created by Ellyson on 5/11/2018.
  */
 
-import { Component, ReactNode } from "react";
+import React from "react";
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-
-export default class TemplateFor3D extends Component<any, any> {
+export default class TemplateFor3D extends React.Component<any, any> {
   private static deleteScene(scene: THREE.Scene | undefined) {
     scene?.traverse((mesh: THREE.Object3D | THREE.Mesh | undefined) => {
       if (mesh instanceof THREE.Mesh) {
         mesh.geometry.dispose();
         if (mesh.material instanceof THREE.Material) {
-          mesh.material && mesh.material.dispose && mesh.material.dispose();
+          mesh.material.dispose && mesh.material.dispose();
         } else if (Array.isArray(mesh.material)) {
           const { length } = mesh.material;
           let i = -1;
           while (++i < length) {
-            mesh.material[i] &&
-              mesh.material[i].dispose &&
+              mesh.material[i]?.dispose &&
               mesh.material[i].dispose();
           }
         }
@@ -30,9 +28,7 @@ export default class TemplateFor3D extends Component<any, any> {
     scene = undefined;
   }
 
-  state: {
-    checked: boolean;
-  };
+  state: { checked: boolean };
 
   protected time: number;
 
@@ -63,6 +59,8 @@ export default class TemplateFor3D extends Component<any, any> {
   private rayCaster: THREE.Raycaster | undefined;
 
   private onKeydown: any;
+
+  protected canvasDiv: HTMLDivElement | null = null;
 
   constructor(props: any) {
     super(props);
@@ -108,7 +106,7 @@ export default class TemplateFor3D extends Component<any, any> {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     // @ts-ignore
-    this.refs?.anchor?.appendChild(this.renderer.domElement);
+    this.canvasDiv.appendChild(this.renderer.domElement);
   }
 
   initCamera(cameraParam: any): void {
@@ -165,7 +163,7 @@ export default class TemplateFor3D extends Component<any, any> {
   }
 
   attachMouseMoveEvent(): void {
-    this.renderer?.domElement.addEventListener(
+    this.renderer?.domElement?.addEventListener(
       "mousemove",
       this.onMouseMove.bind(this)
     );
@@ -176,7 +174,7 @@ export default class TemplateFor3D extends Component<any, any> {
   }
 
   attachMouseClickEvent(): void {
-    this.renderer?.domElement.addEventListener(
+    this.renderer?.domElement?.addEventListener(
       "click",
       this.onClick.bind(this)
     );
@@ -199,11 +197,11 @@ export default class TemplateFor3D extends Component<any, any> {
     this.rayCaster = new THREE.Raycaster();
   }
 
-  render(): ReactNode {
+  render(): React.ReactNode {
     return (
       <div>
         <header />
-        <div ref="anchor" className="canvasDiv" />
+        <div ref={ (ref)=> { this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

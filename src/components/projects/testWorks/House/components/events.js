@@ -16,16 +16,16 @@ export function mouseMove(){
 
 export function addFloor(){
 	this.additinalFloor++;
-	this.floors["House_Middle"].mesh.position.y = FLOOR_POSITION.middle + FLOOR_SIZE.middle * (this.additinalFloor);
-	this.floors["House_Top"].mesh.position.y = FLOOR_SIZE.top + FLOOR_SIZE.middle * (this.additinalFloor + 1);
+	this.floors.House_Middle.mesh.position.y = FLOOR_POSITION.middle + FLOOR_SIZE.middle * (this.additinalFloor);
+	this.floors.House_Top.mesh.position.y = FLOOR_SIZE.top + FLOOR_SIZE.middle * (this.additinalFloor + 1);
 	this.interectiveMeshes[2].position.y = FLOOR_SIZE.middle * (this.additinalFloor) * 0.1;
 	this.saveScreen.positionY = 150 + FLOOR_SIZE.middle * (this.additinalFloor) * 0.1;
 	if (this.additinalFloor === 0){
-		this.floors["House_Top"].mesh.position.y = FLOOR_POSITION.top;
+		this.floors.House_Top.mesh.position.y = FLOOR_POSITION.top;
 		this.interectiveMeshes[2].position.y = FLOOR_POSITION.base;
-		this.floors["House_Middle"].mesh.visible = true;
+		this.floors.House_Middle.mesh.visible = true;
 	} else {
-		const clonedFloor = this.floors["House_Middle"].mesh.clone();
+		const clonedFloor = this.floors.House_Middle.mesh.clone();
 		this.additinalFloorArray[this.additinalFloor - 1] = clonedFloor;
 		clonedFloor.position.y = FLOOR_POSITION.middle + FLOOR_SIZE.middle * (this.additinalFloor -1);
 		this.house.add(clonedFloor);
@@ -35,10 +35,10 @@ export function addFloor(){
 export async function deleteFloor() {
 	this.additinalFloor--;
 	if(this.additinalFloor === -1) {
-		this.floors["House_Middle"].mesh.visible = false;
-		this.floors["House_Top"].mesh.position.y = FLOOR_SIZE.top;
+		this.floors.House_Middle.mesh.visible = false;
+		this.floors.House_Top.mesh.position.y = FLOOR_SIZE.top;
 	} else if (this.additinalFloor > -1) {
-		this.floors["House_Top"].mesh.position.y = FLOOR_SIZE.top + FLOOR_SIZE.middle * (this.additinalFloor + 1);
+		this.floors.House_Top.mesh.position.y = FLOOR_SIZE.top + FLOOR_SIZE.middle * (this.additinalFloor + 1);
 	} else {
 		this.additinalFloor = -1;
 		return;
@@ -47,7 +47,7 @@ export async function deleteFloor() {
 	this.saveScreen.positionY = 150 + FLOOR_SIZE.middle * (this.additinalFloor) * 0.1;
 	const clonedFloor = this.additinalFloorArray[this.additinalFloor + 1] ;
 	await this.house.remove(clonedFloor);
-	this.floors["House_Middle"].mesh.position.y = FLOOR_POSITION.middle + FLOOR_SIZE.middle * (this.additinalFloor);
+	this.floors.House_Middle.mesh.position.y = FLOOR_POSITION.middle + FLOOR_SIZE.middle * (this.additinalFloor);
 	await this.additinalFloorArray.splice(this.additinalFloor + 1, 1);
 }
 
@@ -66,6 +66,20 @@ export async function keydown(e) {
 				break;
 		}
 	}
+}
+
+function removeFromScene(scene, cssScene, object){
+	scene.remove(object.plane);
+	cssScene.remove(object.cssObject);
+	object.cssObject.remove(...object.cssObject.children);
+	object.show = false;
+}
+
+function addToScene(scene, cssScene, object){
+	scene.add(object.plane);
+	cssScene.add(object.cssObject);
+	object.cssObject.add(object.cssObject.userData.child);
+	object.show = true;
 }
 
 export function click(e) {
@@ -96,18 +110,4 @@ export function click(e) {
 				break;
 		}
 	}
-}
-
-function removeFromScene(scene, cssScene, object){
-	scene.remove(object.plane);
-	cssScene.remove(object.cssObject);
-	object.cssObject.remove(...object.cssObject.children);
-	object.show = false;
-}
-
-function addToScene(scene, cssScene, object){
-	scene.add(object.plane);
-	cssScene.add(object.cssObject);
-	object.cssObject.add(object.cssObject.userData.child);
-	object.show = true;
 }

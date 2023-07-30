@@ -7,7 +7,7 @@ import {
   RenderPass,
   ShaderPass,
   FXAAShader,
-} from "../../../../../utils/libs/threejs/three_v0.106.js";
+} from "utils/libs/threejs/three_v0.106";
 // console.log(EffectComposer)
 class Renderer {
   constructor({ debug, mount, scene }) {
@@ -31,7 +31,7 @@ class Renderer {
     this.renderer = new WebGLRenderer();
     this.renderer.setPixelRatio(window.devicePixelRatio || 1);
     this.renderer.setAnimationLoop(this.onAnimationTick.bind(this));
-    this.mount && this.mount.appendChild(this.renderer.domElement);
+    this.mount?.appendChild(this.renderer.domElement);
 
     // Setup composer
     this.composer = new EffectComposer(this.renderer);

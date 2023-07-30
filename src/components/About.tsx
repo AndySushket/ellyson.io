@@ -12,7 +12,6 @@ import {
   Mail,
   Twitter,
 } from "@mui/icons-material";
-// eslint-disable-next-line import/extensions
 import TemplateFor3D from "./templates/mainTemplate3D";
 
 const avatar = require("./MainPage/avatar.jpg");
@@ -192,7 +191,7 @@ export default class Projects extends TemplateFor3D {
     return (
       <div>
         {this.projectsList()}
-        <div ref="anchor" className="canvasDiv" />
+        <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

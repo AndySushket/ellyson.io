@@ -412,7 +412,7 @@ export default class Main extends TemplateFor3D {
           />
         </Box>
 
-        <div ref="anchor" className="canvasDiv" />
+        <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

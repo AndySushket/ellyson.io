@@ -1,12 +1,12 @@
-import Input from './lib/input.js';
-import Renderer from './lib/renderer.js';
-import { Color, FogExp2, Scene } from '../../../../../utils/libs/threejs/three_v0.106.js';
-import Dome from './meshes/dome.js';
-import Ground from './meshes/ground.js';
-import Grid from './meshes/grid.js';
-import Hut from './meshes/hut.js';
-import Pillars from './meshes/pillars.js';
-import Portal from './meshes/portal.js';
+import Input from './lib/input';
+import Renderer from './lib/renderer';
+import { Color, FogExp2, Scene } from 'utils/libs/threejs/three_v0.106';
+import Dome from './meshes/dome';
+import Ground from './meshes/ground';
+import Grid from './meshes/grid';
+import Hut from './meshes/hut';
+import Pillars from './meshes/pillars';
+import Portal from './meshes/portal';
 
 // Create scenes
 const exterior = new Scene();

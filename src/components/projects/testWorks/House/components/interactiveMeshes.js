@@ -4,7 +4,7 @@
 
 import * as THREE from 'three';
 
-export function getInterectiveMeshes(){
+export default function getInterectiveMeshes(){
 	const blueMesh = new THREE.Mesh(new THREE.BoxGeometry(79.6, 75.0, 41.0).translate(-15.0, -2.0, 14.5),
 		new THREE.MeshBasicMaterial({color: new THREE.Color("blue"),transparent: true, opacity: 0}));
 	blueMesh.name = "blue";

@@ -4,7 +4,7 @@ import {
   MeshBasicMaterial,
   PlaneGeometry,
   Vector3,
-} from "utils/libs/threejs/three_v0.106.js";
+} from "utils/libs/threejs/three_v0.106";
 
 class Ground extends Mesh {
   static setupGeometry() {
@@ -22,11 +22,11 @@ class Ground extends Mesh {
       if (i % 2 === 1) {
         const p = geometry.faces[i - 1];
         const v = [face.a, face.b, face.c, p.a, p.b, p.c].map(
-          (v) => geometry.vertices[v]
+          (vert) => geometry.vertices[vert]
         );
-        const height = v.reduce((avg, v) => avg + v.y, 0) / v.length;
-        v.forEach((v) => {
-          v.y = height;
+        const height = v.reduce((avg, vert) => avg + vert.y, 0) / v.length;
+        v.forEach((vert) => {
+          vert.y = height;
         });
         const factor = Math.min(height / 40 + 0.25, 1);
         face.color.setRGB(factor * 0.5, factor, factor * 0.75);

@@ -4,12 +4,12 @@
 
 import * as THREE from "three";
 import TemplateFor3D from "components/templates/mainTemplate3D";
-import frag_titan from "./Shaders/titan.frag";
-import vert_titan from "./Shaders/titan.vert";
-import frag_derbis from "./Shaders/ring.frag";
-import vertex_derbis from "./Shaders/ring.vert";
-import frag_saturn from "./Shaders/saturn.frag";
-import vertex_saturn from "./Shaders/saturn.vert";
+import fragTitan from "./Shaders/titan.frag";
+import vertTitan from "./Shaders/titan.vert";
+import fragDerbis from "./Shaders/ring.frag";
+import vertexDerbis from "./Shaders/ring.vert";
+import fragSaturn from "./Shaders/saturn.frag";
+import vertexSaturn from "./Shaders/saturn.vert";
 
 const saturn = require("assets/img/Galaxy/saturn.jpg");
 const titano = require("assets/img/Galaxy/titano2.jpg");
@@ -46,8 +46,8 @@ export default class Galaxy extends TemplateFor3D {
         saturnTexture: { type: "t", value: textureLoader.load(saturn) },
         time: { value: 1.0 },
       },
-      vertexShader: vertex_saturn,
-      fragmentShader: frag_saturn,
+      vertexShader: vertexSaturn,
+      fragmentShader: fragSaturn,
     });
     this.saturn = new THREE.Mesh(
       new THREE.SphereGeometry(100, 64, 64),
@@ -63,8 +63,8 @@ export default class Galaxy extends TemplateFor3D {
         textureNormal: { type: "t", value: textureLoader.load(titano2) },
         time: { value: 1.0 },
       },
-      vertexShader: vert_titan,
-      fragmentShader: frag_titan,
+      vertexShader: vertTitan,
+      fragmentShader: fragTitan,
     });
     this.titano = new THREE.Mesh(
       new THREE.SphereGeometry(20, 64, 64),
@@ -81,8 +81,8 @@ export default class Galaxy extends TemplateFor3D {
         stretch: { value: new THREE.Vector3(290, 40, 180) },
         shadowType: { value: shadowType },
       },
-      vertexShader: vertex_derbis,
-      fragmentShader: frag_derbis,
+      vertexShader: vertexDerbis,
+      fragmentShader: fragDerbis,
     });
 
     const internalRingMaterial = new THREE.ShaderMaterial({
@@ -91,8 +91,8 @@ export default class Galaxy extends TemplateFor3D {
         stretch: { value: new THREE.Vector3(190, 30, 135) },
         shadowType: { value: 1.0 },
       },
-      vertexShader: vertex_derbis,
-      fragmentShader: frag_derbis,
+      vertexShader: vertexDerbis,
+      fragmentShader: fragDerbis,
     });
 
     const thetas = new Float32Array(n);
@@ -100,9 +100,7 @@ export default class Galaxy extends TemplateFor3D {
     const delayZ = new Float32Array(n);
 
     for (let i = 0; i < n; i++) {
-      const theta = Math.random() * 2 * Math.PI;
-
-      thetas[i] = theta;
+      thetas[i] = Math.random() * 2 * Math.PI;
       delayX[i] = (Math.random() - 0.5) * 80;
       delayZ[i] = (Math.random() - 0.5) * 30;
     }

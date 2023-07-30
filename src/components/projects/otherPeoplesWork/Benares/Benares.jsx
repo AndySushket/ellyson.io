@@ -3,8 +3,8 @@
  */
 
 import React from "react";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import TemplateFor3D from "components/templates/mainTemplate3D";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as THREE from "utils/libs/threejs/three_v0.120";
 import fragmentShader from "./Shaders/shader.frag";
 import vertexShader from "./Shaders/shader.vert";
@@ -32,13 +32,13 @@ export default class Benares extends TemplateFor3D {
     this.raycaster = new THREE.Raycaster();
   }
 
-  onDocumentMouseDown(event) {
-    const mouse = new THREE.Vector2();
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    // this.raycaster.setFromCamera(mouse, this.camera.clone());
-    // if(this.state.checked) this.intersects = this.raycaster.intersectObject(this.planeMesh);
-  }
+  // onDocumentMouseDown(event) {
+  //   const mouse = new THREE.Vector2();
+  //   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  //   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  //   // this.raycaster.setFromCamera(mouse, this.camera.clone());
+  //   // if(this.state.checked) this.intersects = this.raycaster.intersectObject(this.planeMesh);
+  // }
 
   initScene() {
     super.initScene();
@@ -54,7 +54,7 @@ export default class Benares extends TemplateFor3D {
   handleWindowResize() {
     this.HEIGHT = window.innerHeight;
     this.WIDTH = window.innerWidth;
-    this.renderer && this.renderer.setSize(this.WIDTH, this.HEIGHT);
+    this.renderer?.setSize(this.WIDTH, this.HEIGHT);
     this.camera.aspect = this.WIDTH / this.HEIGHT;
     this.camera.updateProjectionMatrix();
   }
@@ -72,13 +72,6 @@ export default class Benares extends TemplateFor3D {
     // #region Resources
     const manager = new THREE.LoadingManager();
     const startButton = document.getElementById("startButton");
-    manager.onProgress = function (url, itemsLoaded, itemsTotal) {
-      startButton.innerText = `${Math.round(itemsLoaded / itemsTotal) * 100} %`;
-    };
-    manager.onLoad = function () {
-      startButton.innerText = "Play";
-      startButton.addEventListener("click", startPlayback);
-    };
 
     let dataTexture = null;
     let analyser;
@@ -307,6 +300,15 @@ export default class Benares extends TemplateFor3D {
     sceneFront.add(mainSphere);
     // #endregion
 
+    function onWindowResize() {
+      cameraFront.aspect = innerWidth / innerHeight;
+      cameraFront.updateProjectionMatrix();
+
+      backUniforms.screenRatio.value = innerWidth / innerHeight;
+
+      renderer.setSize(innerWidth, innerHeight);
+    }
+
     window.addEventListener("resize", onWindowResize, false);
 
     const clock = new THREE.Clock();
@@ -332,15 +334,14 @@ export default class Benares extends TemplateFor3D {
       renderer.render(sceneBack, cameraBack);
       renderer.clearDepth();
       renderer.render(sceneFront, cameraFront);
-    }
 
-    function onWindowResize() {
-      cameraFront.aspect = innerWidth / innerHeight;
-      cameraFront.updateProjectionMatrix();
-
-      backUniforms.screenRatio.value = innerWidth / innerHeight;
-
-      renderer.setSize(innerWidth, innerHeight);
+      manager.onProgress = (url, itemsLoaded, itemsTotal) => {
+        startButton.innerText = `${Math.round(itemsLoaded / itemsTotal) * 100} %`;
+      };
+      manager.onLoad = () => {
+        startButton.innerText = "Play";
+        startButton.addEventListener("click", startPlayback);
+      };
     }
 
     function startPlayback() {
@@ -399,7 +400,7 @@ export default class Benares extends TemplateFor3D {
 
         <div id="overlay">
           <div>
-            <button id="startButton">0 %</button>
+            <button id="startButton" type="button">0 %</button>
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
-import React from "react";
 import House from "./House";
 
-const TestWork = ({ children }: any): JSX.Element => <>{children}</>;
+function TestWork({ children }: any): JSX.Element {
+  return children;
+}
 TestWork.House = House;
 
 export default TestWork;

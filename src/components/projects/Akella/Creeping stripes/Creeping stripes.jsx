@@ -2,8 +2,8 @@
  * Created by Ellyson on 5/11/2018.
  */
 
-import TemplateFor3D from '../../../templates/mainTemplate3D';
 import * as THREE from 'three';
+import TemplateFor3D from 'components/templates/mainTemplate3D';
 import vertexShader from './vertexShader.vert';
 import fragmentShader from './fragmentShader.frag';
 

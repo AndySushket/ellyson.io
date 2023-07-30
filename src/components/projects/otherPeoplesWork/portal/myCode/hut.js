@@ -6,7 +6,7 @@ import {
   MeshBasicMaterial,
   PlaneGeometry,
   Vector2,
-} from "../../../../../utils/libs/threejs/three_v0.106.js";
+} from "utils/libs/threejs/three_v0.106";
 
 class Hut extends Mesh {
   static setupGeometry() {

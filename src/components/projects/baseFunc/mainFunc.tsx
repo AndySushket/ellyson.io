@@ -1,9 +1,10 @@
-import React from "react";
 import PositionRotationScale from "./PositionRotationScale/PositionRotationScale";
 import Quaternion from "./QuaternionFunc/QuaternionFunc";
 import Matrix from "./MatrixFunc/Matrix";
 
-const MainFunc = ({ children }: any): JSX.Element => <>{children}</>;
+function MainFunc({ children }: any): JSX.Element {
+  return children;
+}
 MainFunc.PositionRotationScale = PositionRotationScale;
 MainFunc.Quaternion = Quaternion;
 MainFunc.Matrix = Matrix;

@@ -2,8 +2,8 @@
  * Created by Ellyson on 5/11/2018.
  */
 
-import TemplateFor3D from '../../../templates/mainTemplate3D';
 import * as THREE from 'three';
+import TemplateFor3D from 'components/templates/mainTemplate3D';
 import fragmentShader from './shader.frag';
 import vertexShader from './shader.vert';
 
@@ -15,7 +15,7 @@ export default class Shader4 extends TemplateFor3D {
 
 	initShader() {
 		const geometry = new THREE.SphereGeometry(4, 30, 30);
-		let array = [];
+		const array = [];
 
 		for (let v = 0; v < geometry.attributes.position.array.length / 3; v++) {
 			array.push(Math.random() * 3);
@@ -28,8 +28,8 @@ export default class Shader4 extends TemplateFor3D {
 					value: 0
 				}
 			},
-			vertexShader: vertexShader,
-			fragmentShader: fragmentShader,
+			vertexShader,
+			fragmentShader,
 		});
 
 		this.sphere = new THREE.Mesh(geometry, customMaterial);

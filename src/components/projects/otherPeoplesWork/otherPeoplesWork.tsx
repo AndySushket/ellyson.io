@@ -1,8 +1,9 @@
-import React from "react";
 import Portal from "./portal/myCode/Portal";
 import Benares from "./Benares/Benares";
 
-const OtherPeoplesWork = ({ children }: any): JSX.Element => <>{children}</>;
+function OtherPeoplesWork({ children }: any): JSX.Element {
+  return children;
+}
 OtherPeoplesWork.Portal = Portal;
 OtherPeoplesWork.Benares = Benares;
 

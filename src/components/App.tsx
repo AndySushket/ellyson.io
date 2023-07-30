@@ -2,7 +2,6 @@ import React from 'react';
 import '../styles/App.scss';
 import 'react-bootstrap';
 import {BrowserRouter} from "react-router-dom";
-// import {StylesProvider} from '@mui/material';
 import { ThemeProvider } from "@mui/material/styles";
 import {createTheme} from "@mui/material";
 import Header from "./Header";
@@ -23,7 +22,7 @@ class App extends React.Component<{}, {}> {
                         </BrowserRouter>
                     </ThemeProvider>
                 </div>
-    );
+        );
     }
 }
 

@@ -7,7 +7,7 @@ import {
 	ShaderPass,
 	Vector3,
 	WebGLRenderer,
-} from '../../../../../../utils/libs/threejs/three_v0.106.js';
+} from 'utils/libs/threejs/three_v0.106';
 
 class Renderer {
 	constructor({
@@ -63,7 +63,6 @@ class Renderer {
 			debug,
 			fps,
 			portalCamera,
-			portals,
 			renderer,
 			renderPass,
 		} = this;

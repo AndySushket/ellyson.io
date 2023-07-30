@@ -2,8 +2,8 @@
  * Created by Ellyson on 5/11/2018.
  */
 
-import TemplateFor3D from '../../../../templates/mainTemplate3D';
 import * as THREE from 'three';
+import TemplateFor3D from 'components/templates/mainTemplate3D';
 
 export default class Shader1 extends TemplateFor3D {
 	initControls() {

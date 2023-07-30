@@ -4,7 +4,7 @@
 
 import React from "react";
 import * as THREE from "three";
-import { InterleavedBufferAttribute } from "three";
+import {InterleavedBufferAttribute} from "three";
 import TemplateFor3D from "components/templates/mainTemplate3D";
 // @ts-ignore
 import vertexShader from "./portal.vert";
@@ -162,7 +162,7 @@ export default class thanosPortal extends TemplateFor3D {
             </div>
           </div>
         </header>
-        <div ref="anchor" className="canvasDiv" />
+        <div ref={(ref) => {this.canvasDiv = ref}} className="canvasDiv" />
       </div>
     );
   }

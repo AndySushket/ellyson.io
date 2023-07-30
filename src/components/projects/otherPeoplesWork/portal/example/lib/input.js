@@ -1,4 +1,4 @@
-import { Vector3 } from '../../../../../../utils/libs/threejs/three_v0.106.js';
+import { Vector3 } from 'utils/libs/threejs/three_v0.106';
 
 class Input {
 	constructor({
@@ -98,7 +98,7 @@ class Input {
 		const { isLocked } = this;
 		if (!isLocked) {
 			document.body.requestPointerLock();
-			return;
+			
 		}
 	}
 
@@ -129,6 +129,8 @@ class Input {
 			case 68: // D
 				keyboard.rightwards = true;
 				break;
+			default:
+				break;
 		}
 	}
 
@@ -146,6 +148,8 @@ class Input {
 				break;
 			case 68: // D
 				keyboard.rightwards = false;
+				break;
+			default:
 				break;
 		}
 	}

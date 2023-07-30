@@ -55,7 +55,7 @@ export default class Planet extends TemplateFor3D {
   }
 
   initSkyBox() {
-    const skyGeometry = new THREE.BoxGeometry(10000, 10000, 10000);
+    // const skyGeometry = new THREE.BoxGeometry(10000, 10000, 10000);
     const imageURLs = [];
 
     imageURLs.push(xpos);

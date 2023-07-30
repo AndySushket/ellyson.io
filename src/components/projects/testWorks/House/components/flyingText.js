@@ -5,18 +5,18 @@
 import * as THREE from "three";
 import {CSS3DObject} from "three/examples/jsm/renderers/CSS3DRenderer";
 
-export default class flyingText {
+export default class FlyingText {
 	constructor(w, h, position, rotation, type, main3D){
 		this.randomoffset = Math.random() * Math.PI;
 		this.positionY = position.y;
 		this.main3D = main3D;
 		const dom = this.getDom(w, h, type);
-		this.plane = flyingText.createPlane(
+		this.plane = FlyingText.createPlane(
 			w, h,
 			position,
 			rotation);
 
-		this.cssObject = flyingText.createCssObject(
+		this.cssObject = FlyingText.createCssObject(
 			w, h,
 			position,
 			rotation, dom, type);
@@ -57,7 +57,7 @@ export default class flyingText {
 				return mainDiv;
 			}
 			default:
-				break;
+				return document.createElement('div');
 		}
 	}
 
@@ -95,19 +95,22 @@ export default class flyingText {
 		const CANVAS = document.createElement("canvas");
 		CANVAS.width = this.main3D.WIDTH;
 		CANVAS.height = this.main3D.HEIGHT;
-		this.main3D.linkObject.plane.visible = this.main3D.saveScreen.plane.visible = false;
+		this.main3D.saveScreen.plane.visible = false;
+		this.main3D.linkObject.plane.visible = false;
 		const renderer = new THREE.WebGLRenderer({canvas: CANVAS, preserveDrawingBuffer: true});
 		renderer.render(this.main3D.scene, this.main3D.camera);
 		const link = document.createElement("a");
 		link.setAttribute('download', 'megaScreenShot.png');
 		link.setAttribute('href', CANVAS.toDataURL("image/png").replace("image/png", "image/octet-stream"));
 		link.click();
-		this.main3D.linkObject.plane.visible = this.main3D.saveScreen.plane.visible = true;
+		this.main3D.saveScreen.plane.visible = true;
+		this.main3D.linkObject.plane.visible = true;
 	}
 
 	animate(time){
 		if(this.show){
-			this.plane.position.y = this.cssObject.position.y = this.positionY + Math.sin(time / 30 + this.randomoffset) * 4.0;
+			this.plane.position.y = this.positionY + Math.sin(time / 30 + this.randomoffset) * 4.0;
+			this.cssObject.position.y = this.positionY + Math.sin(time / 30 + this.randomoffset) * 4.0;
 		}
 	}
 }

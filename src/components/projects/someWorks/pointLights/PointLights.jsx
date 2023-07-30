@@ -2,11 +2,12 @@
  * Created by Ellyson on 5/11/2018.
  */
 
-import TemplateFor3D from '../../../templates/mainTemplate3D';
 import * as THREE from 'three';
+import TemplateFor3D from 'components/templates/mainTemplate3D';
 import vertexShader from "./shaders/vertexShader.vert";
 import fragmentShader from "./shaders/fragmentShader.frag";
-const spark = require("../../../../assets/img/spark1.png");
+
+const spark = require("assets/img/spark1.png");
 
 const particles = 100000;
 
@@ -22,9 +23,9 @@ export default class PointLights extends TemplateFor3D {
 			texture: {value: new THREE.TextureLoader().load(spark)}
 		};
 		const shaderMaterial = new THREE.ShaderMaterial({
-			uniforms: uniforms,
-			vertexShader: vertexShader,
-			fragmentShader: fragmentShader,
+			uniforms,
+			vertexShader,
+			fragmentShader,
 			blending: THREE.AdditiveBlending,
 			depthTest: false,
 			transparent: true,
@@ -57,7 +58,7 @@ export default class PointLights extends TemplateFor3D {
 	animate() {
 		if (!this.looped) return;
 		const time = Date.now() * 0.005;
-		let sizes = this.geometry.attributes.size.array;
+		const sizes = this.geometry.attributes.size.array;
 		for (let i = 0; i < particles; i++ ) {
 			sizes[i] = 10 * (1 + Math.sin(0.1 * i + time));
 		}

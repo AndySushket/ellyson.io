@@ -7,8 +7,10 @@ export default class Light {
 		this.spotLight.position.set(1.1, 25, -22);
 		this.pointLight.position.set(9, 12, -22);
 		this.spotLight.target.position.set(32.5, 0, -22);
-		this.spotLight.castShadow = this.pointLight.castShadow = true;
-		this.spotLight.color = this.pointLight.color = currentColor.color;
+		this.pointLight.castShadow = true;
+		this.spotLight.castShadow = true;
+		this.spotLight.color = currentColor.color;
+		this.pointLight.color = currentColor.color;
 		this.spotLight.target.updateMatrixWorld();
 	}
 }
