@@ -4,11 +4,17 @@
 
 import * as THREE from "three";
 import TemplateFor3D from "components/templates/mainTemplate3D";
+// @ts-ignore
 import fragTitan from "./Shaders/titan.frag";
+// @ts-ignore
 import vertTitan from "./Shaders/titan.vert";
+// @ts-ignore
 import fragDerbis from "./Shaders/ring.frag";
+// @ts-ignore
 import vertexDerbis from "./Shaders/ring.vert";
+// @ts-ignore
 import fragSaturn from "./Shaders/saturn.frag";
+// @ts-ignore
 import vertexSaturn from "./Shaders/saturn.vert";
 
 const saturn = require("assets/img/Galaxy/saturn.jpg");
@@ -29,9 +35,22 @@ const speed = 0.002;
 const n = 500000;
 
 export default class Galaxy extends TemplateFor3D {
-  initCamera() {
-    super.initCamera();
-    this.camera.position.set(-285, 15, -115);
+  
+  saturn: THREE.Mesh | undefined;
+
+    titano: THREE.Mesh | undefined;
+
+    externalRing: THREE.Points | undefined;
+
+    internalRing: THREE.Points | undefined;
+
+    scene: THREE.Scene | undefined;
+
+    camera: THREE.PerspectiveCamera | undefined;
+    
+  initCamera(cameraParam: any): void {
+    super.initCamera(cameraParam);
+    this.camera?.position.set(-285, 15, -115);
   }
 
   initControls() {
@@ -40,9 +59,10 @@ export default class Galaxy extends TemplateFor3D {
     this.controls.update();
   }
 
-  initSaturn() {
+  initSaturn(): void {
     const saturnMaterial = new THREE.ShaderMaterial({
       uniforms: {
+        // @ts-ignore
         saturnTexture: { type: "t", value: textureLoader.load(saturn) },
         time: { value: 1.0 },
       },
@@ -53,13 +73,15 @@ export default class Galaxy extends TemplateFor3D {
       new THREE.SphereGeometry(100, 64, 64),
       saturnMaterial
     );
-    this.scene.add(this.saturn);
+    this.scene?.add(this.saturn);
   }
 
-  initTitano() {
+  initTitano(): void {
     const titanoMaterial = new THREE.ShaderMaterial({
       uniforms: {
+        // @ts-ignore
         titanTexture: { type: "t", value: textureLoader.load(titano) },
+        // @ts-ignore
         textureNormal: { type: "t", value: textureLoader.load(titano2) },
         time: { value: 1.0 },
       },
@@ -70,10 +92,10 @@ export default class Galaxy extends TemplateFor3D {
       new THREE.SphereGeometry(20, 64, 64),
       titanoMaterial
     );
-    this.scene.add(this.titano);
+    this.scene?.add(this.titano);
   }
 
-  initRings() {
+  initRings(): void {
     const internalRingGeometry = new THREE.BufferGeometry();
     const externalRingMaterial = new THREE.ShaderMaterial({
       uniforms: {
@@ -122,41 +144,45 @@ export default class Galaxy extends TemplateFor3D {
       internalRingGeometry.clone(),
       internalRingMaterial
     );
-    this.scene.add(this.internalRing);
-    this.scene.add(this.externalRing);
+    this.scene?.add(this.internalRing);
+    this.scene?.add(this.externalRing);
   }
 
-  Saturn() {
+  Saturn(): void {
     this.initSaturn();
     this.initTitano();
     this.initRings();
     this.initSkyBox();
   }
 
-  initSkyBox() {
+  initSkyBox(): void {
     const imageURLs = [lf, rt, dn, up, bk, ft];
     const textureCube = new THREE.CubeTextureLoader().load(imageURLs);
     textureCube.mapping = THREE.CubeRefractionMapping;
-    this.scene.background = textureCube;
+    if (this.scene) {
+        this.scene.background = textureCube;
+    }
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.init3D();
     this.Saturn();
     this.initControls();
     this.animate();
   }
 
-  animate() {
+  animate(): void {
     if (!this.looped) return;
     super.animate();
-    this.saturn.rotation.y -= speed;
-    this.saturn.material.uniforms.time.value += 0.3 * speed;
-    this.titano.material.uniforms.time.value += 0.8 * speed;
-    this.titano.geometry.rotateY(0.01);
-    this.internalRing.material.uniforms.time.value += 0.55 * speed;
-    this.externalRing.material.uniforms.time.value += 0.55 * speed;
-    this.internalRing.material.uniforms.shadowType.value = shadowType;
-    this.externalRing.material.uniforms.shadowType.value = shadowType;
+    if (this.saturn && this.titano && this.internalRing && this.externalRing) {
+      this.saturn.rotation.y -= speed;
+      (this.saturn.material as THREE.ShaderMaterial).uniforms.time.value += 0.3 * speed;
+      (this.titano.material as THREE.ShaderMaterial).uniforms.time.value += 0.8 * speed;
+      this.titano.geometry.rotateY(0.01);
+      (this.internalRing.material as THREE.ShaderMaterial).uniforms.time.value += 0.55 * speed;
+      (this.externalRing.material as THREE.ShaderMaterial).uniforms.time.value += 0.55 * speed;
+      (this.internalRing.material as THREE.ShaderMaterial).uniforms.shadowType.value = shadowType;
+      (this.externalRing.material as THREE.ShaderMaterial).uniforms.shadowType.value = shadowType;
+    }
   }
 }

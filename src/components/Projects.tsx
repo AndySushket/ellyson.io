@@ -58,10 +58,13 @@ export default class Projects extends TemplateFor3D {
             <Row>
               <div>
                 <Button>
-                  <Link to="/Codevember/Galaxy">Galaxy</Link>
+                  <Link to="/Space/Galaxy">Galaxy</Link>
                 </Button>
                 <Button>
-                  <Link to="/Codevember/Planet">Planet</Link>
+                  <Link to="/Space/Earth">Earth</Link>
+                </Button>
+                <Button>
+                  <Link to="/Space/Planet">Planet</Link>
                 </Button>
               </div>
             </Row>

@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 export default function Header() {
    return <div className="header">
        <div className="leftHeader">
-           Andrii Sushket
+           Andy Sushket
        </div>
        <div className="rightHeader">
            <div>

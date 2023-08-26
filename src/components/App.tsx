@@ -10,9 +10,7 @@ import Routing from './Routing';
 const theme = createTheme({
 });
 
-class App extends React.Component<{}, {}> {
-
-    render(): React.ReactNode {
+export default function App() {
         return (
                 <div className="App">
                     <ThemeProvider theme={theme}>
@@ -23,7 +21,4 @@ class App extends React.Component<{}, {}> {
                     </ThemeProvider>
                 </div>
         );
-    }
-}
-
-export default App;
+    };

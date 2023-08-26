@@ -131,8 +131,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
   }
 
   init3D(
-    param: THREE.WebGLRendererParameters | undefined,
-    cameraParam: any
+    param?: THREE.WebGLRendererParameters | undefined,
+    cameraParam?: any
   ): void {
     this.initRenderer(param);
     this.initScene();

@@ -1,7 +1,7 @@
 import React from "react";
 import {Route, Routes} from "react-router-dom";
 
-import Codevember from "./projects/codevember/Codevember";
+import Space from "./projects/space";
 import Shaders from "./projects/shaders/Shaders";
 import MusicVisualization from "./projects/musicVisualisation/musicVisual";
 import SomeWorks from "./projects/someWorks/Works";
@@ -20,9 +20,10 @@ export default function Routing() {
     return (<Routes>
                 <Route path="/">
                     <Route index element={<Main/>}/>
-                    <Route path="Codevember">
-                        <Route index element={<Codevember.Galaxy/>}/>
-                        <Route path="Galaxy" element={<Codevember.Galaxy/>}/>
+                    <Route path="Space">
+                        <Route index element={<Space.Galaxy/>}/>
+                        <Route path="Index" element={<Space.Galaxy/>}/>
+                        <Route path="Earth" element={<Space.Earth/>}/>
                         <Route path="Planet" element={<SomeWorks.Planet/>}/>
                     </Route>
 

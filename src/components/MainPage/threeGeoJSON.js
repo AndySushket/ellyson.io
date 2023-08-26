@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {Line2} from 'three/examples/jsm/lines/Line2';
 import { LineMaterial } from 'three/addons/lines/LineMaterial';
 import { LineGeometry } from 'three/addons/lines/LineGeometry';
-import map2 from "./textures/earth/displaceMap.png";
+import map2 from "src/components/projects/space/Earth/textures/earth/displaceMap.png";
 
 import geoLineVert from "./Shaders/geoLineVert.vert"
 import geoLineFrag from './Shaders/geoLineFrag.frag';
