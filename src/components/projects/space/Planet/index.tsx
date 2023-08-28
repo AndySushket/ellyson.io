@@ -4,8 +4,6 @@
 
 import * as THREE from "three";
 import TemplateFor3D from "components/templates/mainTemplate3D";
-import vertexShader from "./shaders/vertexShader.vert";
-import fragmentShader from "./shaders/fragmentShader.frag";
 
 import xpos from "assets/img/skyBox/planet/nebula-xpos.png";
 import xneg from "assets/img/skyBox/planet/nebula-xneg.png";
@@ -14,9 +12,12 @@ import yneg from "assets/img/skyBox/planet/nebula-yneg.png";
 import zpos from "assets/img/skyBox/planet/nebula-zpos.png";
 import zneg from "assets/img/skyBox/planet/nebula-zneg.png";
 import planet from "assets/img/map/planet.png";
+import fragmentShader from "./shaders/fragmentShader.frag";
+import vertexShader from "./shaders/vertexShader.vert";
 
 export default class Planet extends TemplateFor3D {
   planet: THREE.Mesh | undefined;
+
   initScene(): void  {
     super.initScene();
     if (!this.scene) return;
