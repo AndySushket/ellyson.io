@@ -8,12 +8,14 @@ import fragmentShader from './shader.frag';
 import vertexShader from './shader.vert';
 
 export default class Shader1 extends TemplateFor3D {
-	initControls() {
+
+	sphere: THREE.Mesh | undefined;
+	initControls(): void {
 		super.initControls();
-		this.camera.position.set(0, 0, 10);
+		this.camera?.position.set(0, 0, 10);
 	}
 
-	initShader() {
+	initShader(): void {
 		const geometry = new THREE.SphereGeometry(4, 30, 30);
 		const customMaterial = new THREE.ShaderMaterial({
 			uniforms: {},
@@ -21,17 +23,17 @@ export default class Shader1 extends TemplateFor3D {
 			fragmentShader,
 		});
 		this.sphere = new THREE.Mesh(geometry, customMaterial);
-		this.scene.add(this.sphere);
+		this.scene?.add(this.sphere);
 	}
 
-	componentDidMount() {
+	componentDidMount(): void {
 		this.init3D();
 		this.initShader();
 		this.initControls();
 		this.animate();
 	}
 
-	animate() {
+	animate(): void {
 		if (!this.looped) return;
 		super.animate();
 	}

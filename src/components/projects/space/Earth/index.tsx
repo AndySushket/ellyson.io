@@ -10,32 +10,27 @@ import {
 } from "@mui/material";
 
 import TemplateFor3D from "components/templates/mainTemplate3D";
-// @ts-ignore
 import vert from "./Shaders/vert.vert";
-// @ts-ignore
 import waterVert from "./Shaders/water.vert";
-// @ts-ignore
 import atmosphereVert from "./Shaders/atmosphereVert.vert";
-// @ts-ignore
 import frag from "./Shaders/frag.frag";
-// @ts-ignore
 import waterFrag from "./Shaders/water.frag";
-// @ts-ignore
 import atmosphereFrag from "./Shaders/atmosphereFrag.frag";
 
 // const OrbitControls = require('./components/controls')(THREE);
-const dn = require("./textures/skybox/space_10dn.png");
-const up = require("./textures/skybox/space_10up.png");
-const lf = require("./textures/skybox/space_10lf.png");
-const rt = require("./textures/skybox/space_10rt.png");
-const ft = require("./textures/skybox/space_10ft.png");
-const bk = require("./textures/skybox/space_10bk.png");
 
-const earthMap = require("./textures/earth/earthMap.webp");
-const displaceMap = require("./textures/earth/displaceMap.webp");
-const nightEarthMap = require("./textures/earth/nightEarthMap.webp");
-const map4 = require("./textures/earth/waternormals.webp");
-const earthCloudMap = require("./textures/earth/earthCloudsMap.webp");
+import dn from "./textures/skybox/space_10dn.png";
+import up from "./textures/skybox/space_10up.png";
+import lf from "./textures/skybox/space_10lf.png";
+import rt from "./textures/skybox/space_10rt.png";
+import ft from "./textures/skybox/space_10ft.png";
+import bk from "./textures/skybox/space_10bk.png";
+
+import earthMap from "./textures/earth/earthMap.webp";
+import displaceMap from "./textures/earth/displaceMap.webp";
+import nightEarthMap from "./textures/earth/nightEarthMap.webp";
+import map4 from "./textures/earth/waternormals.webp";
+import earthCloudMap from "./textures/earth/earthCloudsMap.webp";
 
 export default class Main extends TemplateFor3D {
   static EarthRadiusKM: number = 6371;

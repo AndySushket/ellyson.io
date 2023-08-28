@@ -22,9 +22,9 @@ export default function Routing() {
                     <Route index element={<Main/>}/>
                     <Route path="Space">
                         <Route index element={<Space.Galaxy/>}/>
-                        <Route path="Index" element={<Space.Galaxy/>}/>
+                        <Route path="Galaxy" element={<Space.Galaxy/>}/>
                         <Route path="Earth" element={<Space.Earth/>}/>
-                        <Route path="Planet" element={<SomeWorks.Planet/>}/>
+                        <Route path="Planet" element={<Space.Planet/>}/>
                     </Route>
 
                     <Route path="Shaders">
@@ -42,8 +42,7 @@ export default function Routing() {
                     </Route>
 
                     <Route path="SomeWorks">
-                        <Route index element={<SomeWorks.Planet/>}/>
-                        <Route path="Planet" element={<SomeWorks.Planet/>}/>
+                        <Route index element={<SomeWorks.Aviator/>}/>
                         <Route path="Aviator" element={<SomeWorks.Aviator/>}/>
                         <Route path="PointLights" element={<SomeWorks.PointLights/>}/>
                     </Route>

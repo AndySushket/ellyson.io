@@ -99,9 +99,6 @@ export default class Projects extends TemplateFor3D {
             <Row>
               <div>
                 <Button>
-                  <Link to="/SomeWorks/Planet">Planet</Link>
-                </Button>
-                <Button>
                   <Link to="/SomeWorks/Aviator">Aviator</Link>
                 </Button>
                 <Button>

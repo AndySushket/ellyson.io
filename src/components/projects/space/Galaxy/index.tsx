@@ -4,29 +4,24 @@
 
 import * as THREE from "three";
 import TemplateFor3D from "components/templates/mainTemplate3D";
-// @ts-ignore
-import fragTitan from "./Shaders/titan.frag";
-// @ts-ignore
-import vertTitan from "./Shaders/titan.vert";
-// @ts-ignore
-import fragDerbis from "./Shaders/ring.frag";
-// @ts-ignore
-import vertexDerbis from "./Shaders/ring.vert";
-// @ts-ignore
-import fragSaturn from "./Shaders/saturn.frag";
-// @ts-ignore
+
+
+import saturn from "assets/img/Galaxy/saturn.jpg";
+import titano from "assets/img/Galaxy/titano2.jpg";
+import titano2 from "assets/img/Galaxy/moon.jpg";
+
+import dn from "assets/img/skyBox/galaxy/dn.png";
+import up from "assets/img/skyBox/galaxy/up.png";
+import lf from "assets/img/skyBox/galaxy/lf.png";
+import rt from "assets/img/skyBox/galaxy/rt.png";
+import ft from "assets/img/skyBox/galaxy/ft.png";
+import bk from "assets/img/skyBox/galaxy/bk.png";
 import vertexSaturn from "./Shaders/saturn.vert";
-
-const saturn = require("assets/img/Galaxy/saturn.jpg");
-const titano = require("assets/img/Galaxy/titano2.jpg");
-const titano2 = require("assets/img/Galaxy/moon.jpg");
-
-const dn = require(`assets/img/skyBox/galaxy/dn.png`);
-const up = require(`assets/img/skyBox/galaxy/up.png`);
-const lf = require(`assets/img/skyBox/galaxy/lf.png`);
-const rt = require(`assets/img/skyBox/galaxy/rt.png`);
-const ft = require(`assets/img/skyBox/galaxy/ft.png`);
-const bk = require(`assets/img/skyBox/galaxy/bk.png`);
+import fragSaturn from "./Shaders/saturn.frag";
+import vertexDerbis from "./Shaders/ring.vert";
+import fragDerbis from "./Shaders/ring.frag";
+import vertTitan from "./Shaders/titan.vert";
+import fragTitan from "./Shaders/titan.frag";
 
 const textureLoader = new THREE.TextureLoader();
 
