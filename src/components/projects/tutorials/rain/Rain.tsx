@@ -76,6 +76,10 @@ export default class Rain extends TemplateFor3D {
 
   componentDidMount() {
     this.init3D(undefined, {});
+    // point light fix
+    if (this.renderer) {
+      this.renderer.useLegacyLights = true;
+    }
     this.initLight();
     this.initControls();
     this.initRain();
