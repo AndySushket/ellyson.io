@@ -6,8 +6,6 @@ import React from "react";
 import * as THREE from "three";
 import {InterleavedBufferAttribute} from "three";
 import TemplateFor3D from "components/templates/mainTemplate3D";
-// @ts-ignore
-import vertexShader from "./portal.vert";
 
 const smoke = require(`assets/img/smoke.png`);
 
@@ -33,6 +31,8 @@ export default class thanosPortal extends TemplateFor3D {
 
   private uniforms: any;
 
+  private clonedDirectionalLight: THREE.DirectionalLight | undefined;
+
   initControls() {
     super.initControls();
     this.camera?.position.set(0, 0, 1300);
@@ -40,6 +40,12 @@ export default class thanosPortal extends TemplateFor3D {
 
   componentDidMount() {
     this.init3D(undefined, {});
+
+    // point light fix
+    if (this.renderer) {
+      this.renderer.useLegacyLights = true;
+    }
+
     this.initControls();
     this.initPortal();
     this.initPointLight();
@@ -49,9 +55,11 @@ export default class thanosPortal extends TemplateFor3D {
   initPointLight() {
     this.portalLight = new THREE.PointLight(0x062d89, 30, 600, 1.7);
     this.portalLight.position.set(0, 0, 300);
-    this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.1);
+    this.clonedDirectionalLight = this.directionalLight.clone();
     this.directionalLight.position.set(0, 0, 1);
-    this.scene?.add(this.directionalLight, this.portalLight);
+    this.clonedDirectionalLight.position.set(0, 0, -1);
+    this.scene?.add(this.directionalLight, this.clonedDirectionalLight, this.portalLight);
   }
 
   initPortal() {
@@ -101,7 +109,24 @@ export default class thanosPortal extends TemplateFor3D {
       });
 
       this.shaderMaterial.onBeforeCompile = (shader: { vertexShader: any }) => {
-        shader.vertexShader = vertexShader;
+
+        shader.vertexShader = shader.vertexShader.replace(
+            '#define LAMBERT',
+            [
+                '#define LAMBERT',
+                'attribute vec3 instanceOffset;',
+                'attribute vec4 instanceRotation;'
+            ].join( '\n' )
+        );
+
+        shader.vertexShader = shader.vertexShader.replace(
+            '#include <begin_vertex>',
+            [
+              '#include <begin_vertex>',
+              'transformed = transformed + 2.0 * cross(instanceRotation.xyz, cross(instanceRotation.xyz, transformed) + instanceRotation.w * transformed);',
+              'transformed = transformed + instanceOffset;',
+            ].join( '\n' )
+        );
       };
 
       const portalMesh = new THREE.Mesh(

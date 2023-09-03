@@ -3625,10 +3625,10 @@
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.8.tgz#b94a4391c85666c7b73299fd3ad79d4faa435310"
   integrity sha512-ipixuVrh2OdNmauvtT51o3d8z12p6LtFW9in7U79der/kwejjdNchQC5UMn5u/KxNoM7VHHOs/l8KS8uHxhODQ==
 
-"@types/three@^0.154.0":
-  version "0.154.0"
-  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.154.0.tgz#91f4384930ed050a14d7f13c09d5785cc167a064"
-  integrity sha512-IioqpGhch6FdLDh4zazRn3rXHj6Vn2nVOziJdXVbJFi9CaI65LtP9qqUtpzbsHK2Ezlox8NtsLNHSw3AQzucjA==
+"@types/three@^0.155.1":
+  version "0.155.1"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.155.1.tgz#03e1cc9bf7132f50606254611ff5f68ccd682b05"
+  integrity sha512-uNUwnz/wWRxahjIqTtDYQ1qdE1R1py21obxfuILkT+kKrjocMwRLQQA1l8nMxfQU7VXb7CXu04ucMo8OqZt4ZA==
   dependencies:
     "@tweenjs/tween.js" "~18.6.4"
     "@types/stats.js" "*"
@@ -16494,10 +16494,10 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
-three@^0.154.0:
-  version "0.154.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.154.0.tgz#dbef21e10fe6015ec283acc60d0eb58733991e27"
-  integrity sha512-Uzz8C/5GesJzv8i+Y2prEMYUwodwZySPcNhuJUdsVMH2Yn4Nm8qlbQe6qRN5fOhg55XB0WiLfTPBxVHxpE60ug==
+three@^0.156.0:
+  version "0.156.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.156.0.tgz#1080781b8fbf191cd37b4c8e027bf74c18518bf8"
+  integrity sha512-r6meetGWDk3aYjDRh6NpKuUkzoPlI3yldDQe2SkwCcqTTB5NZn7vKQBUXyMExvlwZShaLmvAbsVWaFzp1rkk3A==
 
 "three_106@npm:three@0.106.2":
   version "0.106.2"
