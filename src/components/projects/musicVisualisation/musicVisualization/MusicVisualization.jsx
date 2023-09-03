@@ -117,7 +117,7 @@ export default class MusicVisualization extends TemplateFor3D {
   async componentDidMount() {
     await this.init3D(undefined, {});
     await this.initObjects();
-    await super.initControls();
+    // await super.initControls();
     await this.camera.position.set(86 / 2, 88 / 3, 84 * 1.2);
     await this.camera.lookAt(new THREE.Vector3(86 / 2, 0, 88 / 2));
     await this.animate();
