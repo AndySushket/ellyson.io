@@ -8,6 +8,12 @@ import TemplateFor3D from "components/templates/mainTemplate3D";
 import model from "./bellydancing.fbx";
 
 export default class Index extends TemplateFor3D {
+
+    constructor(props) {
+        super(props);
+        this.isLoaded = false;
+    }
+
   componentWillUnmount() {
     super.componentWillUnmount();
     this.gui.destroy();
@@ -19,42 +25,46 @@ export default class Index extends TemplateFor3D {
   }
 
   onSelect() {
-    const loader = new FBXLoader();
 
-    loader.load( model,  ( object ) => {
+    if (this.isLoaded) {
+      const loader = new FBXLoader();
 
-      object.scale.setScalar( 0.1 );
+      loader.load(model, (object) => {
 
-      const aabb = new THREE.Box3();
-      aabb.setFromObject( object );
+        object.scale.setScalar(0.1);
 
-      this.camera.position.set(0, 0, aabb.max.z * 2);
-      object.position.set(0, -aabb.max.y, 0);
+        const aabb = new THREE.Box3();
+        aabb.setFromObject(object);
 
-      this.mixer = new THREE.AnimationMixer( object );
+        this.camera.position.set(0, 0, aabb.max.z * 2);
+        object.position.set(0, -aabb.max.y, 0);
 
-      const action = this.mixer.clipAction( object.animations[ 0 ] );
-      action.play();
+        this.mixer = new THREE.AnimationMixer(object);
 
-      object.traverse(  ( child ) => {
+        const action = this.mixer.clipAction(object.animations[0]);
+        action.play();
 
-        if ( child.isMesh ) {
+        object.traverse((child) => {
 
-          child.castShadow = true;
-          child.receiveShadow = true;
+          if (child.isMesh) {
 
-        }
+            child.castShadow = true;
+            child.receiveShadow = true;
 
-      } );
+          }
 
-      this.scene.add( object );
+        });
 
-    } );
+        this.scene.add(object);
 
-    const geometry = new THREE.BoxGeometry(5, 5, 5);
-    const material = new THREE.MeshNormalMaterial();
-    this.cube = new THREE.Mesh(geometry, material);
-    this.scene.add(this.cube);
+      });
+
+      // const geometry = new THREE.BoxGeometry(5, 5, 5);
+      // const material = new THREE.MeshNormalMaterial();
+      // this.cube = new THREE.Mesh(geometry, material);
+      // this.scene.add(this.cube);
+      this.isLoaded = true;
+    }
   }
 
   componentDidMount() {
