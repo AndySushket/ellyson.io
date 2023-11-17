@@ -61,20 +61,11 @@ export default class Index extends TemplateFor3D {
 
       });
 
-      const size = 100000;
-      const divisions = 10;
-
-      const gridHelper = new THREE.GridHelper( size, divisions );
-      this.scene.add( gridHelper );
       this.isLoaded = true;
 
       console.log('loaded',window, this.renderer)
     }
 
-    const geometry = new THREE.BoxGeometry(2, 2, 2);
-    const material = new THREE.MeshNormalMaterial();
-    this.cube = new THREE.Mesh(geometry, material);
-    this.scene.add(this.cube);
     console.log(this.cube)
   }
 
