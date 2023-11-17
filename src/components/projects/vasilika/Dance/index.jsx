@@ -4,6 +4,8 @@
 
 import * as THREE from "three";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import {LinearProgress} from "@mui/material";
+import React from "react";
 import TemplateFor3D from "components/templates/mainTemplate3D";
 import model from "./bellydancing.fbx";
 
@@ -12,6 +14,9 @@ export default class Index extends TemplateFor3D {
     constructor(props) {
         super(props);
         this.isLoaded = false;
+        this.state = {
+            loadProcess: 0
+        };
     }
 
   componentWillUnmount() {
@@ -44,6 +49,10 @@ export default class Index extends TemplateFor3D {
 
         this.scene.add(object);
 
+      }, (xhr) => {
+        this.setState({loadProcess: xhr.loaded / xhr.total * 100});
+      }, (error) => {
+        console.log(error);
       });
 
       this.isLoaded = true;
@@ -58,13 +67,21 @@ export default class Index extends TemplateFor3D {
     this.animate();
   }
 
-  applyMatrix() {
-    this.cube.applyMatrix(this.Index);
-  }
-
   animate() {
     if (!this.looped) return;
     if (this.mixer) this.mixer.update( this.clock.getDelta() * 1.5 );
     super.animate();
+  }
+
+
+  render(): React.ReactNode {
+    const { loadProcess } = this.state;
+    return (
+        <div>
+          <header />
+          {loadProcess < 100 && <LinearProgress variant="determinate" value={loadProcess} />}
+          <div ref={ (ref)=> { this.canvasDiv = ref}} className="canvasDiv" />
+        </div>
+    );
   }
 }
