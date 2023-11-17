@@ -62,10 +62,11 @@ export default class Index extends TemplateFor3D {
   componentDidMount() {
     this.init3D({ antialias: true, alpha: true }, undefined, {ar: true});
     this.initLight();
-    const controller = this.renderer.xr.getController( 0 );
-    controller.addEventListener( 'select', ()=> {
-      alert(this.state.i);
-    });
+    // const controller = this.renderer.xr.getController( 0 );
+    // controller.addEventListener( 'select', ()=> {
+    //   // alert(this.state.i, this.renderer?.domElement.parentNode);
+    //   alert(this.renderer?.domElement.parentElement?.parentElement?.innerHTML);
+    // });
     this.onSelect()
     this.initControls();
     this.animate();
@@ -73,7 +74,7 @@ export default class Index extends TemplateFor3D {
 
   animate() {
     if (!this.looped) return;
-    this.setState({i: this.state.i + 1})
+    // this.setState({i: this.state.i + 1})
     if (this.mixer) this.mixer.update( this.clock.getDelta() * 1.5 );
     super.animate();
   }
