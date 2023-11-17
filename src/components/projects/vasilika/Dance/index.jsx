@@ -16,7 +16,6 @@ export default class Index extends TemplateFor3D {
         this.isLoaded = false;
         this.state = {
             loadProcess: 0,
-            ARMode: false
         };
     }
 
@@ -39,7 +38,7 @@ export default class Index extends TemplateFor3D {
 
       loader.load(model, (object) => {
 
-        object.scale.setScalar(0.0001);
+        object.scale.setScalar(0.000001); //very big model
 
         const aabb = new THREE.Box3();
         aabb.setFromObject(object);
@@ -75,8 +74,19 @@ export default class Index extends TemplateFor3D {
     });
   }
 
-  animate() {
+  animate(timestamp, frame) {
     if (!this.looped) return;
+    if (frame) {
+      const referenceSpace = this.renderer.xr.getReferenceSpace();
+        const pose = frame.getViewerPose(referenceSpace);
+        if (pose) {
+            const view = pose.views[0];
+            const camera = this.camera;
+            camera.position.setFromMatrixPosition(view.transform.matrix);
+            camera.quaternion.setFromRotationMatrix(view.transform.matrix);
+            camera.updateMatrixWorld();
+        }
+    }
     if (this.mixer) this.mixer.update( this.clock.getDelta() * 1.5 );
     this.renderer?.render(this.scene, this.camera);
   }
