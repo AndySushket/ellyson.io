@@ -16,7 +16,7 @@ export default class Index extends TemplateFor3D {
         this.isLoaded = false;
         this.state = {
             loadProcess: 0,
-          i: 0
+            ARMode: false
         };
     }
 
@@ -29,6 +29,10 @@ export default class Index extends TemplateFor3D {
   }
 
   onSelect() {
+
+      // document.addEventListener('touchstart', {handleEvent: (event) => {
+      //     // alert();
+      // }});
 
     if (!this.isLoaded) {
       const loader = new FBXLoader();
@@ -54,7 +58,6 @@ export default class Index extends TemplateFor3D {
       }, (error) => {
         console.log(error);
       });
-
       this.isLoaded = true;
     }
   }
@@ -62,21 +65,20 @@ export default class Index extends TemplateFor3D {
   componentDidMount() {
     this.init3D({ antialias: true, alpha: true }, undefined, {ar: true});
     this.initLight();
-    // const controller = this.renderer.xr.getController( 0 );
-    // controller.addEventListener( 'select', ()=> {
-    //   // alert(this.state.i, this.renderer?.domElement.parentNode);
-    //   alert(this.renderer?.domElement.parentElement?.parentElement?.innerHTML);
-    // });
+    this.buttonAr?.addEventListener( 'click', () => {
+      console.log("AR MODE");
+    });
     this.onSelect()
     this.initControls();
-    this.animate();
+    this.renderer?.setAnimationLoop(() => {
+      this.animate();
+    });
   }
 
   animate() {
     if (!this.looped) return;
-    // this.setState({i: this.state.i + 1})
     if (this.mixer) this.mixer.update( this.clock.getDelta() * 1.5 );
-    super.animate();
+    this.renderer?.render(this.scene, this.camera);
   }
 
 

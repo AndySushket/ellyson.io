@@ -33,6 +33,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
 
   protected time: number;
 
+  private buttonAr: HTMLElement | undefined;
+
   protected looped: boolean;
 
   protected clock: THREE.Clock;
@@ -150,7 +152,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
         if (this.renderer instanceof THREE.WebGLRenderer) {
           this.renderer.xr.enabled = true;
           this.renderer.setClearColor( 0x000000, 0 );
-          this.canvasDiv?.appendChild( ARButton.createButton( this.renderer ));
+          this.buttonAr = ARButton.createButton( this.renderer );
+          this.canvasDiv?.appendChild(this.buttonAr);
         }
       }
     }
