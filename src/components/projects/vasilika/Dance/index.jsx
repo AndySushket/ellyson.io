@@ -60,12 +60,18 @@ export default class Index extends TemplateFor3D {
 
       });
 
-      const geometry = new THREE.BoxGeometry(5, 5, 5);
-      const material = new THREE.MeshNormalMaterial();
-      this.cube = new THREE.Mesh(geometry, material);
-      this.scene.add(this.cube);
+      const size = 100000;
+      const divisions = 10;
+
+      const gridHelper = new THREE.GridHelper( size, divisions );
+      this.scene.add( gridHelper );
       this.isLoaded = true;
     }
+
+    const geometry = new THREE.BoxGeometry(15, 15, 15);
+    const material = new THREE.MeshNormalMaterial();
+    this.cube = new THREE.Mesh(geometry, material);
+    this.scene.add(this.cube);
   }
 
   componentDidMount() {
