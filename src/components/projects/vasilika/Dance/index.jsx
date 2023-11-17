@@ -27,18 +27,19 @@ export default class Index extends TemplateFor3D {
   onSelect() {
 
     if (!this.isLoaded) {
+      console.log('loading')
       const loader = new FBXLoader();
 
       loader.load(model, (object) => {
 
-        object.scale.setScalar(0.01);
+        object.scale.setScalar(0.0001);
 
         const aabb = new THREE.Box3();
         aabb.setFromObject(object);
 
         this.camera.position.set(0, 0, aabb.max.z * 2);
-        object.position.set(0, -aabb.max.y, 0);
-        this.camera.lookAt(object.position);
+        object.position.set(0, -aabb.max.y, -aabb.max.z * 2);
+        // this.camera.lookAt(object.position);
 
         this.mixer = new THREE.AnimationMixer(object);
 
@@ -66,20 +67,21 @@ export default class Index extends TemplateFor3D {
       const gridHelper = new THREE.GridHelper( size, divisions );
       this.scene.add( gridHelper );
       this.isLoaded = true;
+
+      console.log('loaded',window, this.renderer)
     }
 
-    const geometry = new THREE.BoxGeometry(15, 15, 15);
+    const geometry = new THREE.BoxGeometry(2, 2, 2);
     const material = new THREE.MeshNormalMaterial();
     this.cube = new THREE.Mesh(geometry, material);
     this.scene.add(this.cube);
+    console.log(this.cube)
   }
 
   componentDidMount() {
     this.init3D(undefined, undefined, {ar: true});
     this.initLight();
-    const controller = this.renderer.xr.getController( 0 );
-    controller.addEventListener( 'select', () => this.onSelect() );
-    // this.onSelect()
+    this.onSelect()
     this.initControls();
     this.animate();
   }
