@@ -48,7 +48,6 @@ export default class Index extends TemplateFor3D {
         action.play();
 
         this.scene.add(object);
-
       }, (xhr) => {
         this.setState({loadProcess: xhr.loaded / xhr.total * 100});
       }, (error) => {
@@ -62,6 +61,10 @@ export default class Index extends TemplateFor3D {
   componentDidMount() {
     this.init3D({ antialias: true, alpha: true }, undefined, {ar: true});
     this.initLight();
+    const controller = this.renderer.xr.getController( 0 );
+    controller.addEventListener( 'select', ()=> {
+      this.renderer.domElement.style.zIndex = "999999";
+    });
     this.onSelect()
     this.initControls();
     this.animate();
