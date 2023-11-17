@@ -26,18 +26,19 @@ export default class Index extends TemplateFor3D {
 
   onSelect() {
 
-    if (this.isLoaded) {
+    if (!this.isLoaded) {
       const loader = new FBXLoader();
 
       loader.load(model, (object) => {
 
-        object.scale.setScalar(0.1);
+        object.scale.setScalar(0.01);
 
         const aabb = new THREE.Box3();
         aabb.setFromObject(object);
 
         this.camera.position.set(0, 0, aabb.max.z * 2);
         object.position.set(0, -aabb.max.y, 0);
+        this.camera.lookAt(object.position);
 
         this.mixer = new THREE.AnimationMixer(object);
 
@@ -59,10 +60,10 @@ export default class Index extends TemplateFor3D {
 
       });
 
-      // const geometry = new THREE.BoxGeometry(5, 5, 5);
-      // const material = new THREE.MeshNormalMaterial();
-      // this.cube = new THREE.Mesh(geometry, material);
-      // this.scene.add(this.cube);
+      const geometry = new THREE.BoxGeometry(5, 5, 5);
+      const material = new THREE.MeshNormalMaterial();
+      this.cube = new THREE.Mesh(geometry, material);
+      this.scene.add(this.cube);
       this.isLoaded = true;
     }
   }
