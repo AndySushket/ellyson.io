@@ -9,6 +9,7 @@ import OtherPeoplesWork from "./projects/otherPeoplesWork/otherPeoplesWork";
 import Akella from "./projects/Akella/akella";
 import TutorialWorks from "./projects/tutorials/tutorialWorks";
 import MainFunc from "./projects/baseFunc/mainFunc";
+import Vasilika from "./projects/vasilika";
 import TestWork from "./projects/testWorks/testWork";
 import ThreeJsJourney from "./projects/threeJsJourney/threeJsJourney";
 import Main from "./MainPage/Main";
@@ -72,6 +73,11 @@ export default function Routing() {
                         <Route path="PositionRotationScale" element={<MainFunc.PositionRotationScale/>}/>
                         <Route path="Quaternion" element={<MainFunc.Quaternion/>}/>
                         <Route path="Matrix" element={<MainFunc.Matrix/>}/>
+                    </Route>
+
+                    <Route path="vasilika">
+                        <Route index element={<Vasilika.Dance/>}/>
+                        <Route path="Dance" element={<Vasilika.Dance/>}/>
                     </Route>
 
                     <Route path="TestWork">

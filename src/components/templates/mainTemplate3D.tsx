@@ -5,6 +5,7 @@
 import React from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { ARButton } from 'three/examples/jsm/webxr/ARButton';
 
 export default class TemplateFor3D extends React.Component<any, any> {
   private static deleteScene(scene: THREE.Scene | undefined) {
@@ -132,7 +133,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
 
   init3D(
     param?: THREE.WebGLRendererParameters | undefined,
-    cameraParam?: any
+    cameraParam?: any,
+    additionalParam? : any
   ): void {
     this.initRenderer(param);
     this.initScene();
@@ -143,6 +145,14 @@ export default class TemplateFor3D extends React.Component<any, any> {
       false
     );
     this.looped = true;
+    if (additionalParam) {
+      if(additionalParam.ar) {
+        if (this.renderer instanceof THREE.WebGLRenderer) {
+          this.renderer.xr.enabled = true;
+          document.body.appendChild( ARButton.createButton( this.renderer ) );
+        }
+      }
+    }
   }
 
   animate(): void {
