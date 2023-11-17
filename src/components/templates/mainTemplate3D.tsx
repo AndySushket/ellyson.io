@@ -150,7 +150,9 @@ export default class TemplateFor3D extends React.Component<any, any> {
         if (this.renderer instanceof THREE.WebGLRenderer) {
           this.renderer.xr.enabled = true;
           this.renderer.setClearColor( 0x000000, 0 );
-          this.canvasDiv?.appendChild( ARButton.createButton( this.renderer ) );
+          this.canvasDiv?.appendChild( ARButton.createButton( this.renderer, {
+            optionalFeatures: [ 'dom-overlay', 'dom-overlay-for-handheld-ar' ],
+            domOverlay: { root: document.body } } ));
         }
       }
     }

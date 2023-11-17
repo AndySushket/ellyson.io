@@ -63,7 +63,12 @@ export default class Index extends TemplateFor3D {
     this.initLight();
     const controller = this.renderer.xr.getController( 0 );
     controller.addEventListener( 'select', ()=> {
-      this.renderer.domElement.style.zIndex = "999999";
+      // this.renderer.domElement.style.zIndex = "999999";
+      let string = ""
+      for (let i = 1; i < document.body.children.length; i++) {
+        string += document.body.children[i].innerHTML;
+      }
+      alert(string);
     });
     this.onSelect()
     this.initControls();
