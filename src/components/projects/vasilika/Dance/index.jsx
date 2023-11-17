@@ -16,18 +16,15 @@ export default class Index extends TemplateFor3D {
 
   componentWillUnmount() {
     super.componentWillUnmount();
-    this.gui.destroy();
   }
 
   initControls() {
-    super.initControls();
     this.camera.position.set(0, 0, 10);
   }
 
   onSelect() {
 
     if (!this.isLoaded) {
-      console.log('loading')
       const loader = new FBXLoader();
 
       loader.load(model, (object) => {
@@ -38,39 +35,23 @@ export default class Index extends TemplateFor3D {
         aabb.setFromObject(object);
 
         this.camera.position.set(0, 0, aabb.max.z * 2);
-        object.position.set(0, -aabb.max.y, -aabb.max.z * 2);
-        // this.camera.lookAt(object.position);
+        object.position.set(0, -1.5 * aabb.max.y, -aabb.max.z * 2);
 
         this.mixer = new THREE.AnimationMixer(object);
 
         const action = this.mixer.clipAction(object.animations[0]);
         action.play();
 
-        object.traverse((child) => {
-
-          if (child.isMesh) {
-
-            child.castShadow = true;
-            child.receiveShadow = true;
-
-          }
-
-        });
-
         this.scene.add(object);
 
       });
 
       this.isLoaded = true;
-
-      console.log('loaded',window, this.renderer)
     }
-
-    console.log(this.cube)
   }
 
   componentDidMount() {
-    this.init3D(undefined, undefined, {ar: true});
+    this.init3D({ antialias: true, alpha: true }, undefined, {ar: true});
     this.initLight();
     this.onSelect()
     this.initControls();
@@ -83,7 +64,7 @@ export default class Index extends TemplateFor3D {
 
   animate() {
     if (!this.looped) return;
-    if (this.mixer) this.mixer.update( this.clock.getDelta() );
+    if (this.mixer) this.mixer.update( this.clock.getDelta() * 1.5 );
     super.animate();
   }
 }

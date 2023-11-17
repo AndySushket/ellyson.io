@@ -149,7 +149,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
       if(additionalParam.ar) {
         if (this.renderer instanceof THREE.WebGLRenderer) {
           this.renderer.xr.enabled = true;
-          document.body.appendChild( ARButton.createButton( this.renderer ) );
+          this.renderer.setClearColor( 0x000000, 0 );
+          this.canvasDiv?.appendChild( ARButton.createButton( this.renderer ) );
         }
       }
     }
