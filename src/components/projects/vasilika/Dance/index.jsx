@@ -15,7 +15,8 @@ export default class Index extends TemplateFor3D {
         super(props);
         this.isLoaded = false;
         this.state = {
-            loadProcess: 0
+            loadProcess: 0,
+          i: 0
         };
     }
 
@@ -63,11 +64,7 @@ export default class Index extends TemplateFor3D {
     this.initLight();
     const controller = this.renderer.xr.getController( 0 );
     controller.addEventListener( 'select', ()=> {
-      this.renderer.domElement.style.zIndex = "999999999";
-      this.renderer.domElement.style.position = "absolute";
-      let string = ""+ document.body.innerHTML;
-
-      alert(string);
+      alert(this.state.i);
     });
     this.onSelect()
     this.initControls();
@@ -76,6 +73,7 @@ export default class Index extends TemplateFor3D {
 
   animate() {
     if (!this.looped) return;
+    this.setState({i: this.state.i + 1})
     if (this.mixer) this.mixer.update( this.clock.getDelta() * 1.5 );
     super.animate();
   }
