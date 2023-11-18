@@ -8,14 +8,18 @@ import {LinearProgress} from "@mui/material";
 import React from "react";
 import TemplateFor3D from "components/templates/mainTemplate3D";
 import model from "./bellydancing.fbx";
+import model2 from "./model3.fbx";
+import model3 from "./Bellydancing (1).fbx";
 
 export default class Index extends TemplateFor3D {
 
     constructor(props) {
         super(props);
+        this.mixers = [];
         this.isLoaded = false;
         this.state = {
             loadProcess: 0,
+            mixers: []
         };
     }
 
@@ -36,27 +40,32 @@ export default class Index extends TemplateFor3D {
     if (!this.isLoaded) {
       const loader = new FBXLoader();
 
-      loader.load(model, (object) => {
+      [model, model2, model3].forEach((fbx, i) => {
+          loader.load(fbx, (object) => {
 
-        object.scale.setScalar(0.000001); //very big model
+              // object.scale.setScalar(0.000001); // very big model
 
-        const aabb = new THREE.Box3();
-        aabb.setFromObject(object);
+              const aabb = new THREE.Box3();
+              aabb.setFromObject(object);
 
-        this.camera.position.set(0, 0, aabb.max.z * 2);
-        object.position.set(0, -1.5 * aabb.max.y, -aabb.max.z * 2);
+              i == 0 && this.camera.position.set(0, 0, aabb.max.z * 2);
+              object.position.set(i * 3 * aabb.max.x, -1.5 * aabb.max.y, -aabb.max.z * 2);
 
-        this.mixer = new THREE.AnimationMixer(object);
+              const mixer = new THREE.AnimationMixer(object);
 
-        const action = this.mixer.clipAction(object.animations[0]);
-        action.play();
+              this.mixers.push(mixer);
 
-        this.scene.add(object);
-      }, (xhr) => {
-        this.setState({loadProcess: xhr.loaded / xhr.total * 100});
-      }, (error) => {
-        console.log(error);
-      });
+              const action = mixer.clipAction(object.animations[0]);
+              action.play();
+
+              console.log(this.mixers);
+              this.scene.add(object);
+          }, (xhr) => {
+              this.setState({loadProcess: xhr.loaded / xhr.total * 100});
+          }, (error) => {
+              console.log(error, i);
+          });
+      })
       this.isLoaded = true;
     }
   }
@@ -81,13 +90,19 @@ export default class Index extends TemplateFor3D {
         const pose = frame.getViewerPose(referenceSpace);
         if (pose) {
             const view = pose.views[0];
-            const camera = this.camera;
+            const {camera} = this;
             camera.position.setFromMatrixPosition(view.transform.matrix);
             camera.quaternion.setFromRotationMatrix(view.transform.matrix);
             camera.updateMatrixWorld();
         }
     }
-    if (this.mixer) this.mixer.update( this.clock.getDelta() * 1.5 );
+
+    const delta = this.clock.getDelta();
+    // if (this.mixer) this.mixer.update( this.clock.getDelta() * 1.5 );
+      this.mixers.forEach((mixer) => {
+
+          mixer.update(delta);
+      });
     this.renderer?.render(this.scene, this.camera);
   }
 
@@ -96,7 +111,7 @@ export default class Index extends TemplateFor3D {
     const { loadProcess } = this.state;
     return (
         <div>
-          <header />
+          {/* <header /> */}
           {loadProcess < 100 && <LinearProgress variant="determinate" value={loadProcess} />}
           <div ref={ (ref)=> { this.canvasDiv = ref}} className="canvasDiv" />
         </div>
