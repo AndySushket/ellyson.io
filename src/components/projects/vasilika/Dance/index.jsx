@@ -9,11 +9,17 @@ import React from "react";
 import TemplateFor3D from "components/templates/mainTemplate3D";
 import danceModel from "./danceModel.fbx";
 
+let hitTestSource = null;
+let hitTestSourceRequested = false;
+let reticle = null;
+
 export default class Index extends TemplateFor3D {
 
     constructor(props) {
         super(props);
         this.mixers = [];
+        hitTestSourceRequested = false;
+        hitTestSource = null;
         this.isLoaded = false;
         this.state = {
             loadProcess: 0,
@@ -26,7 +32,7 @@ export default class Index extends TemplateFor3D {
   }
 
   initControls() {
-    this.camera.position.set(0, 0, 10);
+    // this.camera.position.set(0, 0, 10);
   }
 
   onSelect() {
@@ -35,7 +41,7 @@ export default class Index extends TemplateFor3D {
       [danceModel].forEach((fbx, i) => {
           loader.load(fbx, (object) => {
 
-              object.scale.setScalar(0.000001); // very big model
+              object.scale.setScalar(0.00001); // very big model
 
               const aabb = new THREE.Box3();
               aabb.setFromObject(object);
@@ -56,35 +62,98 @@ export default class Index extends TemplateFor3D {
               console.log(error);
           });
       })
+
+        this.scene.remove(reticle);
+
+
       this.isLoaded = true;
     }
+  }
+
+  initCircle() {
+      reticle = new THREE.Mesh(
+          new THREE.RingGeometry( 0.15, .2, 32 ).rotateX( - Math.PI / 2 ),
+          new THREE.MeshBasicMaterial({side: THREE.DoubleSide})
+      );
+      this.scene.add( reticle );
+      reticle.matrixAutoUpdate = false;
+      reticle.visible = false;
   }
 
   componentDidMount() {
     this.init3D({ antialias: true, alpha: true }, undefined, {ar: true});
     this.initLight();
-    this.buttonAr?.addEventListener( 'click', () => {
-        //action on touch
-    });
-    this.onSelect()
+    this.initCircle();
+
+    const controller = this.renderer.xr.getController( 0 );
+    controller.addEventListener( 'select', () => this.onSelect());
+    this.scene.add( controller );
     this.initControls();
-    this.renderer?.setAnimationLoop(() => {
-      this.animate();
+    this.renderer?.setAnimationLoop((time, frame) => {
+      this.animate(time, frame);
     });
+      this.renderer.xr.addEventListener( 'sessionstart',  ( event ) => {
+          this.scene.add( reticle );
+          reticle.visible = true;
+      } );
+
+      this.renderer.xr.addEventListener( 'sessionend',  ( event ) => {
+          document.body.style.display = '';
+          reticle.visible = false;
+          this.scene.remove( ...this.scene.children );
+      } );
   }
 
   animate(timestamp, frame) {
     if (!this.looped) return;
+
     if (frame) {
-      const referenceSpace = this.renderer.xr.getReferenceSpace();
-        const pose = frame.getViewerPose(referenceSpace);
-        if (pose) {
-            const view = pose.views[0];
-            const {camera} = this;
-            camera.position.setFromMatrixPosition(view.transform.matrix);
-            camera.quaternion.setFromRotationMatrix(view.transform.matrix);
-            camera.updateMatrixWorld();
+
+        const referenceSpace = this.renderer.xr.getReferenceSpace();
+        const session = this.renderer.xr.getSession();
+
+        if ( hitTestSourceRequested === false ) {
+
+            session.requestReferenceSpace( 'viewer' ).then(  ( referenceSpace ) => {
+
+                session.requestHitTestSource( { space: referenceSpace } ).then(  ( source ) => {
+
+                    hitTestSource = source;
+
+                } );
+
+            } );
+
+            session.addEventListener( 'end',  () => {
+
+                hitTestSourceRequested = false;
+                hitTestSource = null;
+
+            } );
+
+            hitTestSourceRequested = true;
+
         }
+
+        if ( hitTestSource ) {
+
+            const hitTestResults = frame.getHitTestResults( hitTestSource );
+
+            if ( hitTestResults.length ) {
+
+                const hit = hitTestResults[ 0 ];
+
+                reticle.visible = true;
+                reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
+
+            } else {
+
+                reticle.visible = false;
+
+            }
+
+        }
+
     }
 
     const delta = this.clock.getDelta();
@@ -93,7 +162,6 @@ export default class Index extends TemplateFor3D {
     });
     this.renderer?.render(this.scene, this.camera);
   }
-
 
   render(): React.ReactNode {
     const { loadProcess } = this.state;

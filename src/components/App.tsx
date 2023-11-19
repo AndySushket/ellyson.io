@@ -11,11 +11,13 @@ const theme = createTheme({
 });
 
 export default function App() {
+    const url = window.location.href;
+    const hasVasilika = url.includes('vasilika');
         return (
                 <div className="App">
                     <ThemeProvider theme={theme}>
                         <BrowserRouter>
-                            <Header/>
+                            {!hasVasilika && <Header/>}
                             <Routing/>
                         </BrowserRouter>
                     </ThemeProvider>
