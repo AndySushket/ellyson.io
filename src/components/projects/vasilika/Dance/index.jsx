@@ -4,7 +4,7 @@
 
 import * as THREE from "three";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
-import {LinearProgress} from "@mui/material";
+import {CircularProgress} from "@mui/material";
 import React from "react";
 import TemplateFor3D from "components/templates/mainTemplate3D";
 import danceModel from "./danceModel.fbx";
@@ -167,7 +167,7 @@ export default class Index extends TemplateFor3D {
     const { loadProcess } = this.state;
     return (
         <div>
-          {loadProcess < 100 && <LinearProgress variant="determinate" value={loadProcess} />}
+          {loadProcess > 0 && loadProcess < 100 && <CircularProgress style={{position: 'absolute', top: "50%" , left: "50%",  transform: "translate(-50%, -50%)"}} variant="determinate" value={loadProcess} />}
           <div ref={ (ref)=> { this.canvasDiv = ref}} className="canvasDiv" />
         </div>
     );
