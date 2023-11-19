@@ -20,7 +20,8 @@ import About from "./About";
 export default function Routing() {
     return (<Routes>
                 <Route path="/">
-                    <Route index element={<Main/>}/>
+                    {/*<Route index element={<Main/>}/>*/}
+                    <Route path="helloWorld" element={<Main/>}/>
                     <Route path="Space">
                         <Route index element={<Space.Galaxy/>}/>
                         <Route path="Galaxy" element={<Space.Galaxy/>}/>

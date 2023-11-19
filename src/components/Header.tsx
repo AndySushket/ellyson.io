@@ -10,7 +10,7 @@ export default function Header() {
        <div className="rightHeader">
            <div>
                <Button color="primary">
-                   <Link to="/">Home</Link>
+                   <Link to="/helloWorld">Home</Link>
                </Button>
            </div>
            /
