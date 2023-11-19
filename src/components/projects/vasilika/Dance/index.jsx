@@ -41,7 +41,7 @@ export default class Index extends TemplateFor3D {
       [danceModel].forEach((fbx, i) => {
           loader.load(fbx, (object) => {
 
-              object.scale.setScalar(0.00001); // very big model
+
 
               const aabb = new THREE.Box3();
               aabb.setFromObject(object);
@@ -55,6 +55,10 @@ export default class Index extends TemplateFor3D {
 
               const action = mixer.clipAction(object.animations[0]);
               action.play();
+              const position = new THREE.Vector3();
+              position.setFromMatrixPosition( reticle.matrix );
+              object.position.set(position.x, position.y, position.z);
+              object.scale.setScalar(0.000003);
               this.scene.add(object);
           }, (xhr) => {
               this.setState({loadProcess: xhr.loaded / xhr.total * 100});
@@ -80,7 +84,13 @@ export default class Index extends TemplateFor3D {
       reticle.visible = false;
   }
 
-  componentDidMount() {
+  initLight() {
+      this.light = new THREE.DirectionalLight(0xffffff, 1);
+      this.ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+      this.scene?.add(this.light, this.ambientLight);
+  }
+
+    componentDidMount() {
     this.init3D({ antialias: true, alpha: true }, undefined, {ar: true});
     this.initLight();
     this.initCircle();
