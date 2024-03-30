@@ -47,7 +47,7 @@
     "smooth-scrollbar": "^8.8.4",
     "smooth-scrollbar-react": "^2.4.1",
     "store": "^2.0.12",
-    "three": "^0.158.0",
+    "three": "^0.163.0",
     "three_106": "npm:three@0.106.2",
     "three_120": "npm:three@0.120.0",
     "typescript": "^5.1.6",
