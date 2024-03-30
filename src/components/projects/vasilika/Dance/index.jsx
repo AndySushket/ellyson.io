@@ -104,7 +104,7 @@ export default class Index extends TemplateFor3D {
       this.animate(time, frame);
     });
       this.renderer.xr.addEventListener( 'sessionstart',  ( event ) => {
-          console.log("=======sessionstart", event?.target, event?.target?.getCamera())
+          this.handleWindowResize();
           this.scene.add( reticle );
           reticle.visible = true;
       } );
@@ -120,6 +120,14 @@ export default class Index extends TemplateFor3D {
     if (!this.looped) return;
 
     if (frame) {
+
+        // if ( xr.enabled === true && xr.isPresenting === true ) {
+        //
+        //     if ( xr.cameraAutoUpdate === true ) xr.updateCamera( this.camera );
+        //
+        //     this.camera = xr.getCamera(); // use XR camera for rendering
+        //
+        // }
 
         const referenceSpace = this.renderer.xr.getReferenceSpace();
         const session = this.renderer.xr.getSession();
