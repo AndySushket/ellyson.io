@@ -5,7 +5,7 @@
 import React from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { ARButton } from 'three/examples/jsm/webxr/ARButton';
+import { ARButton } from './ARButton';
 
 export default class TemplateFor3D extends React.Component<any, any> {
   private static deleteScene(scene: THREE.Scene | undefined) {

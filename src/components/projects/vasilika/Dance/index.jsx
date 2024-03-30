@@ -98,11 +98,13 @@ export default class Index extends TemplateFor3D {
     const controller = this.renderer.xr.getController( 0 );
     controller.addEventListener( 'select', () => this.onSelect());
     this.scene.add( controller );
+        console.log("=======", controller)
     this.initControls();
     this.renderer?.setAnimationLoop((time, frame) => {
       this.animate(time, frame);
     });
       this.renderer.xr.addEventListener( 'sessionstart',  ( event ) => {
+          console.log("=======sessionstart", event?.target, event?.target?.getCamera())
           this.scene.add( reticle );
           reticle.visible = true;
       } );
