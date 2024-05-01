@@ -10,25 +10,25 @@ export default function Header() {
        <div className="rightHeader">
            <div>
                <Button color="primary">
-                   <Link to="/helloWorld">Home</Link>
+                   <Link to="/main">Home</Link>
                </Button>
            </div>
            /
            <div>
                <Button color="primary">
-                   <Link to="/Gallery">Gallery</Link>
+                   <Link to="/gallery">Gallery</Link>
                </Button>
            </div>
+           {/*/*/}
+           {/*<div>*/}
+           {/*    <Button color="primary">*/}
+           {/*        <Link to="/Music">Music</Link>*/}
+           {/*    </Button>*/}
+           {/*</div>*/}
            /
            <div>
                <Button color="primary">
-                   <Link to="/Music">Music</Link>
-               </Button>
-           </div>
-           /
-           <div>
-               <Button color="primary">
-                   <Link to="/About">About</Link>
+                   <Link to="/about">About</Link>
                </Button>
            </div>
        </div>

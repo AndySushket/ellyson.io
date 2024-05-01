@@ -39,7 +39,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
 
   protected clock: THREE.Clock;
 
-  private mouse: THREE.Vector2;
+  protected mouse: THREE.Vector2 = new THREE.Vector2();
 
   private resolution: THREE.Vector2;
 

@@ -15,13 +15,23 @@ import ThreeJsJourney from "./projects/threeJsJourney/threeJsJourney";
 import Main from "./MainPage/Main";
 import Projects from "./Projects";
 import Music from "./Music";
-import About from "./About";
+import About from "./pages/About";
 
 export default function Routing() {
     return (<Routes>
                 <Route path="/">
                     {/*<Route index element={<Main/>}/>*/}
-                    <Route path="helloWorld" element={<Main/>}/>
+                    {/*<Route path="main" element={*/}
+                    {/*    <div className="main">*/}
+                            {/*<Background3DScene>*/}
+                            {/*    <Routes>*/}
+                                    <Route path="main" element={<Main/>}/>
+                                    <Route path="gallery" element={<Projects/>}/>
+                                    <Route path="about" element={<About/>}/>
+                                {/*</Routes>*/}
+                            {/*</Background3DScene>*/}
+                        {/*</div>*/}
+                    {/*}/>*/}
                     <Route path="Space">
                         <Route index element={<Space.Galaxy/>}/>
                         <Route path="Galaxy" element={<Space.Galaxy/>}/>
@@ -91,9 +101,6 @@ export default function Routing() {
                         <Route path="Texture" element={<ThreeJsJourney.Texture/>}/>
                     </Route>
                 </Route>
-                <Route path="gallery" element={<Projects/>}/>
-                <Route path="music" element={<Music/>}/>
-                <Route path="about" element={<About/>}/>
             </Routes>
     )
 }
