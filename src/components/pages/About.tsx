@@ -2,7 +2,6 @@
  * Created by Ellyson on 15/09/2022.
  */
 
-import * as THREE from "three";
 import React from "react";
 import {
   Container,
@@ -19,39 +18,13 @@ import {
   Twitter,
   ContactPage,
 } from "@mui/icons-material";
-import TemplateFor3D from "../templates/mainTemplate3D";
 import "./AboutStyles.scss";
 import {Col, Row} from "react-bootstrap";
 
 const avatar = require("../MainPage/avatar.jpg");
 const pdf = require("assets/Andrii_Sushket_CV.pdf");
 
-class About extends TemplateFor3D {
-  private sphere: THREE.Mesh | undefined;
-
-  initControls(): void {
-    super.initControls();
-    this.camera?.position.set(0, 0, 10);
-  }
-
-  initShader(): void {
-    const geometry = new THREE.SphereGeometry(4, 30, 30);
-    const customMaterial = new THREE.ShaderMaterial();
-    this.sphere = new THREE.Mesh(geometry, customMaterial);
-    this.scene?.add(this.sphere);
-  }
-
-  componentDidMount(): void {
-    this.init3D(undefined, {});
-    this.initShader();
-    this.initControls();
-    this.animate();
-  }
-
-  animate(): void {
-    if (!this.looped) return;
-    super.animate();
-  }
+class About extends React.Component<any, any>{
 
   skillList(): React.ReactNode {
     const list = [
@@ -95,7 +68,7 @@ class About extends TemplateFor3D {
   projectsList(): React.ReactNode {
     return (
       <Container className="about-page" maxWidth="lg">
-        <div className="about-container">
+        <Row className="about-container">
           <Col item xs={4}>
             <Avatar alt="Hi" src={avatar} sx={{ width: 300, height: 300 }} />
             <div>
@@ -213,23 +186,14 @@ class About extends TemplateFor3D {
               </div>
             </Row>
           </Col>
-        </div>
+        </Row>
       </Container>
     );
   }
 
   render(): React.ReactNode {
-    return (
-        <div>
-          {this.projectsList()}
-          <div
-              ref={(ref) => {
-                this.canvasDiv = ref;
-              }}
-              className="canvasDiv"
-          />
-        </div>
-    );
+    console.log("render?")
+    return this.projectsList();
   }
 }
 

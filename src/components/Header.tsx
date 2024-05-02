@@ -16,19 +16,7 @@ export default function Header() {
            /
            <div>
                <Button color="primary">
-                   <Link to="/gallery">Gallery</Link>
-               </Button>
-           </div>
-           {/*/*/}
-           {/*<div>*/}
-           {/*    <Button color="primary">*/}
-           {/*        <Link to="/Music">Music</Link>*/}
-           {/*    </Button>*/}
-           {/*</div>*/}
-           /
-           <div>
-               <Button color="primary">
-                   <Link to="/about">About</Link>
+                   <Link to="/main/projects">Projects</Link>
                </Button>
            </div>
        </div>

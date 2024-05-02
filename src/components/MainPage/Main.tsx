@@ -5,7 +5,7 @@
 import * as THREE from "three";
 import React from "react";
 import TemplateFor3D from "components/templates/mainTemplate3D";
-
+import { Outlet } from 'react-router-dom';
 // import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 // import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 // import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
@@ -120,7 +120,8 @@ export default class Projects extends TemplateFor3D {
   render(): React.ReactNode {
     return (
         <div>
-          <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv" />
+          <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv main-canvasDiv" />
+          <Outlet />
         </div>
     );
   }
