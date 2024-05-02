@@ -17,25 +17,11 @@ import Projects from "./Projects";
 import Music from "./Music";
 import About from "./pages/About";
 
-function RoutesWithCommonComponent(e: any) {
-    console.log(e)
-    return (
-        <>
-            <Main />
-            <Routes>
-                <Route  path="main" element={<About />} />
-                <Route path="gallery" element={<Projects />} />
-            </Routes>
-        </>
-    );
-}
-
 export default function Routing() {
-    const paths = ['main', 'gallery'];
   return (
     <Routes>
       <Route path="/">
-        <Route path="/main" element={<Main />} >
+        <Route path="/main" element={<Main />}>
           <Route index element={<About />} />
           <Route path="projects" element={<Projects />} />
         </Route>

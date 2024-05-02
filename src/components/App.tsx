@@ -14,13 +14,13 @@ export default function App() {
     const url = window.location.pathname;
     const hideHeader = url.includes('vasilika') || url === '/';
         return (
-                <div className="App">
-                    <ThemeProvider theme={theme}>
-                        <BrowserRouter>
-                            {hideHeader || <Header/>}
-                            <Routing/>
-                        </BrowserRouter>
-                    </ThemeProvider>
-                </div>
+          <div className="App">
+            <ThemeProvider theme={theme}>
+              <BrowserRouter>
+                {hideHeader || <Header />}
+                <Routing />
+              </BrowserRouter>
+            </ThemeProvider>
+          </div>
         );
     };

@@ -3,13 +3,7 @@
  */
 
 import React from "react";
-import {
-  Container,
-  IconButton,
-  styled,
-  Avatar,
-  Paper,
-} from "@mui/material";
+import { Container, IconButton, styled, Avatar, Paper } from "@mui/material";
 import {
   Facebook,
   Instagram,
@@ -19,19 +13,18 @@ import {
   ContactPage,
 } from "@mui/icons-material";
 import "./AboutStyles.scss";
-import {Col, Row} from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
-const avatar = require("../MainPage/avatar.jpg");
 const pdf = require("assets/Andrii_Sushket_CV.pdf");
+const avatar = require("../MainPage/avatar.jpg");
 
-class About extends React.Component<any, any>{
-
+class About extends React.Component<any, any> {
   skillList(): React.ReactNode {
     const list = [
       "JavaScript",
       "TypeScript",
       "Three.js",
-        "GLSL",
+      "GLSL",
       "React",
       "Redux",
       "Saga",
@@ -53,13 +46,9 @@ class About extends React.Component<any, any>{
       "Blender",
     ];
     return (
-      <Row className='skill-list'>
+      <Row className="skill-list">
         {list.map((el) => (
-          <span
-              className="list-item"
-          >
-            {el}
-          </span>
+          <span className="list-item">{el}</span>
         ))}
       </Row>
     );
@@ -93,10 +82,7 @@ class About extends React.Component<any, any>{
               >
                 <LinkedIn />
               </IconButton>
-              <IconButton
-                href={pdf}
-                target="_blank"
-              >
+              <IconButton href={pdf} target="_blank">
                 <ContactPage />
               </IconButton>
               <div className="contact-item">
@@ -134,55 +120,95 @@ class About extends React.Component<any, any>{
             <Row className="experience">
               <h3>Experience</h3>
               <div>
-                <p><span><span className="underline">Senior Frontend Developer</span> | Svitla Systems Inc. - Remote</span>	 <span>10/2021 - Current</span></p>
-                <p className="stack">Stack: JavaScript, Three.js, React, Redux, Saga, Node.js, Webpack, SASS, MongoDB, WebSocket, Jest.</p>
-                <p className="jobDescription">Developed a new rendering engine using Three.js, resulting in a tenfold increase in performance.
-                Implemented synchronization between 3D objects and Google Maps tiles, ensuring interaction.
-                Built-in support for quadtrees to optimize interactive operations such as intersection and selection.
-                Optimized processes at the shader level to improve rendering performance.</p>
+                <p>
+                  <span>
+                    <span className="underline">Senior Frontend Developer</span>{" "}
+                    | Svitla Systems Inc. - Remote
+                  </span>{" "}
+                  <span>10/2021 - Current</span>
+                </p>
+                <p className="stack">
+                  Stack: JavaScript, Three.js, React, Redux, Saga, Node.js,
+                  Webpack, SASS, MongoDB, WebSocket, Jest.
+                </p>
+                <p className="jobDescription">
+                  Developed a new rendering engine using Three.js, resulting in
+                  a tenfold increase in performance. Implemented synchronization
+                  between 3D objects and Google Maps tiles, ensuring
+                  interaction. Built-in support for quadtrees to optimize
+                  interactive operations such as intersection and selection.
+                  Optimized processes at the shader level to improve rendering
+                  performance.
+                </p>
               </div>
               <div className="separator" />
               <div>
-                <p><span><span className="underline">Frontend 3D Developer</span> | Logivations - Remote/Office, Ukraine</span> <span>10/2017 - 10/2021</span></p>
-                <p className="stack">Stack: JavaScript, TypeScript, Three.js, React, Redux, Reflux, Backbone, LESS, Socket.io, Webpack.</p>
-                <p className="jobDescription">Developed real-time visualizations, collaborating with ML for object detection and management.
-                Revamped product packaging visualization, improving functionality and performance.
-                Developed support for importing animated models, ensuring JSON data storage in the database.</p>
-
+                <p>
+                  <span>
+                    <span className="underline">Frontend 3D Developer</span> |
+                    Logivations - Remote/Office, Ukraine
+                  </span>{" "}
+                  <span>10/2017 - 10/2021</span>
+                </p>
+                <p className="stack">
+                  Stack: JavaScript, TypeScript, Three.js, React, Redux, Reflux,
+                  Backbone, LESS, Socket.io, Webpack.
+                </p>
+                <p className="jobDescription">
+                  Developed real-time visualizations, collaborating with ML for
+                  object detection and management. Revamped product packaging
+                  visualization, improving functionality and performance.
+                  Developed support for importing animated models, ensuring JSON
+                  data storage in the database.
+                </p>
               </div>
               <div className="separator" />
               <div>
-                <p><span><span
-                    className="underline">Frontend Developer</span> | ABC Hosting - Remote</span> <span>03/2017 - 10/2017</span></p>
-                <p className="stack">Stack: JavaScript, PHP, jQuery, HTML, and CSS.</p>
-                <p className="jobDescription">Engineered templates for enhanced hosting functionality, optimizing user experience.
-                Contributed to website animations to enrich user engagement and experience.</p>
+                <p>
+                  <span>
+                    <span className="underline">Frontend Developer</span> | ABC
+                    Hosting - Remote
+                  </span>{" "}
+                  <span>03/2017 - 10/2017</span>
+                </p>
+                <p className="stack">
+                  Stack: JavaScript, PHP, jQuery, HTML, and CSS.
+                </p>
+                <p className="jobDescription">
+                  Engineered templates for enhanced hosting functionality,
+                  optimizing user experience. Contributed to website animations
+                  to enrich user engagement and experience.
+                </p>
               </div>
             </Row>
             <Row className="education">
               <h3>Education</h3>
               <div>
                 <p>
-                  <span className="underline">Engineer Specialist: Radio engineering</span>
+                  <span className="underline">
+                    Engineer Specialist: Radio engineering
+                  </span>
                   <span>2009 - 2016</span>
                 </p>
                 <p>Polytechnic University | Lviv/Ukraine</p>
               </div>
               <div>
                 <p>
-                   <span className="underline">HTML\CSS, JavaScript, JavaScript Advanced Courses</span>  <span>2016</span>
+                  <span className="underline">
+                    HTML\CSS, JavaScript, JavaScript Advanced Courses
+                  </span>{" "}
+                  <span>2016</span>
                 </p>
-                <p>
-                  Logos | Lviv/Ukraine
-                </p>
+                <p>Logos | Lviv/Ukraine</p>
               </div>
               <div>
                 <p>
-                  <span className="underline">Three.js, Shaders, Post-processing, Blender, R3F Course</span>  <span> 2023</span>
+                  <span className="underline">
+                    Three.js, Shaders, Post-processing, Blender, R3F Course
+                  </span>{" "}
+                  <span> 2023</span>
                 </p>
-                  <p>
-                    Three.js Journey | Online
-                  </p>
+                <p>Three.js Journey | Online</p>
               </div>
             </Row>
           </Col>
@@ -192,7 +218,6 @@ class About extends React.Component<any, any>{
   }
 
   render(): React.ReactNode {
-    console.log("render?")
     return this.projectsList();
   }
 }
