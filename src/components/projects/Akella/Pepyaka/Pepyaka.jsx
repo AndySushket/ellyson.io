@@ -72,6 +72,7 @@ export default class Pepyka extends TemplateFor3D {
   }
 
   componentDidMount() {
+    super.componentDidMount()
     this.init3D({ antialias: true });
     this.initControls();
     this.addObject();
@@ -79,7 +80,7 @@ export default class Pepyka extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     if (this.sphere) {
       this.time += 0.05;
       this.sphere.material.uniforms.time.value = this.time;

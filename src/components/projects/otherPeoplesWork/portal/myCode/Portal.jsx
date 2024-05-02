@@ -50,6 +50,7 @@ export default class TriangleWallpaper extends TemplateFor3D {
   }
 
   componentDidMount() {
+    super.componentDidMount()
     this.exterior = new THREE.Scene();
     this.interior = new THREE.Scene();
     let renderTarget;
@@ -150,7 +151,7 @@ export default class TriangleWallpaper extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     super.animate();
   }
 

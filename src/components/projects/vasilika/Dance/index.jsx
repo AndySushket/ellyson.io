@@ -91,6 +91,7 @@ export default class Index extends TemplateFor3D {
   }
 
     componentDidMount() {
+    super.componentDidMount();
     this.init3D({ antialias: true, alpha: true }, undefined, {ar: true});
     this.initLight();
     this.initCircle();
@@ -117,7 +118,7 @@ export default class Index extends TemplateFor3D {
   }
 
   animate(timestamp, frame) {
-    if (!this.looped) return;
+      if (!this.looped || !this.state.isTabActive) return;
 
     if (frame) {
 

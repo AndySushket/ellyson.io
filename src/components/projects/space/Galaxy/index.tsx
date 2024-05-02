@@ -160,6 +160,7 @@ export default class Galaxy extends TemplateFor3D {
   }
 
   componentDidMount(): void {
+    super.componentDidMount()
     this.init3D();
     this.Saturn();
     this.initControls();
@@ -167,7 +168,7 @@ export default class Galaxy extends TemplateFor3D {
   }
 
   animate(): void {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     super.animate();
     if (this.saturn && this.titano && this.internalRing && this.externalRing) {
       this.saturn.rotation.y -= speed;

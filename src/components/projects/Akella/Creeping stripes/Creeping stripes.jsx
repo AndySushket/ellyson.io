@@ -64,7 +64,7 @@ export default class CreepingStripes extends TemplateFor3D {
 	}
 
 	componentDidMount() {
-
+		super.componentDidMount()
 		this.init3D({antialias: true });
 		super.initControls();
 		this.addObject();
@@ -72,7 +72,7 @@ export default class CreepingStripes extends TemplateFor3D {
 	}
 
 	animate() {
-		if (!this.looped) return;
+		if (!this.looped || !this.state.isTabActive) return;
 		this.time += 0.01;
 		super.animate();
 		if (this.scene) {

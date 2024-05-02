@@ -125,6 +125,7 @@ export default class House extends TemplateFor3D {
 	}
 
 	async componentDidMount() {
+		super.componentDidMount()
 		this.init3D({alpha: true,antialias: true, preserveDrawingBuffer: true});
 		this.cssRenderer = new CssRenderer(this.renderer, this.canvasDiv);
 		this.initControls(this.cssRenderer.renderer.domElement);
@@ -145,7 +146,7 @@ export default class House extends TemplateFor3D {
 	}
 
 	animate() {
-		if (!this.looped) return;
+		if (!this.looped || !this.state.isTabActive) return;
 		this.controls.update();
 		this.linkObject?.animate(this.time);
 		this.saveScreen?.animate(this.time);

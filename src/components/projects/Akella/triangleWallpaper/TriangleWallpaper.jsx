@@ -136,6 +136,7 @@ export default class TriangleWallpaper extends TemplateFor3D {
   }
 
   componentDidMount() {
+    super.componentDidMount()
     this.init3D();
     this.initControls();
     this.initPlateMesh();
@@ -154,7 +155,7 @@ export default class TriangleWallpaper extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     super.animate();
     if (this.geometry) {
       const  position = this.geometry.getAttribute("position");

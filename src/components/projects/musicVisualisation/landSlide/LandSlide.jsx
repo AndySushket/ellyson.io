@@ -21,6 +21,7 @@ export default class LandSlide extends TemplateFor3D {
     super();
     this.state = {
       checked: false,
+      isTabActive: !document.hidden,
       treks: [trek1, trek2, trek3, trek4],
     };
     this.initObjects();
@@ -103,6 +104,7 @@ export default class LandSlide extends TemplateFor3D {
   }
 
   async componentDidMount() {
+    super.componentDidMount()
     await this.init3D();
 
     await this.camera.position.set(86 / 2, 88 / 3, 84 * 1.2);
@@ -120,7 +122,7 @@ export default class LandSlide extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     super.animate();
     this.analyser?.getByteFrequencyData(this.dataArray); // frequency
     this.analyser?.getByteTimeDomainData(this.timeByteData); // waveform

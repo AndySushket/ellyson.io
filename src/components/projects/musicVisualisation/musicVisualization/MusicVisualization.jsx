@@ -21,6 +21,7 @@ export default class MusicVisualization extends TemplateFor3D {
     super();
     this.state = {
       checked: false,
+      isTabActive: !document.hidden,
       treks: [trek1, trek2, trek3, trek4],
     };
   }
@@ -115,6 +116,7 @@ export default class MusicVisualization extends TemplateFor3D {
   }
 
   async componentDidMount() {
+    super.componentDidMount()
     await this.init3D(undefined, {});
     await this.initObjects();
     // await super.initControls();
@@ -130,7 +132,7 @@ export default class MusicVisualization extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     super.animate();
     this.analyser?.getByteFrequencyData(this.dataArray); // frequency
     this.analyser?.getByteTimeDomainData(this.timeByteData); // waveform

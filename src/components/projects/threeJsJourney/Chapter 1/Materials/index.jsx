@@ -25,6 +25,7 @@ export default class Shader1 extends TemplateFor3D {
 	}
 
 	componentDidMount() {
+		super.componentDidMount()
 		this.init3D();
 		this.initLight();
 		this.initProject();
@@ -35,7 +36,7 @@ export default class Shader1 extends TemplateFor3D {
 	}
 
 	animate() {
-		if (!this.looped) return;
+		if (!this.looped || !this.state.isTabActive) return;
 		super.animate();
 	}
 }

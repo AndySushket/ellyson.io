@@ -37,6 +37,7 @@ export default class Matrix extends TemplateFor3D {
   }
 
   componentDidMount() {
+    super.componentDidMount()
     this.init3D();
     this.initPositionRotationScale();
     this.initControls();
@@ -48,7 +49,7 @@ export default class Matrix extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     super.animate();
   }
 }

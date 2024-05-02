@@ -39,6 +39,7 @@ export default class thanosPortal extends TemplateFor3D {
   }
 
   componentDidMount() {
+    super.componentDidMount();
     this.init3D(undefined, {});
 
     // point light fix
@@ -138,7 +139,7 @@ export default class thanosPortal extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     const delta = this.clock.getDelta();
     if (Math.random() > 0.9 && this.portalLight) {
       this.portalLight.power = 350 + Math.random() * 500;

@@ -18,8 +18,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
           const { length } = mesh.material;
           let i = -1;
           while (++i < length) {
-              mesh.material[i]?.dispose &&
-              mesh.material[i].dispose();
+            mesh.material[i]?.dispose && mesh.material[i].dispose();
           }
         }
       }
@@ -29,7 +28,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
     scene = undefined;
   }
 
-  state: { checked: boolean };
+  state: { checked: boolean; isTabActive: boolean };
 
   protected time: number;
 
@@ -69,6 +68,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
     super(props);
     this.state = {
       checked: false,
+      isTabActive: !document.hidden,
     };
     this.time = 0;
     this.looped = true;
@@ -77,6 +77,16 @@ export default class TemplateFor3D extends React.Component<any, any> {
     this.resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
     this.HEIGHT = window.innerHeight;
     this.WIDTH = window.innerWidth;
+  }
+
+
+  handleVisibilityChange = () => {
+    console.log("handleVisibilityChange", !document.hidden);
+    this.setState({ isTabActive: !document.hidden });
+  };
+
+  componentDidMount() {
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   componentWillUnmount(): void {
@@ -95,6 +105,10 @@ export default class TemplateFor3D extends React.Component<any, any> {
       this.camera = undefined;
     }
     this.looped = false;
+    document.removeEventListener(
+      "visibilitychange",
+        this.handleVisibilityChange,
+    );
   }
 
   initScene(): void {
@@ -117,7 +131,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
       cameraParam?.fov || 75,
       window.innerWidth / window.innerHeight,
       0.1,
-      1000000
+      1000000,
     );
   }
 
@@ -136,7 +150,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
   init3D(
     param?: THREE.WebGLRendererParameters | undefined,
     cameraParam?: any,
-    additionalParam? : any
+    additionalParam?: any,
   ): void {
     this.initRenderer(param);
     this.initScene();
@@ -144,18 +158,18 @@ export default class TemplateFor3D extends React.Component<any, any> {
     window.addEventListener(
       "resize",
       this.handleWindowResize.bind(this),
-      false
+      false,
     );
     this.looped = true;
     if (additionalParam) {
-      if(additionalParam.ar) {
+      if (additionalParam.ar) {
         if (this.renderer instanceof THREE.WebGLRenderer) {
           this.renderer.xr.enabled = true;
-          this.renderer.setClearColor( 0x000000, 0 );
-          const arButton = ARButton.createButton( this.renderer, {
+          this.renderer.setClearColor(0x000000, 0);
+          const arButton = ARButton.createButton(this.renderer, {
             // optionalFeatures: [ 'dom-overlay', 'dom-overlay-for-handheld-ar' ],
             // domOverlay: { root: document.body },
-            requiredFeatures: [ 'hit-test' ]
+            requiredFeatures: ["hit-test"],
           });
           document.body.appendChild(arButton);
         }
@@ -183,7 +197,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
   attachMouseMoveEvent(): void {
     this.renderer?.domElement?.addEventListener(
       "mousemove",
-      this.onMouseMove.bind(this)
+      this.onMouseMove.bind(this),
     );
   }
 
@@ -194,7 +208,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
   attachMouseClickEvent(): void {
     this.renderer?.domElement?.addEventListener(
       "click",
-      this.onClick.bind(this)
+      this.onClick.bind(this),
     );
   }
 
@@ -219,7 +233,12 @@ export default class TemplateFor3D extends React.Component<any, any> {
     return (
       <div>
         <header />
-        <div ref={ (ref)=> { this.canvasDiv = ref}} className="canvasDiv" />
+        <div
+          ref={(ref) => {
+            this.canvasDiv = ref;
+          }}
+          className="canvasDiv"
+        />
       </div>
     );
   }

@@ -49,6 +49,7 @@ export default class Main extends TemplateFor3D {
 
   state: {
     checked: boolean;
+    isTabActive: boolean;
     progress: number;
     buffer: number;
   };
@@ -56,6 +57,7 @@ export default class Main extends TemplateFor3D {
   constructor(props: any) {
     super(props);
     this.state = {
+      isTabActive: !document.hidden,
       checked: false,
       progress: 0,
       buffer: 10,
@@ -102,6 +104,7 @@ export default class Main extends TemplateFor3D {
   }
 
   componentDidMount(): void {
+    super.componentDidMount()
     this.init3D({ antialias: true }, { fov: 35 });
 
     this.initLight();
@@ -348,7 +351,7 @@ export default class Main extends TemplateFor3D {
   }
 
   animate(): void {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     // const move = (this.time / 100) % 1;
     // this.depthMaterial && (this.scene.overrideMaterial = this.depthMaterial);
     // if(this.renderTarget) {

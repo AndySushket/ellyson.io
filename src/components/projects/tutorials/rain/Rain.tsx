@@ -75,6 +75,7 @@ export default class Rain extends TemplateFor3D {
   }
 
   componentDidMount() {
+    super.componentDidMount()
     this.init3D(undefined, {});
     // point light fix
     if (this.renderer) {
@@ -156,7 +157,7 @@ export default class Rain extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     this.cloudParticles.forEach((p) => {
       const { rotation } = p;
       rotation.z -= 0.001;

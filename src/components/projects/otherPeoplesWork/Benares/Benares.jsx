@@ -60,6 +60,7 @@ export default class Benares extends TemplateFor3D {
   }
 
   componentDidMount() {
+    super.componentDidMount()
     const { innerWidth, innerHeight } = window;
 
     const renderer = new THREE.WebGLRenderer({
@@ -381,7 +382,7 @@ export default class Benares extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     super.animate();
   }
 

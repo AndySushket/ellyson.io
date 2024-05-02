@@ -18,6 +18,7 @@ export default class PointLights extends TemplateFor3D {
 	}
 
 	componentDidMount() {
+		super.componentDidMount()
 		this.init3D();
 		const uniforms = {
 			texture: {value: new THREE.TextureLoader().load(spark)}
@@ -56,7 +57,7 @@ export default class PointLights extends TemplateFor3D {
 	}
 
 	animate() {
-		if (!this.looped) return;
+		if (!this.looped || !this.state.isTabActive) return;
 		const time = Date.now() * 0.005;
 		const sizes = this.geometry.attributes.size.array;
 		for (let i = 0; i < particles; i++ ) {

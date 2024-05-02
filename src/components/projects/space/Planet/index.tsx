@@ -76,6 +76,7 @@ export default class Planet extends TemplateFor3D {
   }
 
   componentDidMount(): void {
+    super.componentDidMount()
     this.init3D();
     this.initLight();
     this.initPlanet();
@@ -85,7 +86,7 @@ export default class Planet extends TemplateFor3D {
   }
 
   animate(): void  {
-    if (!this.looped) return;
+    if (!this.looped || !this.state.isTabActive) return;
     super.animate();
     if (!this.planet) return;
     this.planet.rotation.y += 0.001;

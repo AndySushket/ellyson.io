@@ -37,6 +37,7 @@ export default class Shader4 extends TemplateFor3D {
 	}
 
 	componentDidMount() {
+		super.componentDidMount()
 		this.init3D();
 		this.initShader();
 		this.initControls();
@@ -44,7 +45,7 @@ export default class Shader4 extends TemplateFor3D {
 	}
 
 	animate() {
-		if (!this.looped) return;
+		if (!this.looped || !this.state.isTabActive) return;
 		super.animate();
 		this.sphere.material.uniforms.amplitude.value = Math.sin(this.time / 50);
 	}

@@ -77,7 +77,7 @@ export default class DisplacedBox extends TemplateFor3D {
 	}
 
 	componentDidMount() {
-
+		super.componentDidMount()
 		this.init3D({antialias: true });
 		this.initControls();
 		this.mouseVel();
@@ -86,7 +86,7 @@ export default class DisplacedBox extends TemplateFor3D {
 	}
 
 	animate() {
-		if (!this.looped) return;
+		if (!this.looped || !this.state.isTabActive) return;
 		this.time += 0.01 + this.fimalSpeed;
 		this.fimalSpeed = Math.abs(this.speedX) / 100;
 		super.animate();

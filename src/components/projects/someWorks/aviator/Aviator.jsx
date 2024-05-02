@@ -447,6 +447,7 @@ export default class Aviator extends TemplateFor3D {
 	}
 
 	componentDidMount() {
+		super.componentDidMount()
 		this.createScene(); // set up camera and thr render
 		this.createLights(); // add lights
 		this.createPlane();// plane
@@ -491,7 +492,7 @@ export default class Aviator extends TemplateFor3D {
 	animate() {
 		//  updatePlane();
 		// Rotate the propeller, the sea and the thanos portal
-		if (!this.looped) return;
+		if (!this.looped || !this.state.isTabActive) return;
 		super.animate();
 		this.sea.mesh.rotation.z += .01;
 		this.sky.mesh.rotation.z += .01;
