@@ -1,5 +1,5 @@
 /**
- * Created by Ellyson on 15/09/2022.
+ * Created by Ellyson on 2/05/2024.
  */
 
 import * as THREE from "three";
@@ -11,7 +11,6 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { BokehPass } from "three/examples/jsm/postprocessing/BokehPass";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass";
 
-// Import the TWEEN library
 import * as TWEEN from "@tweenjs/tween.js";
 import TemplateFor3D from "components/templates/mainTemplate3D";
 
@@ -51,49 +50,35 @@ class MainPage3D extends TemplateFor3D {
     this.scene?.add(this.sphere);
   }
 
-  // handleRouteChange() {
-  //   if (this.props.location.pathname === "/projects") {
-  //     // Set camera position and other settings as per your need.
-  //     this.camera.position.z = 5;
-  //
-  //     // Depending upon your implementation and use case, you might also want to update your renderer
-  //   }
-  // }
-
   componentDidUpdate(prevProps: Readonly<any>) {
     if (prevProps.currentPath !== this.props.currentPath) {
-      console.log("state ", this.props.currentPath);
       if (this.props.currentPath === "/main/projects" && this.camera) {
-        console.log("state 2");
-
         new TWEEN.Tween(this.camera.position)
           .to(
             {
-              x: Math.random() * 150 - 75, // changes x position to a random number between -25 and 25
-              y: Math.random() * 150 - 75, // changes y position to a random number between -25 and 25
-              z: Math.random() * 150 - 75, // changes z position to a random number between -25 and 25
+              x: Math.random() * 150 - 75,
+              y: Math.random() * 150 - 75,
+              z: Math.random() * 150 - 75,
             },
             2000,
-          ) // takes 2000 milliseconds to tween to the new position
+          )
           .easing(TWEEN.Easing.Quadratic.Out) // smooth transition
           .onUpdate(() => {
             this.camera?.lookAt(new THREE.Vector3(0, 0, 0));
           })
-          .start(); // start the tween immediately
-
-        // Ensure to update the animations in your animation loop.
+          .start();
       }
 
       if (this.props.currentPath === "/main" && this.camera) {
         new TWEEN.Tween(this.camera.position)
             .to(
                 {
-                  x: 0, // changes x position to a random number between -25 and 25
-                  y: 0, // changes y position to a random number between -25 and 25
-                  z: 200, // changes z position to a random number between -25 and 25
+                  x: 0,
+                  y: 0,
+                  z: 200,
                 },
                 2000,
-            ) // takes 2000 milliseconds to tween to the new position
+            )
             .easing(TWEEN.Easing.Quadratic.Out) // smooth transition
             .onUpdate(() => {
               this.camera?.lookAt(new THREE.Vector3(0, 0, 0));

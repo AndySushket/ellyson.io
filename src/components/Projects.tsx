@@ -1,13 +1,11 @@
 /**
- * Created by Ellyson on 15/09/2022.
+ * Created by Ellyson on 2/05/2024.
  */
 
-import * as THREE from "three";
 import React from "react";
 import { Button } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import TemplateFor3D from "./templates/mainTemplate3D";
 
 export default class Projects extends React.Component<any, any> {
 
