@@ -14,7 +14,7 @@ import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass";
 import * as TWEEN from "@tweenjs/tween.js";
 import TemplateFor3D from "components/templates/mainTemplate3D";
 
-class MainPage3D extends TemplateFor3D {
+class Background3D extends TemplateFor3D {
   private postprocessing: any | undefined = {};
 
   private composer: EffectComposer | undefined;
@@ -159,7 +159,7 @@ class MainPage3D extends TemplateFor3D {
   }
 }
 
-function MainWithLocation() {
+function Background3DWithLocation() {
   const location = useLocation();
   const [currentPath, setPath] = useState(location.pathname);
 
@@ -167,7 +167,7 @@ function MainWithLocation() {
     setPath(location.pathname);
   }, [location]);
 
-  return <MainPage3D currentPath={currentPath} />;
+  return <Background3D currentPath={currentPath} />;
 }
 
-export default MainWithLocation;
+export default Background3DWithLocation;

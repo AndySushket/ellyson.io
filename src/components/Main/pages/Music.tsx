@@ -5,7 +5,7 @@
 import * as THREE from "three";
 import React from "react";
 import { Container } from "@mui/material";
-import TemplateFor3D from "./templates/mainTemplate3D";
+import TemplateFor3D from "../../templates/mainTemplate3D";
 
 export default class Music extends TemplateFor3D {
 
