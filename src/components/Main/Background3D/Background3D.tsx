@@ -11,7 +11,7 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { BokehPass } from "three/examples/jsm/postprocessing/BokehPass";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass";
 
-import * as TWEEN from "@tweenjs/tween.js";
+import AnimationUtil from "utils/Animation";
 import TemplateFor3D from "components/templates/mainTemplate3D";
 
 class Background3D extends TemplateFor3D {
@@ -53,37 +53,29 @@ class Background3D extends TemplateFor3D {
   componentDidUpdate(prevProps: Readonly<any>) {
     if (prevProps.currentPath !== this.props.currentPath) {
       if (this.props.currentPath === "/main/projects" && this.camera) {
-        new TWEEN.Tween(this.camera.position)
-          .to(
-            {
-              x: Math.random() * 150 - 75,
-              y: Math.random() * 150 - 75,
-              z: Math.random() * 150 - 75,
+        AnimationUtil.moveCamera(
+            new THREE.Vector3(  Math.random() * 150 - 75,
+           Math.random() * 150 - 75,
+           Math.random() * 150 - 75),
+            this.camera,
+            () => {
+              this.camera?.lookAt(new THREE.Vector3(0, 0, 0));
             },
             2000,
-          )
-          .easing(TWEEN.Easing.Quadratic.Out) // smooth transition
-          .onUpdate(() => {
-            this.camera?.lookAt(new THREE.Vector3(0, 0, 0));
-          })
-          .start();
+        );
       }
 
       if (this.props.currentPath === "/main" && this.camera) {
-        new TWEEN.Tween(this.camera.position)
-            .to(
-                {
-                  x: 0,
-                  y: 0,
-                  z: 200,
-                },
-                2000,
-            )
-            .easing(TWEEN.Easing.Quadratic.Out) // smooth transition
-            .onUpdate(() => {
+        AnimationUtil.moveCamera(
+            new THREE.Vector3(  0,
+                0,
+                200),
+            this.camera,
+            () => {
               this.camera?.lookAt(new THREE.Vector3(0, 0, 0));
-            })
-            .start(); // start the tween immediately
+            },
+            2000,
+        );
       }
     }
   }
@@ -133,7 +125,7 @@ class Background3D extends TemplateFor3D {
     if (!this.camera || !this.mouse) return;
     this.camera.position.x += (this.mouse.x - this.camera.position.x) * 0.036;
     this.camera.position.y += (-this.mouse.y - this.camera.position.y) * 0.036;
-    TWEEN.update();
+    AnimationUtil.updateAnimation();
     if (this.sphere) {
       this.sphere.traverse((obj) => {
         if (obj instanceof THREE.Mesh) {
