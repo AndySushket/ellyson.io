@@ -1,0 +1,140 @@
+* {
+  transition: opacity 3s;
+}
+
+.about-page {
+  position: relative;
+  top: 80px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 15px;
+  color: #ebebeb;
+  width: fit-content;
+
+  h3,
+  a,
+  svg {
+    text-align: left;
+    color: #ebebeb;
+  }
+
+  .about-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    //background: rgb(142 142 142 / 17%);
+    padding: 50px;
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    line-height: 20px;
+
+    .col-8 {
+
+      //max-height: 90vh;
+      //overflow: auto;
+    }
+
+    & > .MuiGrid-root {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .MuiAvatar-root {
+      margin: auto;
+      width: 250px;
+      height: 250px;
+      margin-bottom: 20px;
+    }
+
+    .contact-item {
+      margin: 7px 10px;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    .list-item {
+      padding: 5px 5px;
+      width: auto;
+      height: 30px;
+      margin: 3px;
+      color: white;
+      float: left;
+      border-radius: 8px;
+      //background: rgb(235 235 235 / 15%);
+    }
+
+    .summary {
+      div {
+        text-indent: 50px;
+        text-align: justify;
+        margin-bottom: 25px;
+      }
+    }
+
+    .experience {
+      margin-bottom: 20px;
+      > div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        p:first-child {
+          display: flex;
+          justify-content: space-between;
+          flex-direction: row;
+          width: 100%;
+        }
+        p.stack {
+          text-align: left;
+          font-style: italic;
+        }
+        p.jobDescription {
+          text-indent: 50px;
+          text-align: left;
+        }
+        p {
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    .education {
+      div {
+        p {
+          display: flex;
+          justify-content: space-between;
+          span:last-child {
+            font-weight: 700;
+          }
+        }
+        p:last-child {
+          margin-top: -15px;
+          font-size: 13px;
+        }
+      }
+    }
+
+    .skill-list {
+      width: 100%;
+    }
+  }
+
+  .MuiPaper-root {
+    color: #ebebeb;
+  }
+}
+
+.separator {
+  border: rgba(235, 235, 235, 0.54) 1px solid;
+  margin-bottom: 10px;
+}
+span.underline {
+  text-shadow: 1px -1px 0px #0000005c;
+  text-decoration: underline rgba(235, 235, 235, 0.58);
+}
+
+@media (min-width: 1200px) {
+  .MuiContainer-root.about-page {
+    max-width: 1350px;
+  }
+}
