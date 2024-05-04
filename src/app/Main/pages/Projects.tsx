@@ -25,7 +25,7 @@ function Projects({location}: {location: string}) {
           initial={{ opacity: 0, backdropFilter: "blur(0)" }}
           animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
           exit={{ opacity: 0, backdropFilter: "blur(0)" }}
-          transition={{ duration: 1 }}
+          transition={{ duration: .75 }}
         >
           <div>
             <Col>

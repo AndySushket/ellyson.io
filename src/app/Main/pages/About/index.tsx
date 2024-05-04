@@ -56,7 +56,7 @@ function About({location}: {location: string}) {
               initial={{ opacity: 0, backdropFilter: "blur(0)" }}
               animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
               exit={{ opacity: 0, backdropFilter: "blur(0)" }}
-              transition={{ duration: 1 }}
+              transition={{ duration: .75 }}
           >
             <Container  maxWidth="lg">
               <Row className="about-container">

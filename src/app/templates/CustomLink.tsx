@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import React from "react";
 import { connect } from "react-redux";
 import { Button } from "@mui/material";
@@ -7,7 +7,6 @@ import { setLocation } from "../store/UI/UI";
 interface ICustomLink {
   dest: string;
   children: React.ReactNode;
-  value: number;
   setLocation: (dest: string) => void;
 }
 
@@ -15,22 +14,24 @@ interface ICustomLink {
 const CustomLink: React.FC<ICustomLink> = ({
   dest,
   children,
-  value,
   setLocation,
 }: ICustomLink) => {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const handleDelayedLinkClick =
     (to: string, delay: number) => (event: any) => {
       event.preventDefault();
       setLocation(dest);
+      if (!location.pathname.includes("/main")) {
+        navigate(to);
+      }
       setTimeout(() => {
         navigate(to);
       }, delay);
     };
 
   return (
-    <Button color="primary" onClick={handleDelayedLinkClick(dest, 1000)}>{children}</Button>
+    <Button color="primary" onClick={handleDelayedLinkClick(dest, 750)}>{children}</Button>
   );
 };
 

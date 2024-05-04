@@ -74,7 +74,7 @@ class Background3D extends TemplateFor3D {
             Math.random() * 300 - 150,
           ),
           camera: this.camera,
-          ms: 2000,
+          ms: 1500,
           lookAtVector: new THREE.Vector3(),
         });
       }
@@ -83,7 +83,7 @@ class Background3D extends TemplateFor3D {
         AnimationUtil.moveCamera({
           nextPosition: new THREE.Vector3(0, 0, 200),
           camera: this.camera,
-          ms: 2000,
+          ms: 1500,
           lookAtVector: new THREE.Vector3(),
         });
       }
