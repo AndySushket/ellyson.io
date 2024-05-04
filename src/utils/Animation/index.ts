@@ -7,12 +7,30 @@ const EASING = {
   ExponentialOut: TWEEN.Easing.Exponential.Out
 }
 
+interface IMoveCamera {
+  nextPosition: Vector3,
+  camera: Camera,
+  callbackComplete?: () => void,
+  ms?: number,
+  easing?: (amount: number) => number
+  lookAtVector?: Vector3
+}
+
+interface IRotateCamera {
+  startRotation: Euler;
+  endRotation: Euler;
+  camera: Camera;
+  controls: OrbitControls;
+  callbackComplete: () => void;
+  angle: number;
+}
+
 class Animation {
   tween: TWEEN.Tween<any> | undefined = undefined;
 
-  onStartAnimate: () => void = () => {};
+  onStartAnimate: () => void = () => {}; // for start render process after animation
 
-  onStopAnimation: () => void = () => {};
+  onStopAnimation: () => void = () => {}; // for stop render process after animation
 
   removeCallbackOnLastChainedTween = () => {
     // @ts-ignore
@@ -43,7 +61,7 @@ class Animation {
       .start()
       .onComplete(() => {
         this.tween = undefined;
-        this.onStopAnimation && this.onStopAnimation();
+        this.onStopAnimation?.();
         callbackComplete();
       });
 
@@ -72,14 +90,7 @@ class Animation {
     controls,
     callbackComplete = () => {},
     angle,
-  }: {
-    startRotation: Euler;
-    endRotation: Euler;
-    camera: Camera;
-    controls: OrbitControls;
-    callbackComplete: () => void;
-    angle: number;
-  }) => {
+  }: IRotateCamera) => {
     this.initTween(camera);
     // @ts-ignore
     this.tween._chainedTweens.push(
@@ -105,13 +116,14 @@ class Animation {
     );
   };
 
-  moveCamera = (
-    nextPosition: Vector3,
-    camera: Camera,
+  moveCamera = ({
+    nextPosition,
+    camera,
     callbackComplete = () => {},
-    ms: number = 700,
-    easing?: (amount: number) => number
-  ) => {
+    ms = 700,
+    easing,
+    lookAtVector = new Vector3()
+}: IMoveCamera) => {
     const cameraPosition = camera.position.clone();
 
     this.initTween(camera);
@@ -123,6 +135,9 @@ class Animation {
           ms,
         () => {
           camera.position.copy(cameraPosition);
+          if (lookAtVector) {
+            camera.lookAt(lookAtVector)
+          }
         },
         () => {
           callbackComplete();

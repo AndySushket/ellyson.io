@@ -53,29 +53,25 @@ class Background3D extends TemplateFor3D {
   componentDidUpdate(prevProps: Readonly<any>) {
     if (prevProps.currentPath !== this.props.currentPath) {
       if (this.props.currentPath === "/main/projects" && this.camera) {
-        AnimationUtil.moveCamera(
-            new THREE.Vector3(  Math.random() * 150 - 75,
-           Math.random() * 150 - 75,
-           Math.random() * 150 - 75),
-            this.camera,
-            () => {
-              this.camera?.lookAt(new THREE.Vector3(0, 0, 0));
-            },
-            2000,
-        );
+        AnimationUtil.moveCamera({
+          nextPosition: new THREE.Vector3(  Math.random() * 300 - 150,
+              Math.random() * 300 - 150,
+              Math.random() * 300 - 150),
+          camera: this.camera,
+          ms: 2000,
+          lookAtVector: new THREE.Vector3(),
+        });
       }
 
       if (this.props.currentPath === "/main" && this.camera) {
-        AnimationUtil.moveCamera(
-            new THREE.Vector3(  0,
-                0,
-                200),
-            this.camera,
-            () => {
-              this.camera?.lookAt(new THREE.Vector3(0, 0, 0));
-            },
-            2000,
-        );
+        AnimationUtil.moveCamera({
+          nextPosition: new THREE.Vector3(  0,
+              0,
+              200),
+          camera: this.camera,
+          ms: 2000,
+          lookAtVector: new THREE.Vector3(),
+        });
       }
     }
   }
@@ -122,9 +118,6 @@ class Background3D extends TemplateFor3D {
   animate(): void {
     if (!this.looped || !this.state.isTabActive) return;
     this.postprocessing.composer.render(0.2);
-    if (!this.camera || !this.mouse) return;
-    this.camera.position.x += (this.mouse.x - this.camera.position.x) * 0.036;
-    this.camera.position.y += (-this.mouse.y - this.camera.position.y) * 0.036;
     AnimationUtil.updateAnimation();
     if (this.sphere) {
       this.sphere.traverse((obj) => {
