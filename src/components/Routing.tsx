@@ -14,7 +14,6 @@ import TestWork from "./projects/testWorks/testWork";
 import ThreeJsJourney from "./projects/threeJsJourney/threeJsJourney";
 import Main from "./Main/Background3D/Background3D";
 import Projects from "components/Main/pages/Projects";
-// import Music from "components/Main/pages/Music";
 import About from "components/Main/pages/About";
 
 export default function Routing() {
