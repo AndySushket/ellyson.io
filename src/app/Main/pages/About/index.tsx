@@ -60,7 +60,7 @@ function About({location}: {location: string}) {
           >
             <Container  maxWidth="lg">
               <Row className="about-container">
-                <Col item xs={4}>
+                <Col item xs={12} lg={4} >
                   <Avatar
                     alt="Hi"
                     src={avatar}
@@ -95,7 +95,7 @@ function About({location}: {location: string}) {
                   </div>
                 </Col>
 
-                <Col xs={8}>
+                <Col xs={12} lg={8}>
                   <Row>
                     <h1> Andy Sushket</h1>
                   </Row>
