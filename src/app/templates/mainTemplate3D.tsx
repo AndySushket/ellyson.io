@@ -68,7 +68,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
     super(props);
     this.state = {
       checked: false,
-      isTabActive: !document.hidden,
+      isTabActive: true,
     };
     this.time = 0;
     this.looped = true;
