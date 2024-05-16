@@ -3,7 +3,7 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCDy-Q2rOXXol6_I1rOVTXBeDSlFiiBQVM",
-  authDomain: "ellyson-project.firebaseapp.com",
+  authDomain: "ellyson.io",
   projectId: "ellyson-project",
   storageBucket: "ellyson-project.appspot.com",
   messagingSenderId: "368910366104",
