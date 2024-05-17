@@ -6,6 +6,7 @@ import React from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { ARButton } from 'three/examples/jsm/webxr/ARButton';
+import {analytics, logEvent} from "firebase/firebaseConfig";
 
 export default class TemplateFor3D extends React.Component<any, any> {
   private static deleteScene(scene: THREE.Scene | undefined) {
@@ -87,6 +88,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
 
   componentDidMount() {
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    logEvent(analytics, `page: ${window.location.pathname}`);
   }
 
   componentWillUnmount(): void {
