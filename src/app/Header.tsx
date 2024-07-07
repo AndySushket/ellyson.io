@@ -7,11 +7,11 @@ export default function Header() {
       <div className="leftHeader">Andy Sushket</div>
       <div className="rightHeader">
         <div>
-          <CustomLink dest="/main">Home</CustomLink>
+          <CustomLink dest="/">Home</CustomLink>
         </div>
         /
         <div>
-          <CustomLink dest="/main/projects">Projects</CustomLink>
+          <CustomLink dest="/projects">Projects</CustomLink>
         </div>
       </div>
     </div>

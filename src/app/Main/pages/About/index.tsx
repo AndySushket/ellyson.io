@@ -33,7 +33,7 @@ function About({location}: {location: string}) {
   const [exit, setExit] = React.useState(false);
 
   useEffect(() => {
-    if(location !== "/main") setExit(true);
+    if(location !== "/") setExit(true);
     else setExit(false);
     }, [location]);
 

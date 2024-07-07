@@ -19,8 +19,7 @@ import Main from "./Main/Background3D/Background3D";
 export default function Routing() {
   return (
     <Routes>
-      <Route path="/">
-        <Route path="/main" element={<Main />}>
+        <Route path="/" element={<Main />}>
           <Route index element={<About />} />
           <Route path="projects" element={<Projects />} />
         </Route>
@@ -102,7 +101,6 @@ export default function Routing() {
           <Route index element={<ThreeJsJourney.Texture />} />
           <Route path="Texture" element={<ThreeJsJourney.Texture />} />
         </Route>
-      </Route>
     </Routes>
   );
 }

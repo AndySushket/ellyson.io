@@ -13,7 +13,7 @@ function Projects({location}: {location: string}) {
   const [exit, setExit] = React.useState(false);
 
   useEffect(() => {
-    if (location !== "/main/projects") setExit(true);
+    if (location !== "/projects") setExit(true);
     else setExit(false);
   }, [location]);
 

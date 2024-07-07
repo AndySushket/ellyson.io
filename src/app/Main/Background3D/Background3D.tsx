@@ -23,7 +23,7 @@ class Background3D extends TemplateFor3D {
 
   private sphere: THREE.Object3D | undefined;
 
-  private currentLocation: string = "/main";
+  private currentLocation: string = "/";
 
   initControls(): void {
     this.camera?.position.set(0, 0, 200);
@@ -66,7 +66,7 @@ class Background3D extends TemplateFor3D {
           ? this.props.currentPath
           : this.props.stateLocation;
 
-      if (this.currentLocation === "/main/projects" && this.camera) {
+      if (this.currentLocation === "/projects" && this.camera) {
         AnimationUtil.moveCamera({
           nextPosition: new THREE.Vector3(
             Math.random() * 300 - 150,
@@ -79,7 +79,7 @@ class Background3D extends TemplateFor3D {
         });
       }
 
-      if (this.currentLocation === "/main" && this.camera) {
+      if (this.currentLocation === "/" && this.camera) {
         AnimationUtil.moveCamera({
           nextPosition: new THREE.Vector3(0, 0, 200),
           camera: this.camera,
