@@ -1,7 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import Projects from "app/Main/pages/Projects";
+import Projects from "app/Main/pages/ProjectsList";
+import Projects2 from "app/Main/pages/ProjectsList/all";
 import About from "app/Main/pages/About";
 import Space from "./projects/space";
 import Shaders from "./projects/shaders/Shaders";
@@ -22,6 +23,7 @@ export default function Routing() {
         <Route path="/" element={<Main />}>
           <Route index element={<About />} />
           <Route path="projects" element={<Projects />} />
+          <Route path="projects2" element={<Projects2 />} />
         </Route>
         <Route path="Space">
           <Route index element={<Space.Galaxy />} />
