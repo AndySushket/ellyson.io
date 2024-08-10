@@ -82,11 +82,9 @@ function About({location}: {location: string}) {
                     <IconButton href={pdf} target="_blank">
                       <ContactPage />
                     </IconButton>
-                    <div className="contact-item">
-                      {CONTACTS.EMAIL}
+                    <IconButton href={`mailto:${CONTACTS.EMAIL}`} target="_blank">
                       <Mail />
-                    </div>
-                    <div className="contact-item">{CONTACTS.PHONE}</div>
+                    </IconButton>
                     <div className="contact-item">{CONTACTS.LOCATION}</div>
                   </div>
                   <div>

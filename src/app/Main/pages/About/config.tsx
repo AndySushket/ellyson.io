@@ -28,7 +28,6 @@ export const MY_SKILLS = [
 
 export const CONTACTS = {
   EMAIL: "andy.sushket@gmail.com",
-  PHONE: "+352661527603",
   TWITTER: "https://twitter.com/_Ellyson_",
   FACEBOOK: "https://www.facebook.com/Just.Ellyson/",
   LINKEDIN: "https://www.linkedin.com/in/andrii-sushket/",
