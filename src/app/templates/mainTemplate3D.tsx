@@ -82,7 +82,6 @@ export default class TemplateFor3D extends React.Component<any, any> {
 
 
   handleVisibilityChange = () => {
-    console.log("handleVisibilityChange", !document.hidden);
     this.setState({ isTabActive: !document.hidden });
   };
 
