@@ -365,3 +365,11 @@ div.header {
 ::-webkit-scrollbar-thumb:hover {
   background: #c8c8c8;
 }
+
+div[role="tooltip"] > div {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+}

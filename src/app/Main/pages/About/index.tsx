@@ -2,8 +2,9 @@
  * Created by Ellyson on 2/05/2024.
  */
 
-import React, {useEffect} from "react";
-import { Container, IconButton, Avatar } from "@mui/material";
+import React, { useEffect } from "react";
+import { Container, IconButton, Avatar, Tooltip } from "@mui/material";
+import Fade from "@mui/material/Fade";
 // @ts-ignore
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -28,14 +29,13 @@ import {
 const pdf = require("assets/Andrii_Sushket_CV.pdf");
 const avatar = require("../../assets/avatar.jpg");
 
-function About({location}: {location: string}) {
-
+function About({ location }: { location: string }) {
   const [exit, setExit] = React.useState(false);
 
   useEffect(() => {
-    if(location !== "/") setExit(true);
+    if (location !== "/") setExit(true);
     else setExit(false);
-    }, [location]);
+  }, [location]);
 
   function skillList(): React.ReactNode {
     return (
@@ -52,39 +52,78 @@ function About({location}: {location: string}) {
       <AnimatePresence>
         {!exit && (
           <motion.div
-              className="about-page"
-              initial={{ opacity: 0, backdropFilter: "blur(0)" }}
-              animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
-              exit={{ opacity: 0, backdropFilter: "blur(0)" }}
-              transition={{ duration: .75 }}
+            className="about-page"
+            initial={{ opacity: 0, backdropFilter: "blur(0)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0)" }}
+            transition={{ duration: 0.75 }}
           >
-            <Container  maxWidth="lg">
+            <Container maxWidth="lg">
               <Row className="about-container">
-                <Col item xs={12} lg={4} >
+                <Col item xs={12} lg={4}>
                   <Avatar
                     alt="Hi"
                     src={avatar}
                     sx={{ width: 300, height: 300 }}
                   />
                   <div>
-                    <IconButton href={CONTACTS.INSTAGRAM} target="_blank">
-                      <Instagram />
-                    </IconButton>
-                    <IconButton href={CONTACTS.FACEBOOK} target="_blank">
-                      <Facebook />
-                    </IconButton>
-                    <IconButton href={CONTACTS.TWITTER} target="_blank">
-                      <Twitter />
-                    </IconButton>
-                    <IconButton href={CONTACTS.LINKEDIN} target="_blank">
-                      <LinkedIn />
-                    </IconButton>
-                    <IconButton href={pdf} target="_blank">
-                      <ContactPage />
-                    </IconButton>
-                    <IconButton href={`mailto:${CONTACTS.EMAIL}`} target="_blank">
-                      <Mail />
-                    </IconButton>
+                    <Tooltip
+                      TransitionComponent={Fade}
+                      enterNextDelay={300}
+                      title={CONTACTS.INSTAGRAM}
+                    >
+                      <IconButton href={CONTACTS.INSTAGRAM} target="_blank">
+                        <Instagram />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      TransitionComponent={Fade}
+                      enterNextDelay={300}
+                      title={CONTACTS.FACEBOOK}
+                    >
+                      <IconButton href={CONTACTS.FACEBOOK} target="_blank">
+                        <Facebook />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      TransitionComponent={Fade}
+                      enterNextDelay={300}
+                      title={CONTACTS.TWITTER}
+                    >
+                      <IconButton href={CONTACTS.TWITTER} target="_blank">
+                        <Twitter />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      TransitionComponent={Fade}
+                      enterNextDelay={300}
+                      title={CONTACTS.LINKEDIN}
+                    >
+                      <IconButton href={CONTACTS.LINKEDIN} target="_blank">
+                        <LinkedIn />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      TransitionComponent={Fade}
+                      enterNextDelay={300}
+                      title={'CV'}
+                    >
+                      <IconButton href={pdf} target="_blank">
+                        <ContactPage />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      TransitionComponent={Fade}
+                      enterNextDelay={300}
+                      title={CONTACTS.EMAIL}
+                    >
+                      <IconButton
+                        href={`mailto:${CONTACTS.EMAIL}`}
+                        target="_blank"
+                      >
+                        <Mail />
+                      </IconButton>
+                    </Tooltip>
                     <div className="contact-item">{CONTACTS.LOCATION}</div>
                   </div>
                   <div>
