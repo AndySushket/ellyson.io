@@ -102,6 +102,7 @@ export default function Routing() {
         <Route path="ThreeJsJourney">
           <Route index element={<ThreeJsJourney.Texture />} />
           <Route path="Texture" element={<ThreeJsJourney.Texture />} />
+          <Route path="HauntedHouse" element={<ThreeJsJourney.HauntedHouse />} />
         </Route>
     </Routes>
   );

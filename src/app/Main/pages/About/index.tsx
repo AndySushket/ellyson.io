@@ -106,7 +106,7 @@ function About({ location }: { location: string }) {
                     <Tooltip
                       TransitionComponent={Fade}
                       enterNextDelay={300}
-                      title={'CV'}
+                      title="CV"
                     >
                       <IconButton href={pdf} target="_blank">
                         <ContactPage />
@@ -115,7 +115,7 @@ function About({ location }: { location: string }) {
                     <Tooltip
                       TransitionComponent={Fade}
                       enterNextDelay={300}
-                      title={`Email`}
+                      title="Email"
                     >
                       <IconButton
                         href={`mailto:${CONTACTS.EMAIL}`}
