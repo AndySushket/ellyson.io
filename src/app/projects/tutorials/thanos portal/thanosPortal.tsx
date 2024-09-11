@@ -44,7 +44,7 @@ export default class thanosPortal extends TemplateFor3D {
 
     // point light fix
     if (this.renderer) {
-      this.renderer.useLegacyLights = true;
+      // this.renderer.useLegacyLights = true;
     }
 
     this.initControls();
@@ -155,6 +155,7 @@ export default class thanosPortal extends TemplateFor3D {
         )
         .normalize();
       for (let i = 0, il = orientation.count; i < il; i++) {
+        // @ts-ignore
         this.currentQ.fromArray(orientation.array, i * 4);
         this.currentQ.multiply(this.tmpQ);
         orientation.setXYZW(

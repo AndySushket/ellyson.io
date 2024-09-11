@@ -103,6 +103,7 @@ export default function Routing() {
           <Route index element={<ThreeJsJourney.Texture />} />
           <Route path="Texture" element={<ThreeJsJourney.Texture />} />
           <Route path="HauntedHouse" element={<ThreeJsJourney.HauntedHouse />} />
+          <Route path="Particles" element={<ThreeJsJourney.Particles />} />
         </Route>
     </Routes>
   );

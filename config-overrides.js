@@ -1,15 +1,19 @@
-const path = require("path");
 const {
   addWebpackModuleRule,
   override,
   addWebpackAlias,
 } = require("customize-cra");
 
+const path = require("path");
+
 module.exports = {
   webpack: override(
+    addWebpackAlias({
+      "~": path.resolve(__dirname, "src"),
+    }),
     addWebpackModuleRule({
       test: /\.(shader|vert|frag|glsl|fnt)$/,
-      loader: require.resolve("raw-loader"),
-    })
+      loader: "raw-loader",
+    }),
   ),
 };

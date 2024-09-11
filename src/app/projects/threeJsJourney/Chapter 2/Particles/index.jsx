@@ -1,0 +1,66 @@
+/**
+ * Created by Ellyson on 5/11/2018.
+ */
+
+import * as THREE from 'three';
+import TemplateFor3D from 'app/templates/mainTemplate3D';
+
+export default class Shader1 extends TemplateFor3D {
+	initControls() {
+		super.initControls();
+		this.camera.position.set(0, 0, 10);
+	}
+
+	initProject() {
+		const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
+		const particlesMaterial = new THREE.PointsMaterial({
+			size: 0.1,
+			sizeAttenuation: true
+		})
+		this.particles = new THREE.Points(particlesGeometry, particlesMaterial)
+		// this.scene.add(this.particles);
+
+		//custom
+
+		const particlesGeometry2 = new THREE.BufferGeometry()
+		const count = 500000;
+		const positions = new Float32Array(count * 3);
+
+		for (let i = 0; i < count * 3; i++) {
+			positions[i] = (Math.random() - 0.5) * 10;
+		}
+
+		const textureLoader = new THREE.TextureLoader()
+		const particleTexture = textureLoader.load('/textures/particles/2.png')
+
+// ...
+
+
+
+		particlesGeometry2.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+		const particlesMaterial2 = new THREE.PointsMaterial({
+			size: 0.02,
+			sizeAttenuation: true
+		})
+		particlesMaterial2.color = new THREE.Color('#ff88cc');
+		particlesMaterial.map = particleTexture;
+		this.particles2 = new THREE.Points(particlesGeometry2, particlesMaterial2)
+		this.scene.add(this.particles2);
+	}
+
+	componentDidMount() {
+		super.componentDidMount()
+		this.init3D();
+		this.initLight();
+		this.initProject();
+		this.initControls();
+		this.animate();
+		this.light.position.set(3.,1,33)
+		this.ambientLight.intensity = .8;
+	}
+
+	animate() {
+		if (!this.looped || !this.state.isTabActive) return;
+		super.animate();
+	}
+}
