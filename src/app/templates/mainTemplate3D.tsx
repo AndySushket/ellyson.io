@@ -123,8 +123,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    // @ts-ignore
-    this.canvasDiv.appendChild(this.renderer.domElement);
+
+    this.canvasDiv?.appendChild(this.renderer.domElement);
   }
 
   initCamera(cameraParam: any): void {

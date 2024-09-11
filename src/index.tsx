@@ -1,5 +1,5 @@
 import React from "react";
-// @ts-ignore
+
 import { createRoot } from "react-dom/client";
 import App from "app/App";
 import registerServiceWorker from "./registerServiceWorker";

@@ -57,8 +57,7 @@ export default class Galaxy extends TemplateFor3D {
   initSaturn(): void {
     const saturnMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        // @ts-ignore
-        saturnTexture: { type: "t", value: textureLoader.load(saturn) },
+        saturnTexture: { value: textureLoader.load(saturn) },
         time: { value: 1.0 },
       },
       vertexShader: vertexSaturn,
