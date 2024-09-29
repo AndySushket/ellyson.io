@@ -12,50 +12,47 @@ export default class Shader1 extends TemplateFor3D {
 	}
 
 	initProject() {
-		const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
+		const particlesGeometry = new THREE.SphereGeometry(1, 32, 32);
 		const particlesMaterial = new THREE.PointsMaterial({
 			size: 0.1,
 			sizeAttenuation: true
-		})
-		this.particles = new THREE.Points(particlesGeometry, particlesMaterial)
-		// this.scene.add(this.particles);
+		});
+		this.particles = new THREE.Points(particlesGeometry, particlesMaterial);
+		this.scene.add(this.particles);
 
 		//custom
 
-		const particlesGeometry2 = new THREE.BufferGeometry()
-		const count = 500000;
+		const particlesGeometry2 = new THREE.BufferGeometry();
+		const count = 5000;
 		const positions = new Float32Array(count * 3);
 
 		for (let i = 0; i < count * 3; i++) {
 			positions[i] = (Math.random() - 0.5) * 10;
 		}
 
-		const textureLoader = new THREE.TextureLoader()
-		const particleTexture = textureLoader.load('/textures/particles/2.png')
+		const textureLoader = new THREE.TextureLoader();
+		const particleTexture = textureLoader.load('/textures/particles/2.png');
 
-// ...
-
-
-
-		particlesGeometry2.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+		particlesGeometry2.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 		const particlesMaterial2 = new THREE.PointsMaterial({
-			size: 0.02,
+			size: 0.1,
 			sizeAttenuation: true
-		})
+		});
+
 		particlesMaterial2.color = new THREE.Color('#ff88cc');
-		particlesMaterial.map = particleTexture;
-		this.particles2 = new THREE.Points(particlesGeometry2, particlesMaterial2)
+		particlesMaterial2.map = particleTexture;
+		this.particles2 = new THREE.Points(particlesGeometry2, particlesMaterial2);
 		this.scene.add(this.particles2);
 	}
 
 	componentDidMount() {
-		super.componentDidMount()
+		super.componentDidMount();
 		this.init3D();
 		this.initLight();
 		this.initProject();
 		this.initControls();
 		this.animate();
-		this.light.position.set(3.,1,33)
+		this.light.position.set(3.,1,33);
 		this.ambientLight.intensity = .8;
 	}
 
