@@ -7,9 +7,6 @@
       "dom.iterable",
       "esnext"
     ],
-    "paths": {
-      "src/*": ["*"]
-    },
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -23,12 +20,22 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "typeRoots": ["node_modules/@types"],
-    "types": ["react", "react-dom"]
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "react",
+      "react-dom"
+    ]
   },
   "include": [
     "./src",
     "typings.d.ts"
   ],
-  "exclude": ["dist", "node_modules",  "src/**/*.vert", "src/**/*.frag"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "src/**/*.vert",
+    "src/**/*.frag"
+  ]
 }

@@ -31,6 +31,7 @@ import displaceMap from "./textures/earth/displaceMap.webp";
 import nightEarthMap from "./textures/earth/nightEarthMap.webp";
 import map4 from "./textures/earth/waternormals.webp";
 import earthCloudMap from "./textures/earth/earthCloudsMap.webp";
+import { DirectionalLight } from 'three';
 
 export default class Main extends TemplateFor3D {
   static EarthRadiusKM: number = 6371;
@@ -79,23 +80,22 @@ export default class Main extends TemplateFor3D {
   initShader(): void {
     const { progress, buffer } = this.state;
 
-
     const onStart = (url: string, loaded: number, total: number) => {
-      console.log("onStart", url, loaded, total);
+      console.log('onStart', url, loaded, total);
     };
 
     const onLoad = () => {
-      console.log("onLoad");
+      console.log('onLoad');
       this.setState({ progress: 100, buffer: 100 });
     };
 
     const onProgress = (url: string, loaded: number, total: number) => {
-      console.log("onProgress", url, loaded, total);
+      console.log('onProgress', url, loaded, total);
       this.setState({ progress: progress + 15, buffer: buffer + 15 });
     };
 
     const onError = (url: string) => {
-      console.log("onError", url);
+      console.log('onError', url);
     };
 
     this.loadingManager = new THREE.LoadingManager(onLoad, onProgress, onError);
@@ -104,7 +104,7 @@ export default class Main extends TemplateFor3D {
   }
 
   componentDidMount(): void {
-    super.componentDidMount()
+    super.componentDidMount();
     this.init3D({ antialias: true }, { fov: 35 });
 
     this.initLight();
@@ -154,8 +154,7 @@ export default class Main extends TemplateFor3D {
       texture2.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
       texture2.minFilter = THREE.NearestFilter;
 
-      displacementMap.anisotropy =
-        this.renderer.capabilities.getMaxAnisotropy();
+      displacementMap.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
       displacementMap.minFilter = THREE.NearestFilter;
 
       const material: THREE.ShaderMaterial = new THREE.ShaderMaterial({
@@ -177,8 +176,8 @@ export default class Main extends TemplateFor3D {
         // wireframe: true
       });
 
-      const noiseMap = textureLoader.load("https://i.imgur.com/gPz7iPX.jpg");
-      const dudvMap = textureLoader.load("https://i.imgur.com/hOIsXiZ.png");
+      const noiseMap = textureLoader.load('https://i.imgur.com/gPz7iPX.jpg');
+      const dudvMap = textureLoader.load('https://i.imgur.com/hOIsXiZ.png');
 
       noiseMap.wrapS = noiseMap.wrapT = THREE.RepeatWrapping;
       noiseMap.minFilter = THREE.NearestFilter;
@@ -234,10 +233,7 @@ export default class Main extends TemplateFor3D {
         },
         vertexShader: waterVert,
         fragmentShader: waterFrag,
-        uniforms: THREE.UniformsUtils.merge([
-          THREE.UniformsLib.fog,
-          waterUniforms,
-        ]),
+        uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib.fog, waterUniforms]),
         fog: true,
       });
 
@@ -245,7 +241,7 @@ export default class Main extends TemplateFor3D {
 
       this.waterMesh = new THREE.Mesh(
         waterGeometry,
-        this.getCustomMaterial(this.light, map4, waterFrag, 2.00975)
+        this.getCustomMaterial(this.light, map4, waterFrag, 2.00975),
       );
 
       this.scene?.add(mesh, /* this.waterMesh , */ mesh4, cloudMesh);
@@ -266,12 +262,7 @@ export default class Main extends TemplateFor3D {
     }
   }
 
-  calcPosFromLatLonRad(
-    lat: number,
-    lon: number,
-    radius: number,
-    mesh: THREE.Mesh
-  ) {
+  calcPosFromLatLonRad(lat: number, lon: number, radius: number, mesh: THREE.Mesh) {
     let x;
     let y;
     let z;
@@ -287,7 +278,7 @@ export default class Main extends TemplateFor3D {
     const geometry2 = new THREE.SphereGeometry(0.02, 64, 64);
     // Crear Material Esfera
     const material2 = new THREE.MeshPhysicalMaterial({
-      color: "red",
+      color: 'red',
     });
 
     const earth2 = new THREE.Mesh(geometry2, material2);
@@ -297,12 +288,7 @@ export default class Main extends TemplateFor3D {
     return [x, y, z];
   }
 
-  getCustomMaterial(
-    light: THREE.DirectionalLight | undefined,
-    tex: THREE.Texture,
-    frag: string,
-    radius: number
-  ) {
+  getCustomMaterial(light: DirectionalLight | undefined, tex: {}, frag: string, radius: number) {
     const lightColor = light?.color.clone();
     const vertShader: string = waterVert;
     const fragShader: string = frag;
@@ -318,28 +304,23 @@ export default class Main extends TemplateFor3D {
       tex: { type: string; value: THREE.Texture };
       lightColor: { type: string; value: THREE.Vector4 };
       vRadius: { type: string; value: number };
-      time: { type: string; value: number }
+      time: { type: string; value: number };
     } = {
       // custom uniforms (your textures)
 
-      tex: { type: "t", value: texture },
-      time: { type: "f", value: this.time },
+      tex: { type: 't', value: texture },
+      time: { type: 'f', value: this.time },
 
-      eye: { type: "v3", value: this.camera?.position },
+      eye: { type: 'v3', value: this.camera?.position },
 
-      vRadius: { type: "f", value: radius },
+      vRadius: { type: 'f', value: radius },
 
-      lightPosition: { type: "v3", value: light?.position.clone() },
+      lightPosition: { type: 'v3', value: light?.position.clone() },
       lightColor: {
-        type: "v4",
-        value: new THREE.Vector4(
-          lightColor?.r,
-          lightColor?.g,
-          lightColor?.b,
-          1.0
-        ),
+        type: 'v4',
+        value: new THREE.Vector4(lightColor?.r, lightColor?.g, lightColor?.b, 1.0),
       },
-      lightIntensity: { type: "f", value: light?.intensity },
+      lightIntensity: { type: 'f', value: light?.intensity },
     };
     const meshFaceMaterial = new THREE.ShaderMaterial({
       uniforms,
@@ -386,8 +367,7 @@ export default class Main extends TemplateFor3D {
     // this.camera.position.set( 5 * Math.sin(this.time / 1000), 0, 5 * Math.cos(this.time / 1000));
     // this.camera.lookAt(new THREE.Vector3());
     if (this.waterMesh && this.light) {
-      this.waterMesh.material.uniforms.lightPosition.value =
-        this.light.position;
+      this.waterMesh.material.uniforms.lightPosition.value = this.light.position;
       this.waterMesh.material.uniforms.time.value = this.time / 5000;
     }
     super.animate();
@@ -399,22 +379,23 @@ export default class Main extends TemplateFor3D {
     return (
       <div>
         <Box
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
           style={{
-            transition: "1s",
-            position: "absolute",
-            top: "47px",
+            transition: '1s',
+            position: 'absolute',
+            top: '47px',
             opacity: progress === 100 ? 0 : 1,
           }}
         >
-          <LinearProgress
-            variant="buffer"
-            value={progress}
-            valueBuffer={buffer}
-          />
+          <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
         </Box>
 
-        <div ref={ (ref) => {this.canvasDiv = ref}} className="canvasDiv" />
+        <div
+          ref={(ref) => {
+            this.canvasDiv = ref;
+          }}
+          className="canvasDiv"
+        />
       </div>
     );
   }
