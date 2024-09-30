@@ -2,14 +2,14 @@
  * Created by Ellyson on 5/11/2018.
  */
 
-import React from "react";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import TemplateFor3D from "app/templates/mainTemplate3D";
-import * as THREE from "utils/libs/threejs/three_v0.120";
-import fragmentShader from "./Shaders/shader.frag";
-import vertexShader from "./Shaders/shader.vert";
+import React from 'react';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import TemplateFor3D from 'app/templates/mainTemplate3D';
+import * as THREE from 'utils/libs/threejs/three_v0.120';
+import fragmentShader from './Shaders/shader.frag';
+import vertexShader from './Shaders/shader.vert';
 
-const mp3 = require("./sound/holbaumannbenares.mp3");
+const mp3 = require('./sound/holbaumannbenares.mp3');
 
 const prefix = ``; // `dark-s_`;
 const format = `.jpg`;
@@ -23,8 +23,8 @@ const negz = require(`./textures/cube/${prefix}negz${format}`);
 
 const urls = [posx, negx, posy, negy, posz, negz];
 
-const aum = require("./textures/aum.png");
-const benares = require("./textures/benares.png");
+const aum = require('./textures/aum.png');
+const benares = require('./textures/benares.png');
 
 export default class Benares extends TemplateFor3D {
   constructor() {
@@ -60,7 +60,7 @@ export default class Benares extends TemplateFor3D {
   }
 
   componentDidMount() {
-    super.componentDidMount()
+    super.componentDidMount();
     const { innerWidth, innerHeight } = window;
 
     const renderer = new THREE.WebGLRenderer({
@@ -72,7 +72,7 @@ export default class Benares extends TemplateFor3D {
 
     // #region Resources
     const manager = new THREE.LoadingManager();
-    const startButton = document.getElementById("startButton");
+    const startButton = document.getElementById('startButton');
 
     let dataTexture = null;
     let analyser;
@@ -117,12 +117,7 @@ export default class Benares extends TemplateFor3D {
 
     // #region Front
     const sceneFront = new THREE.Scene();
-    const cameraFront = new THREE.PerspectiveCamera(
-      60,
-      innerWidth / innerHeight,
-      0.1,
-      100
-    );
+    const cameraFront = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 100);
     cameraFront.position.set(3, 3, 3).setLength(3.75);
 
     const controls = new OrbitControls(cameraFront, renderer.domElement);
@@ -158,9 +153,7 @@ export default class Benares extends TemplateFor3D {
     const icosahedronGeom = new THREE.IcosahedronGeometry(1, 0);
     for (let i = 0; i < spheresAmount; i++) {
       const sphere = new THREE.Mesh(sGeom, sMat);
-      sphere.userData.dirVector = new THREE.Vector3().copy(
-        icosahedronGeom.vertices[i]
-      );
+      sphere.userData.dirVector = new THREE.Vector3().copy(icosahedronGeom.vertices[i]);
       sphere.userData.dirTheta = Math.random() * Math.PI;
       spheres.push(sphere);
       sceneFront.add(sphere);
@@ -183,17 +176,14 @@ export default class Benares extends TemplateFor3D {
       sides.push(Math.floor(i / (51 * 51)));
     }
     // mainSphereGeom = mainSphereGeom.toNonIndexed();
-    mainSphereGeom.setAttribute(
-      "sides",
-      new THREE.Float32BufferAttribute(sides, 1)
-    );
+    mainSphereGeom.setAttribute('sides', new THREE.Float32BufferAttribute(sides, 1));
 
     const mainSphereMat = new THREE.MeshLambertMaterial({
       color: 0x333366,
       envMap: reflectionCube,
       reflectivity: 0.125,
     });
-    mainSphereMat.defines = { USE_UV: "" };
+    mainSphereMat.defines = { USE_UV: '' };
     mainSphereMat.extensions = { derivatives: true };
     const uniforms = {
       corpuscules: {
@@ -252,7 +242,7 @@ export default class Benares extends TemplateFor3D {
     vec3 n2 = cross(n1, normAccumulate);
     vec3 finalNormal = mix(n0, n2, distRatio);
     transformedNormal = normalMatrix * finalNormal;
-    `
+    `,
       );
 
       shader.fragmentShader = `
@@ -293,7 +283,7 @@ export default class Benares extends TemplateFor3D {
         col = hsb2rgb(vec3((1./6.) * vSides * (PI / 3.) + time, .125, .5));
         //col = mix(col, vec3(0.5, 0.25, 0), waveVal);
         gl_FragColor.rgb = mix(gl_FragColor.rgb, col, texVal * waveVal);
-        `
+        `,
       );
       // console.log(shader.fragmentShader);
     };
@@ -310,7 +300,7 @@ export default class Benares extends TemplateFor3D {
       renderer.setSize(innerWidth, innerHeight);
     }
 
-    window.addEventListener("resize", onWindowResize, false);
+    window.addEventListener('resize', onWindowResize, false);
 
     const clock = new THREE.Clock();
 
@@ -318,9 +308,7 @@ export default class Benares extends TemplateFor3D {
       const t = clock.getElapsedTime() * 0.625;
 
       spheres.forEach((s) => {
-        s.position
-          .copy(s.userData.dirVector)
-          .multiplyScalar(Math.sin(s.userData.dirTheta + t) * 2);
+        s.position.copy(s.userData.dirVector).multiplyScalar(Math.sin(s.userData.dirTheta + t) * 2);
       });
       uniforms.time.value = t;
       backUniforms.time.value = t;
@@ -340,8 +328,8 @@ export default class Benares extends TemplateFor3D {
         startButton.innerText = `${Math.round(itemsLoaded / itemsTotal) * 100} %`;
       };
       manager.onLoad = () => {
-        startButton.innerText = "Play";
-        startButton.addEventListener("click", startPlayback);
+        startButton.innerText = 'Play';
+        startButton.addEventListener('click', startPlayback);
       };
     }
 
@@ -359,12 +347,7 @@ export default class Benares extends TemplateFor3D {
 
       analyser = new THREE.AudioAnalyser(audio, fftSize);
 
-      dataTexture = new THREE.DataTexture(
-        analyser.data,
-        fftSize / 2,
-        1,
-        THREE.LuminanceFormat
-      );
+      dataTexture = new THREE.DataTexture(analyser.data, fftSize / 2, 1, THREE.LuminanceFormat);
 
       backUniforms.soundData.value = dataTexture;
 
@@ -376,7 +359,7 @@ export default class Benares extends TemplateFor3D {
 
       renderer.setAnimationLoop(AnimationLoop);
 
-      const overlay = document.getElementById("overlay");
+      const overlay = document.getElementById('overlay');
       overlay.remove();
     }
   }
@@ -401,7 +384,9 @@ export default class Benares extends TemplateFor3D {
 
         <div id="overlay">
           <div>
-            <button id="startButton" type="button">0 %</button>
+            <button id="startButton" type="button">
+              0 %
+            </button>
           </div>
         </div>
       </div>

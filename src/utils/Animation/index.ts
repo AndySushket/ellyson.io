@@ -1,19 +1,19 @@
-import * as TWEEN from "@tweenjs/tween.js";
-import { Camera, Euler, Vector3 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import * as TWEEN from '@tweenjs/tween.js';
+import { Camera, Euler, Vector3 } from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const EASING = {
   QuadraticOut: TWEEN.Easing.Quadratic.Out,
-  ExponentialOut: TWEEN.Easing.Exponential.Out
-}
+  ExponentialOut: TWEEN.Easing.Exponential.Out,
+};
 
 interface IMoveCamera {
-  nextPosition: Vector3,
-  camera: Camera,
-  callbackComplete?: () => void,
-  ms?: number,
-  easing?: (amount: number) => number
-  lookAtVector?: Vector3
+  nextPosition: Vector3;
+  camera: Camera;
+  callbackComplete?: () => void;
+  ms?: number;
+  easing?: (amount: number) => number;
+  lookAtVector?: Vector3;
 }
 
 interface IRotateCamera {
@@ -51,7 +51,7 @@ class Animation {
     ms: number,
     callback: () => void,
     callbackComplete = () => {},
-    easing: (amount: number) => number = EASING.QuadraticOut
+    easing: (amount: number) => number = EASING.QuadraticOut,
   ) =>
     new TWEEN.Tween(start)
       .to(end, ms)
@@ -73,10 +73,7 @@ class Animation {
     this.removeCallbackOnLastChainedTween();
   };
 
-  setStartStopAnimation = (
-    onStartAnimate: () => void,
-    onStopAnimation: () => void,
-  ) => {
+  setStartStopAnimation = (onStartAnimate: () => void, onStopAnimation: () => void) => {
     this.onStartAnimate = onStartAnimate;
     this.onStopAnimation = onStopAnimation;
   };
@@ -99,11 +96,7 @@ class Animation {
         endRotation,
         700,
         () => {
-          camera.rotation.set(
-            startRotation.x,
-            startRotation.y,
-            startRotation.z,
-          );
+          camera.rotation.set(startRotation.x, startRotation.y, startRotation.z);
         },
         () => {
           if (controls) {
@@ -122,8 +115,8 @@ class Animation {
     callbackComplete = () => {},
     ms = 700,
     easing,
-    lookAtVector = new Vector3()
-}: IMoveCamera) => {
+    lookAtVector = new Vector3(),
+  }: IMoveCamera) => {
     const cameraPosition = camera.position.clone();
 
     this.initTween(camera);
@@ -132,17 +125,17 @@ class Animation {
       this.getNewTween(
         cameraPosition,
         nextPosition,
-          ms,
+        ms,
         () => {
           camera.position.copy(cameraPosition);
           if (lookAtVector) {
-            camera.lookAt(lookAtVector)
+            camera.lookAt(lookAtVector);
           }
         },
         () => {
           callbackComplete();
         },
-          easing
+        easing,
       ),
     );
   };

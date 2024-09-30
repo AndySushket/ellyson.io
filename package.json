@@ -40,7 +40,6 @@
     "tweakpane": "^4.0.4",
     "uuid": "^10.0.0",
 
-
     "three": "^0.169.0",
     "three_106": "npm:three@0.106.2",
     "three_120": "npm:three@0.120.0",

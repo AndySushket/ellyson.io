@@ -3,10 +3,7 @@ export function isObject(value) {
 }
 
 export function isNumeric(value) {
-  return (
-    !isNaN(parseFloat(value)) &&
-    isFinite(value)
-  );
+  return !isNaN(parseFloat(value)) && isFinite(value);
 }
 
 export function isBoolean(value) {
