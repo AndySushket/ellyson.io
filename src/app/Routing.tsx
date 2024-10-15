@@ -104,6 +104,7 @@ export default function Routing() {
           <Route path="Texture" element={<ThreeJsJourney.Texture />} />
           <Route path="HauntedHouse" element={<ThreeJsJourney.HauntedHouse />} />
           <Route path="Particles" element={<ThreeJsJourney.Particles />} />
+          <Route path="GalaxyGenerator" element={<ThreeJsJourney.GalaxyGenerator />} />
         </Route>
     </Routes>
   );
