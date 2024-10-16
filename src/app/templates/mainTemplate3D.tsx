@@ -195,8 +195,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
     }
   }
 
-  attachMouseMoveEvent(): void {
-    this.renderer?.domElement?.addEventListener(
+  attachMouseMoveEvent(element?: any): void {
+    (element || this.renderer?.domElement)?.addEventListener(
       "mousemove",
       this.onMouseMove.bind(this),
     );

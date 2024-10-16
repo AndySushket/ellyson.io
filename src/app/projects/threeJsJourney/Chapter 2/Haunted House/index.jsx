@@ -45,7 +45,7 @@ const doorHeight = require("./resources/door/height.jpg");
 const doorMetalness = require("./resources/door/metalness.jpg");
 const doorRoughness = require("./resources/door/roughness.jpg");
 
-export default class Shader1 extends TemplateFor3D {
+export default class HauntedHouse extends TemplateFor3D {
   initControls() {
     super.initControls();
     this.camera.position.set(0, 0, 10);

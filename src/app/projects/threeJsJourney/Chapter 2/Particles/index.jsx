@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import TemplateFor3D from 'app/templates/mainTemplate3D';
 import img from './particles/2.png';
 
-export default class Shader1 extends TemplateFor3D {
+export default class Particles extends TemplateFor3D {
 	initControls() {
 		super.initControls();
 		this.camera.position.set(0, 0, 10);

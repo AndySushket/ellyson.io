@@ -7,7 +7,7 @@ import TemplateFor3D from 'app/templates/mainTemplate3D';
 // @ts-ignore
 import * as dat from "dat.gui";
 
-export default class Shader1 extends TemplateFor3D {
+export default class GalaxyGenerator extends TemplateFor3D {
   componentWillUnmount() {
 			super.componentWillUnmount();
 			this.gui.destroy();
