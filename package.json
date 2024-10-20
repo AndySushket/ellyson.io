@@ -41,6 +41,7 @@
     "uuid": "^10.0.0",
 
     "gsap": "^3.5.1",
+    "cannon-es": "^0.20.0",
     "three": "^0.169.0",
     "three_106": "npm:three@0.106.2",
     "three_120": "npm:three@0.120.0",
