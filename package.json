@@ -61,7 +61,8 @@
 
     "@reduxjs/toolkit": "^2.2.7",
 
-    "customize-cra": "^1.0.0"
+    "customize-cra": "^1.0.0",
+    "file-loader": "^6.2.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
