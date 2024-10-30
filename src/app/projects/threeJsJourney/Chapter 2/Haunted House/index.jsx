@@ -27,7 +27,7 @@ const roofARM = require("./resources/roof/roof_slates_02_1k/roof_slates_02_arm_1
 
 const bushColor = require("./resources/bush/leaves_forest_ground_1k/leaves_forest_ground_diff_1k.jpg");
 const bushNormal = require("./resources/bush/leaves_forest_ground_1k/leaves_forest_ground_nor_gl_1k.jpg");
-const bushARM = require("./resources/bush/leaves_forest_ground_1k/leaves_forest_ground_arm_1k.jpg");
+const bushARM = require("./resources/bush/leaves_forest_ground_1k/leaves_forest_ground_arm_1k.webp");
 
 //graves
 
