@@ -6,7 +6,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  output: 'export', // Outputs a Single-Page Application (SPA).
+  output: 'standalone', // Outputs a Single-Page Application (SPA).
   distDir: './build', // Changes the build output directory to `./dist`.
 }
 

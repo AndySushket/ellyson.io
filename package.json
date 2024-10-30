@@ -140,6 +140,7 @@
         "@babel/preset-env": "^7.25.4",
         "@babel/core": "^7.25.2",
         "@babel/eslint-parser": "^7.13.10",
+        "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "eslint": "^7.22.0",
         "eslint-config-airbnb": "^18.2.1",
         "eslint-config-prettier": "^8.1.0",
