@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "private": true,
   "dependencies": {
+    "next": "^12.0.7",
 
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -65,8 +66,8 @@
     "file-loader": "^6.2.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "DISABLE_ESLINT_PLUGIN=true react-app-rewired build",
+    "start": "npx serve@latest ./build",
+    "build": "DISABLE_ESLINT_PLUGIN=true next build",
     "test": "react-app-rewired test",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
   },
@@ -150,6 +151,7 @@
         "eslint-watch": "^7.0.0",
         "@types/jest": "^26.0.24",
         "@types/three": "^0.169.0",
+        "@types/next": "^9.0.0",
         "@types/react-dom": "^18.3.0",
         "cross-env": "^7.0.3",
         "enzyme": "^3.11.0",

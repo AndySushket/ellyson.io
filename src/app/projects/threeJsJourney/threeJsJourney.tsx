@@ -8,6 +8,8 @@ import ImportModels from './Chapter 3/ImportModels';
 import Raycaster from './Chapter 3/Raycaster';
 import EnvMap from './Chapter 3/EnvMap';
 import RealisticRendering from './Chapter 3/realisticRender';
+import Shaders from './Chapter 4/Shader 1';
+import ShadersPatterns from './Chapter 4/Shader Patterns';
 
 function ThreeJsJourney({ children }: any): JSX.Element {
   return children;
@@ -22,5 +24,7 @@ ThreeJsJourney.ImportModels = ImportModels;
 ThreeJsJourney.Raycaster = Raycaster;
 ThreeJsJourney.EnvMap = EnvMap;
 ThreeJsJourney.RealisticRendering = RealisticRendering;
+ThreeJsJourney.Shaders = Shaders;
+ThreeJsJourney.ShadersPatterns = ShadersPatterns;
 
 export default ThreeJsJourney;

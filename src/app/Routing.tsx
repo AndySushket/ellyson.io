@@ -17,7 +17,7 @@ import TestWork from './projects/testWorks/testWork';
 import ThreeJsJourney from './projects/threeJsJourney/threeJsJourney';
 import Main from './Main/Background3D/Background3D';
 
-export default function Routing() {
+function Routing() {
   return (
     <Routes>
       <Route path="/" element={<Main />}>
@@ -98,7 +98,15 @@ export default function Routing() {
         <Route path="GalaxyGenerator" element={<ThreeJsJourney.GalaxyGenerator />} />
         <Route path="ScrollBasedAnimation" element={<ThreeJsJourney.ScrollBasedAnimation />} />
         <Route path="Physics" element={<ThreeJsJourney.Physics />} />
+        <Route path="ImportModels" element={<ThreeJsJourney.ImportModels />} />
+        <Route path="Raycaster" element={<ThreeJsJourney.Raycaster />} />
+        <Route path="EnvMap" element={<ThreeJsJourney.EnvMap />} />
+        <Route path="RealisticRendering" element={<ThreeJsJourney.RealisticRendering />} />
+        <Route path="Shaders" element={<ThreeJsJourney.Shaders />} />
+        <Route path="ShadersPatterns" element={<ThreeJsJourney.ShadersPatterns />} />
       </Route>
     </Routes>
   );
 }
+
+export default Routing;
