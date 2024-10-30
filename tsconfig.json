@@ -3,7 +3,9 @@
     "target": "ES6",
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": [
+        "*"
+      ]
     },
     "lib": [
       "dom",
@@ -22,7 +24,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "typeRoots": [
       "node_modules/@types",
       "types"
@@ -30,12 +32,14 @@
     "types": [
       "react",
       "react-dom"
-    ]
+    ],
+    "incremental": true
   },
   "include": [
     "./src",
-    "typings.d.ts"
-    , "**/*.ts", "**/*.tsx"
+    "typings.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ],
   "exclude": [
     "dist",

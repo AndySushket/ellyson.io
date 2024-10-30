@@ -184,7 +184,7 @@ export default class Index extends TemplateFor3D {
     this.renderer?.render(this.scene, this.camera);
   }
 
-  render(): React.ReactNode {
+  render() {
     const { loadProcess } = this.state;
     return (
         <div>
