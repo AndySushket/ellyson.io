@@ -7,7 +7,7 @@ import {Button, ProgressBar} from "react-bootstrap";
 
 import * as TWEEN from '@tweenjs/tween.js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import TemplateFor3D from 'app/templates/mainTemplate3D';
+import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
 import getInterectiveMeshes from './components/interactiveMeshes';
 import {loadHouse, addSkyBox} from './components/House';
 import {mouseMove, keydown, click, addFloor, deleteFloor} from './components/events';

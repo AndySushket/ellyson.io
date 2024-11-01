@@ -9,7 +9,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 
-import TemplateFor3D from "app/templates/mainTemplate3D";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 import vert from "./Shaders/vert.vert";
 import waterVert from "./Shaders/water.vert";
 import atmosphereVert from "./Shaders/atmosphereVert.vert";
@@ -119,7 +119,7 @@ export default class Main extends TemplateFor3D {
 
   initSkyBox() {
     if (this.scene) {
-      const imageURLs = [ft, bk, up, dn, rt, lf];
+      const imageURLs = [ft.src, bk.src, up.src, dn.src, rt.src, lf.src];
       const textureCube = new THREE.CubeTextureLoader().load(imageURLs);
       textureCube.mapping = THREE.CubeRefractionMapping;
       this.scene.background = textureCube;
@@ -131,11 +131,11 @@ export default class Main extends TemplateFor3D {
       const geometry = new THREE.BoxGeometry(1, 1, 1, 1000, 1000, 1000);
       const textureLoader = new THREE.TextureLoader(this.loadingManager);
 
-      const texture = textureLoader.load(earthMap);
-      const texture2 = textureLoader.load(nightEarthMap);
-      const displacementMap = textureLoader.load(displaceMap);
+      const texture = textureLoader.load(earthMap.src);
+      const texture2 = textureLoader.load(nightEarthMap.src);
+      const displacementMap = textureLoader.load(displaceMap.src);
 
-      const cloudsMap = textureLoader.load(earthCloudMap);
+      const cloudsMap = textureLoader.load(earthCloudMap.src);
       cloudsMap.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
       cloudsMap.minFilter = THREE.NearestFilter;
       const geometryCloud = new THREE.IcosahedronGeometry(2.02, 500);
@@ -293,7 +293,7 @@ export default class Main extends TemplateFor3D {
     const vertShader: string = waterVert;
     const fragShader: string = frag;
 
-    const texture = new THREE.TextureLoader().load(map4);
+    const texture = new THREE.TextureLoader().load(map4.src);
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(15, 15);
     texture.needsUpdate = true;

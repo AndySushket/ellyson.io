@@ -3,12 +3,12 @@
  */
 
 import * as THREE from 'three';
-import TemplateFor3D from 'app/templates/mainTemplate3D';
+import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
 import vertexShader from './vertexShader.vert';
 import fragmentShader from './fragmentShader.frag';
 
-const image2 = require("./image.png");
-const image = require("./image2.png");
+const image2 = require("./image.png").default;
+const image = require("./image2.png").default;
 
 export default class DisplacedBox extends TemplateFor3D {
 
@@ -55,8 +55,8 @@ export default class DisplacedBox extends TemplateFor3D {
 	addObject() {
 		// const number = 11;
 
-		const t1 =  new THREE.TextureLoader().load(image);
-		const t2 =  new THREE.TextureLoader().load(image2);
+		const t1 =  new THREE.TextureLoader().load(image.src);
+		const t2 =  new THREE.TextureLoader().load(image2.src);
 		// eslint-disable-next-line no-multi-assign
 		t1.wrapS = t1.wrapT = t2.wrapS = t2.wrapT = THREE.MirroredRepeatWrapping;
 

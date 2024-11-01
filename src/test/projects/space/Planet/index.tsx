@@ -3,7 +3,7 @@
  */
 
 import * as THREE from "three";
-import TemplateFor3D from "app/templates/mainTemplate3D";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
 import xpos from "assets/img/skyBox/planet/nebula-xpos.png";
 import xneg from "assets/img/skyBox/planet/nebula-xneg.png";
@@ -36,7 +36,7 @@ export default class Planet extends TemplateFor3D {
   }
 
   initPlanet(): void  {
-    const texture: THREE.Texture = new THREE.TextureLoader().load(planet);
+    const texture: THREE.Texture = new THREE.TextureLoader().load(planet.src);
     const sphereGeo: THREE.SphereGeometry = new THREE.SphereGeometry(100, 32, 16);
     const sphereMaterial: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
       side: THREE.DoubleSide,
@@ -62,12 +62,12 @@ export default class Planet extends TemplateFor3D {
     // const skyGeometry = new THREE.BoxGeometry(10000, 10000, 10000);
     const imageURLs = [];
 
-    imageURLs.push(xpos);
-    imageURLs.push(xneg);
-    imageURLs.push(ypos);
-    imageURLs.push(yneg);
-    imageURLs.push(zpos);
-    imageURLs.push(zneg);
+    imageURLs.push(xpos.src);
+    imageURLs.push(xneg.src);
+    imageURLs.push(ypos.src);
+    imageURLs.push(yneg.src);
+    imageURLs.push(zpos.src);
+    imageURLs.push(zneg.src);
 
     const textureCube: THREE.CubeTexture = new THREE.CubeTextureLoader().load(imageURLs);
     textureCube.mapping = THREE.CubeRefractionMapping;

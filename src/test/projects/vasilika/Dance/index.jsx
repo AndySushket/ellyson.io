@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import {CircularProgress} from "@mui/material";
 import React from "react";
-import TemplateFor3D from "app/templates/mainTemplate3D";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 import danceModel from "./danceModel.fbx";
 
 let hitTestSource = null;

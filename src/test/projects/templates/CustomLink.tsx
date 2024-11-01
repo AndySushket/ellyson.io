@@ -2,7 +2,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import React from "react";
 import { connect } from "react-redux";
 import { Button } from "@mui/material";
-import { setLocation } from "@/app/projects/store/UI/UI";
+import { setLocation } from "@/test/projects/store/UI/UI";
 
 interface ICustomLink {
   dest: string;

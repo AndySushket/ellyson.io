@@ -4,7 +4,7 @@
 
 import React from "react";
 
-import TemplateFor3D from "app/templates/mainTemplate3D";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 import * as THREE from "utils/libs/threejs/three_v0.106";
 // import Mouse from "../../../../plugins/mouse.js";
 import Portal from "./portalMesh";

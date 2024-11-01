@@ -3,7 +3,7 @@
  */
 
 import * as THREE from 'three';
-import TemplateFor3D from 'app/templates/mainTemplate3D';
+import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import dat from 'dat.gui/src/dat';

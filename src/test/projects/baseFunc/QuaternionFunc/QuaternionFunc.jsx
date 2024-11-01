@@ -4,7 +4,7 @@
 
 import * as THREE from "three";
 import * as dat from "dat.gui";
-import TemplateFor3D from "app/templates/mainTemplate3D";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
 export default class Quaternion extends TemplateFor3D {
   componentWillUnmount() {

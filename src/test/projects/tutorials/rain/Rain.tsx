@@ -4,7 +4,7 @@
 
 import React from "react";
 import * as THREE from "three";
-import TemplateFor3D from "app/templates/mainTemplate3D";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
 const smoke = require(`assets/img/smoke.png`);
 const drop = require(`assets/img/drop.png`);

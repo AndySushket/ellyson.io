@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import fragmentShader from './shader.frag';
 import vertexShader from './shader.vert';
-import TemplateFor3D from 'app/templates/mainTemplate3D';
+import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
 
 export default class Shader3 extends TemplateFor3D {
 	initControls() {

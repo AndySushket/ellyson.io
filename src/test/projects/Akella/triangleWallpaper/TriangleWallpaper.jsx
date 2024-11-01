@@ -6,7 +6,7 @@ import React from "react";
 import Delaunator from "delaunator";
 import { Button } from "react-bootstrap";
 import * as THREE from "three";
-import TemplateFor3D from "app/templates/mainTemplate3D";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 // import Mouse from "utils/plugins/mouse";
 import Particle from "utils/plugins/particles";
 import Perlin from "utils/plugins/perlin";

@@ -3,7 +3,7 @@
  */
 
 import * as THREE from 'three';
-import TemplateFor3D from 'app/templates/mainTemplate3D';
+import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
 import AmbientOcclusionMap from './maps/Door_Wood_001_ambientOcclusion.jpg'
 import baseColorMap from './maps/Door_Wood_001_basecolor.jpg'
 import heightMap from './maps/Door_Wood_001_height.png'

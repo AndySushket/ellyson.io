@@ -5,7 +5,7 @@
 import React from "react";
 import * as THREE from "three";
 import {InterleavedBufferAttribute} from "three";
-import TemplateFor3D from "app/templates/mainTemplate3D";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
 import smoke from "assets/img/smoke.png";
 
@@ -65,7 +65,7 @@ export default class thanosPortal extends TemplateFor3D {
 
   initPortal() {
     const loader = new THREE.TextureLoader();
-    loader.load(smoke, (texture) => {
+    loader.load(smoke.src, (texture) => {
       const starsGeometry: any = new THREE.PlaneGeometry(350, 350, 1, 1);
       this.instancedPortalGeo = new THREE.InstancedBufferGeometry().copy(
         starsGeometry

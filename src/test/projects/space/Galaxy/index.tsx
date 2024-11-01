@@ -3,7 +3,7 @@
  */
 
 import * as THREE from "three";
-import TemplateFor3D from "app/templates/mainTemplate3D";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
 
 import saturn from "assets/img/Galaxy/saturn.jpg";
@@ -57,7 +57,7 @@ export default class Galaxy extends TemplateFor3D {
   initSaturn(): void {
     const saturnMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        saturnTexture: { value: textureLoader.load(saturn) },
+        saturnTexture: { value: textureLoader.load(saturn.src) },
         time: { value: 1.0 },
       },
       vertexShader: vertexSaturn,
@@ -150,7 +150,7 @@ export default class Galaxy extends TemplateFor3D {
   }
 
   initSkyBox(): void {
-    const imageURLs = [lf, rt, dn, up, bk, ft];
+    const imageURLs = [lf.src, rt.src, dn.src, up.src, bk.src, ft.src];
     const textureCube = new THREE.CubeTextureLoader().load(imageURLs);
     textureCube.mapping = THREE.CubeRefractionMapping;
     if (this.scene) {
