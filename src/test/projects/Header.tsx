@@ -1,5 +1,5 @@
 import React from "react";
-import CustomLink from "app/templates/CustomLink";
+import Button from "@mui/material/Button";
 
 export default function Header() {
   return (
@@ -7,11 +7,11 @@ export default function Header() {
       <div className="leftHeader">Andy Sushket</div>
       <div className="rightHeader">
         <div>
-          <CustomLink dest="/">Home</CustomLink>
+          <Button className="btn btn-primary-outline" href="/">Home</Button>
         </div>
         /
         <div>
-          <CustomLink dest="/projects">Projects</CustomLink>
+          <Button className="btn btn-primary-outline" href="/projects">Projects</Button>
         </div>
       </div>
     </div>

@@ -1,25 +1,22 @@
-/**
- * Created by Ellyson on 5/11/2018.
- */
-
+"use client";
 import React from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { ARButton } from 'three/examples/jsm/webxr/ARButton';
-import {analytics, logEvent} from "../../firebase/firebaseConfig";
+import { ARButton } from "three/examples/jsm/webxr/ARButton";
+// import { logCustomEvent } from "../../firebase/firebaseConfig";
+
+const isBrowser = typeof window !== 'undefined';
 
 export default class TemplateFor3D extends React.Component<any, any> {
-  private static deleteScene(scene: THREE.Scene | undefined) {
+  static deleteScene(scene: THREE.Scene | undefined) {
     scene?.traverse((mesh: THREE.Object3D | THREE.Mesh | undefined) => {
       if (mesh instanceof THREE.Mesh) {
         mesh.geometry.dispose();
         if (mesh.material instanceof THREE.Material) {
           mesh.material.dispose && mesh.material.dispose();
         } else if (Array.isArray(mesh.material)) {
-          const { length } = mesh.material;
-          let i = -1;
-          while (++i < length) {
-            mesh.material[i]?.dispose && mesh.material[i].dispose();
+          for (const material of mesh.material) {
+            material.dispose && material.dispose();
           }
         }
       }
@@ -32,36 +29,26 @@ export default class TemplateFor3D extends React.Component<any, any> {
   state: { checked: boolean; isTabActive: boolean };
 
   protected time: number;
-
-  private buttonAr: HTMLElement | undefined;
-
   protected looped: boolean;
-
   protected clock: THREE.Clock;
-
-  protected mouse: THREE.Vector2 = new THREE.Vector2();
-
-  private resolution: THREE.Vector2;
-
+  protected mouse: THREE.Vector2;
   protected HEIGHT: number;
-
   protected WIDTH: number;
-
   protected scene: THREE.Scene | undefined;
-
   protected renderer: THREE.WebGLRenderer | undefined;
-
   protected camera: THREE.PerspectiveCamera | undefined;
-
   protected light: THREE.DirectionalLight | undefined;
-
-  private ambientLight: THREE.AmbientLight | undefined;
-
   protected controls: any;
 
-  private rayCaster: THREE.Raycaster | undefined;
+  protected buttonAr: HTMLElement | undefined;
 
-  private onKeydown: any;
+  protected resolution: THREE.Vector2;
+
+  protected ambientLight: THREE.AmbientLight | undefined;
+
+  protected rayCaster: THREE.Raycaster | undefined;
+
+  protected onKeydown: any;
 
   protected canvasDiv: HTMLDivElement | null = null;
 
@@ -75,22 +62,38 @@ export default class TemplateFor3D extends React.Component<any, any> {
     this.looped = true;
     this.clock = new THREE.Clock();
     this.mouse = new THREE.Vector2();
-    this.resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
-    this.HEIGHT = window.innerHeight;
-    this.WIDTH = window.innerWidth;
-  }
 
+    if (isBrowser) {
+      this.resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
+      this.HEIGHT = window.innerHeight;
+      this.WIDTH = window.innerWidth;
+    } else {
+      this.resolution = new THREE.Vector2(0, 0);
+      this.HEIGHT = 0;
+      this.WIDTH = 0;
+    }
+  }
 
   handleVisibilityChange = () => {
     this.setState({ isTabActive: !document.hidden });
   };
 
   componentDidMount() {
-    document.addEventListener('visibilitychange', this.handleVisibilityChange);
-    logEvent(analytics, `page: ${window.location.pathname}`);
+    console.log("componentDidMount");
+    if (typeof window === 'undefined') return;
+    if (isBrowser) {
+      this.HEIGHT = window.innerHeight;
+      this.WIDTH = window.innerWidth;
+      this.resolution.set(this.WIDTH, this.HEIGHT);
+
+      document.addEventListener("visibilitychange", this.handleVisibilityChange);
+
+      window.addEventListener("resize", this.handleWindowResize, false);
+    }
   }
 
   componentWillUnmount(): void {
+    console.log("componentWillUnmount");
     if (this.scene) {
       TemplateFor3D.deleteScene(this.scene);
       this.scene.children.length = 0;
@@ -105,11 +108,10 @@ export default class TemplateFor3D extends React.Component<any, any> {
     if (this.camera) {
       this.camera = undefined;
     }
+
     this.looped = false;
-    document.removeEventListener(
-      "visibilitychange",
-        this.handleVisibilityChange,
-    );
+    document.removeEventListener("visibilitychange", this.handleVisibilityChange);
+    window.removeEventListener("resize", this.handleWindowResize);
   }
 
   initScene(): void {
@@ -120,7 +122,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
     this.renderer = new THREE.WebGLRenderer(param);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setClearColor(0x000000);
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(this.WIDTH, this.HEIGHT);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -130,9 +132,9 @@ export default class TemplateFor3D extends React.Component<any, any> {
   initCamera(cameraParam: any): void {
     this.camera = new THREE.PerspectiveCamera(
       cameraParam?.fov || 75,
-      window.innerWidth / window.innerHeight,
+      this.WIDTH / this.HEIGHT,
       0.1,
-      1000000,
+      1000000
     );
   }
 
@@ -151,65 +153,61 @@ export default class TemplateFor3D extends React.Component<any, any> {
   init3D(
     param?: THREE.WebGLRendererParameters | undefined,
     cameraParam?: any,
-    additionalParam?: any,
+    additionalParam?: any
   ): void {
     this.initRenderer(param);
     this.initScene();
     this.initCamera(cameraParam);
-    window.addEventListener(
-      "resize",
-      this.handleWindowResize.bind(this),
-      false,
-    );
-    this.looped = true;
-    if (additionalParam) {
-      if (additionalParam.ar) {
-        if (this.renderer instanceof THREE.WebGLRenderer) {
-          this.renderer.xr.enabled = true;
-          this.renderer.setClearColor(0x000000, 0);
-          const arButton = ARButton.createButton(this.renderer, {
-            // optionalFeatures: [ 'dom-overlay', 'dom-overlay-for-handheld-ar' ],
-            // domOverlay: { root: document.body },
-            requiredFeatures: ["hit-test"],
-          });
-          document.body.appendChild(arButton);
-        }
-      }
+    this.initLight();
+
+    this.initControls();
+
+    if (additionalParam && additionalParam.ar && this.renderer instanceof THREE.WebGLRenderer) {
+      this.renderer.xr.enabled = true;
+      this.renderer.setClearColor(0x000000, 0);
+
+      const arButton = ARButton.createButton(this.renderer, {
+        requiredFeatures: ["hit-test"],
+      });
+      document.body.appendChild(arButton);
     }
   }
 
   animate(): void {
-    requestAnimationFrame(this.animate.bind(this));
+    if (!this.looped) return;
+    requestAnimationFrame(() => this.animate());
     this.time++;
     // @ts-ignore
     this.renderer?.render(this.scene, this.camera);
   }
 
-  handleWindowResize(): void {
+  handleWindowResize = (): void => {
     if (this.camera) {
       this.HEIGHT = window.innerHeight;
       this.WIDTH = window.innerWidth;
-      this.renderer && this.renderer.setSize(this.WIDTH, this.HEIGHT);
+      this.renderer?.setSize(this.WIDTH, this.HEIGHT);
       this.camera.aspect = this.WIDTH / this.HEIGHT;
       this.camera.updateProjectionMatrix();
     }
-  }
+  };
 
   attachMouseMoveEvent(element?: any): void {
     (element || this.renderer?.domElement)?.addEventListener(
       "mousemove",
-      this.onMouseMove.bind(this),
+      this.onMouseMove.bind(this)
     );
   }
 
   attachKeydownEvent(): void {
-    window.addEventListener("keydown", this.onKeydown.bind(this));
+    if (isBrowser) {
+      window.addEventListener("keydown", this.onKeydown.bind(this));
+    }
   }
 
   attachMouseClickEvent(): void {
     this.renderer?.domElement?.addEventListener(
       "click",
-      this.onClick.bind(this),
+      this.onClick.bind(this)
     );
   }
 
@@ -222,8 +220,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
   }
 
   getMousePosition(e: MouseEvent): void {
-    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    this.mouse.x = (e.clientX / this.WIDTH) * 2 - 1;
+    this.mouse.y = -(e.clientY / this.HEIGHT) * 2 + 1;
   }
 
   initRaycaster(): void {

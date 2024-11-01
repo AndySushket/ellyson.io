@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import Projects from 'app/Main/pages/ProjectsList';
-import Projects2 from 'app/Main/pages/ProjectsList/all';
-import About from 'app/Main/pages/About';
+import Projects from '@/app/projects/Main/pages/ProjectsList';
+import Projects2 from '@/app/projects/Main/pages/ProjectsList/all';
+import About from '@/app/projects/Main/pages/About';
 import Space from './projects/space';
 import Shaders from './projects/shaders/Shaders';
 import MusicVisualization from './projects/musicVisualisation/musicVisual';
@@ -15,7 +15,7 @@ import MainFunc from './projects/baseFunc/mainFunc';
 import Vasilika from './projects/vasilika';
 import TestWork from './projects/testWorks/testWork';
 import ThreeJsJourney from './projects/threeJsJourney/threeJsJourney';
-import Main from './Main/Background3D/Background3D';
+import Main from '@/app/projects/Main/Background3D/Background3D';
 
 function Routing() {
   return (

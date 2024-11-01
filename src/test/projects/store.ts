@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import UI from "app/store/UI/UI";
+import UI from "@/app/projects/store/UI/UI";
 
 export default configureStore({
     reducer: {

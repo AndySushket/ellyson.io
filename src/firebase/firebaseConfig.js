@@ -1,7 +1,9 @@
-import { initializeApp } from 'firebase/app';
-import { getAnalytics, logEvent } from 'firebase/analytics';
+import { initializeApp, getApps } from "firebase/app";
 
-const firebaseConfig = {
+import { getAnalytics, logEvent, isSupported } from "firebase/analytics";
+
+
+  const firebaseConfig = {
   apiKey: 'AIzaSyCDy-Q2rOXXol6_I1rOVTXBeDSlFiiBQVM',
   authDomain: 'ellyson.io',
   projectId: 'ellyson-project',
@@ -10,9 +12,13 @@ const firebaseConfig = {
   appId: '1:368910366104:web:cb58a31375ff0a8d4ce7ed',
   measurementId: 'G-XDL0R248X3',
 };
-
 const app = initializeApp(firebaseConfig);
 
-const analytics = getAnalytics(app);
+const analytics = isSupported().then((isSupported) => (isSupported ? getAnalytics(app) : null));
 
-export { analytics, logEvent };
+export const logCustomEvent = async (event) => {
+  if (!analytics) return;
+
+  logEvent(getAnalytics(), event, { platform: "web" });
+};
+

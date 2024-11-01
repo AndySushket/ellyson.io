@@ -3,18 +3,16 @@
  */
 
 import * as THREE from "three";
-import React, { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { BokehPass } from "three/examples/jsm/postprocessing/BokehPass";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass";
 
-import { connect } from "react-redux";
 import AnimationUtil from "utils/Animation";
-import TemplateFor3D from "app/templates/mainTemplate3D";
-import { setLocation } from "app/store/UI/UI";
+import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
 class Background3D extends TemplateFor3D {
   private postprocessing: any | undefined = {};
@@ -52,42 +50,6 @@ class Background3D extends TemplateFor3D {
       this.sphere.add(mesh);
     }
     this.scene?.add(this.sphere);
-  }
-
-  componentDidUpdate(prevProps: Readonly<any>) {
-    const { currentLocation } = this;
-
-    if (
-      currentLocation !== this.props.currentPath ||
-      currentLocation !== this.props.stateLocation
-    ) {
-      this.currentLocation =
-        prevProps.currentPath !== this.props.currentPath
-          ? this.props.currentPath
-          : this.props.stateLocation;
-
-      if (this.currentLocation === "/projects" && this.camera) {
-        AnimationUtil.moveCamera({
-          nextPosition: new THREE.Vector3(
-            Math.random() * 300 - 150,
-            Math.random() * 300 - 150,
-            Math.random() * 300 - 150,
-          ),
-          camera: this.camera,
-          ms: 1500,
-          lookAtVector: new THREE.Vector3(),
-        });
-      }
-
-      if (this.currentLocation === "/" && this.camera) {
-        AnimationUtil.moveCamera({
-          nextPosition: new THREE.Vector3(0, 0, 200),
-          camera: this.camera,
-          ms: 1500,
-          lookAtVector: new THREE.Vector3(),
-        });
-      }
-    }
   }
 
   componentDidMount(): void {
@@ -158,54 +120,5 @@ class Background3D extends TemplateFor3D {
   }
 }
 
-function Background3DWithLocation({
-  stateLocation,
-  setLocationDispatch,
-}: {
-  stateLocation: string;
-  setLocationDispatch: any;
-}) {
-  const location = useLocation();
-  const [currentPath, setPath] = useState("");
 
-  useEffect(() => {
-    if (currentPath !== location.pathname) {
-      setPath(location.pathname);
-      if (stateLocation !== location.pathname) {
-        setLocationDispatch(location.pathname);
-      }
-    }
-
-    if (stateLocation !== currentPath && currentPath === location.pathname) {
-      setPath(stateLocation);
-    } else if (
-      stateLocation !== currentPath &&
-      currentPath !== location.pathname
-    ) {
-      setPath(location.pathname);
-      setLocationDispatch(location.pathname);
-    }
-  }, [location, stateLocation]);
-
-  return (
-    <Background3D currentPath={currentPath} stateLocation={stateLocation} />
-  );
-}
-
-function mapStateToProps(state: { ui: any }) {
-  const {
-    ui: { location },
-  } = state;
-  return { stateLocation: location };
-}
-
-const mapDispatchToProps = (
-  dispatch: (arg0: { payload: undefined; type: "UI/setLocation" }) => any,
-) => ({
-  setLocationDispatch: (dest: void) => dispatch(setLocation(dest)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Background3DWithLocation);
+export default React.memo(Background3D);

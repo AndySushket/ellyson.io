@@ -33,13 +33,19 @@
       "react",
       "react-dom"
     ],
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
+    "**/*.ts",
+    "**/*.tsx",
     "./src",
     "typings.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "./build/types/**/*.ts"
   ],
   "exclude": [
     "dist",

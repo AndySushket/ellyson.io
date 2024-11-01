@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "../styles/App.scss";
+
 import "react-bootstrap";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
