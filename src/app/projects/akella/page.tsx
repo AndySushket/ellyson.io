@@ -1,4 +1,4 @@
 "use client";
 
-import Pepyaka from "./Pepyaka/page";
+import Pepyaka from "./pepyaka/page";
 export default Pepyaka;

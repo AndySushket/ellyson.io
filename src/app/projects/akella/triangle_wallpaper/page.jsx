@@ -66,11 +66,12 @@ export default class Page extends TemplateFor3D {
     super.initControls();
     this.camera.position.set(1366 / 2, 768 / 2, 770);
     this.controls.target.set(1366 / 2, 768 / 2, 0);
+    this.controls.update()
   }
 
   initPlateMesh() {
     const loader = new THREE.TextureLoader();
-    loader.load(image.srcp, (texture) => {
+    loader.load(image.src, (texture) => {
       const position = [];
       const indexes = [];
       this.dots.forEach((d) => {
