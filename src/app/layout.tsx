@@ -6,8 +6,11 @@ import { GlobalStateProvider } from 'state/GlobalStateProvider';
 
 import "../styles/App.scss";
 import Background3D from '@/test/projects/Main/Background3D/Background3D';
+import { usePathname } from 'next/navigation';
 
 export default function RootLayout({ children }: { children: React.ReactNode , background: React.ReactNode }) {
+  const pathname = usePathname();
+  const useBackGround = pathname === '/' || pathname === '/projects';
   return (
     <html lang='en'>
     <head>
@@ -36,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode , b
       />
     </head>
     <body>
-    <Background3D/>
+    {useBackGround && <Background3D/>}
     <GlobalStateProvider>
       <Header/>
       {children}

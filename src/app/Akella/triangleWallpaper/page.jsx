@@ -1,6 +1,7 @@
 /**
  * Created by Ellyson on 5/11/2018.
  */
+"use client";
 
 import React from "react";
 import Delaunator from "delaunator";
@@ -13,9 +14,9 @@ import Perlin from "utils/plugins/perlin";
 import vertexShader from "./shaders/vertexShader.vert";
 import fragmentShader from "./shaders/fragmentShader.frag";
 
-const image = require("assets/img/image.jpg");
+const image = require("assets/img/image.jpg").default;
 
-export default class TriangleWallpaper extends TemplateFor3D {
+export default class Page extends TemplateFor3D {
   constructor() {
     super();
     this.raycaster = new THREE.Raycaster();
@@ -69,7 +70,7 @@ export default class TriangleWallpaper extends TemplateFor3D {
 
   initPlateMesh() {
     const loader = new THREE.TextureLoader();
-    loader.load(image, (texture) => {
+    loader.load(image.srcp, (texture) => {
       const position = [];
       const indexes = [];
       this.dots.forEach((d) => {

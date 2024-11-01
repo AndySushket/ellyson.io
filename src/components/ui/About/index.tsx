@@ -24,8 +24,6 @@ function About() {
   const { state } = useGlobalState();
   const { location } = state;
 
-  console.log('location', location);
-
   useEffect(() => {
     if (location !== "/") setExit(true);
     else setExit(false);

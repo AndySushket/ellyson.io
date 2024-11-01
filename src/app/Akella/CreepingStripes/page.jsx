@@ -1,13 +1,14 @@
 /**
  * Created by Ellyson on 5/11/2018.
  */
+"use client";
 
 import * as THREE from 'three';
 import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
 import vertexShader from './vertexShader.vert';
 import fragmentShader from './fragmentShader.frag';
 
-export default class CreepingStripes extends TemplateFor3D {
+export default class Page extends TemplateFor3D {
 
 	constructor(){
 		super();

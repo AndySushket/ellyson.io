@@ -11,9 +11,6 @@ function Projects() {
   const { state } = useGlobalState();
   const { location } = state;
 
-
-  console.log("location2", location);
-
   useEffect(() => {
     if (location !== "/projects") setExit(true);
     else setExit(false);
