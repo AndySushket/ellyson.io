@@ -52,7 +52,8 @@ const nextConfig = {
     );
     return config;
   },
-  output: 'standalone', // Outputs a Single-Page Application (SPA).
+  // output: 'standalone', // Outputs a Single-Page Application (SPA).
+  output: 'export', // Outputs a static site using `next export`.
   distDir: './build', // Changes the build output directory to `./dist`.
 }
 
