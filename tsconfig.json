@@ -45,8 +45,9 @@
     "**/*.tsx",
     "./build/types/**/*.ts",
     "./src",
+    ".next/types/**/*.ts",
     "typings.d.ts",
-    ".next/types/**/*.ts"
+    "out/types/**/*.ts"
   ],
   "exclude": [
     "dist",
