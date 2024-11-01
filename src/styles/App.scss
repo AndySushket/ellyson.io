@@ -311,9 +311,17 @@ div.header {
       color: wheat;
       text-decoration: none;
     }
+
+    button, a {
+      &:hover {
+        color: rgba(255, 255, 255, 0.69);
+        border-color: transparent;
+      }
+    }
     .MuiIconButton-root,
-    .MuiButton-root {
+    .MuiButton-root, a {
       color: rgb(228, 228, 228);
+      text-decoration: none;
     }
     //
     > :last-child {
