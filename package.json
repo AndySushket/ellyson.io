@@ -67,7 +67,7 @@
   },
   "scripts": {
     "start": "npx serve@latest ./build",
-    "build": "DISABLE_ESLINT_PLUGIN=true next build",
+    "build": "DISABLE_ESLINT_PLUGIN=true next build && node updateFirebaseRewrites.js",
     "dev": "DISABLE_ESLINT_PLUGIN=true next dev",
     "test": "react-app-rewired test",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
