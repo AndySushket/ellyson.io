@@ -1,32 +1,33 @@
-import {useLocation, useNavigate} from "react-router-dom";
+'use client';
+
 import React from "react";
-import { connect } from "react-redux";
 import { Button } from "@mui/material";
-import { setLocation } from "@/test/projects/store/UI/UI";
+import { useRouter, usePathname } from 'next/navigation'
+import { useGlobalState } from 'state/GlobalStateProvider';
 
 interface ICustomLink {
   dest: string;
   children: React.ReactNode;
-  setLocation: (dest: string) => void;
+  // setLocation: (dest: string) => void;
 }
 
 // eslint-disable-next-line no-shadow
 const CustomLink: React.FC<ICustomLink> = ({
   dest,
   children,
-  setLocation,
 }: ICustomLink) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { updateState } = useGlobalState();
+  const router = useRouter();
+  const pathname = usePathname();
   const handleDelayedLinkClick =
     (to: string, delay: number) => (event: any) => {
       event.preventDefault();
-      setLocation(dest);
-      if (!location.pathname.includes("/main")) {
-        navigate(to);
+      updateState("location", to);
+      if (!pathname.includes("/") && !pathname.includes("projects")) {
+        router.push(to);
       }
       setTimeout(() => {
-        navigate(to);
+        router.push(to);
       }, delay);
     };
 
@@ -35,18 +36,4 @@ const CustomLink: React.FC<ICustomLink> = ({
   );
 };
 
-function mapStateToProps(state: { ui: any }) {
-  const {
-    ui: { value },
-  } = state;
-  return { value };
-}
-
-const mapDispatchToProps = (
-  dispatch: (arg0: { payload: undefined; type: "UI/setLocation" }) => any,
-) => ({
-  setLocation: (dest: void) => dispatch(setLocation(dest)),
-});
-
-// @ts-ignore
-export default connect(mapStateToProps, mapDispatchToProps)(CustomLink);
+export default CustomLink;

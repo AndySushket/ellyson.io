@@ -1,15 +1,13 @@
 "use client";
 
 import React from 'react';
-import Header from 'test/projects/Header';
-import { usePathname } from 'next/navigation';
+import Header from 'components/ui/Header';
+import { GlobalStateProvider } from 'state/GlobalStateProvider';
 
 import "../styles/App.scss";
 import Background3D from '@/test/projects/Main/Background3D/Background3D';
 
-export default function RootLayout({ children, background }: { children: React.ReactNode , background: React.ReactNode }) {
-  const pathname = usePathname();
-  const showBackground = true;
+export default function RootLayout({ children }: { children: React.ReactNode , background: React.ReactNode }) {
   return (
     <html lang='en'>
     <head>
@@ -38,9 +36,11 @@ export default function RootLayout({ children, background }: { children: React.R
       />
     </head>
     <body>
-    <Header />
     <Background3D/>
-    {children}
+    <GlobalStateProvider>
+      <Header/>
+      {children}
+    </GlobalStateProvider>
     </body>
     </html>
   );
