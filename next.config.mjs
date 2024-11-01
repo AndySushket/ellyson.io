@@ -54,7 +54,7 @@ const nextConfig = {
   },
   // output: 'standalone', // Outputs a Single-Page Application (SPA).
   output: 'export', // Outputs a static site using `next export`.
-  distDir: './build', // Changes the build output directory to `./dist`.
+  distDir: 'out', // The directory where the build is written to. Default is `.next`.
 }
 
 export default nextConfig

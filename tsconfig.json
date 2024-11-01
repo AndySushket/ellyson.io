@@ -43,9 +43,10 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "./build/types/**/*.ts",
     "./src",
     "typings.d.ts",
-    "./build/types/**/*.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "dist",
