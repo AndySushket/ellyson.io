@@ -11,17 +11,6 @@ const nextConfig = {
         use: 'raw-loader',
       },
       {
-        test: /\.(gltf|glb|FBX|fbx)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]', // Сохраняем оригинальное имя и расширение
-            },
-          },
-        ],
-      },
-      {
         test: /\.(mp3|wav|ogg|flac)$/, // Расширьте список, если нужно обрабатывать другие типы аудиофайлов
         use: {
           loader: 'file-loader',
@@ -30,7 +19,13 @@ const nextConfig = {
           },
         },
       },
-
+      {
+        test: /\.fbx$/i, // Обработка файлов .fbx
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/media/[name].[hash][ext]', // Путь, куда будет помещен файл
+        },
+      },
       {
         test: /\.(pdf|json)$/, // Расширьте список, если нужно обрабатывать другие типы аудиофайлов
         use: {

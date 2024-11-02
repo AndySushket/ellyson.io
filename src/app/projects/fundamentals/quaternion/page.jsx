@@ -2,6 +2,8 @@
  * Created by Ellyson on 5/11/2018.
  */
 
+"use client";
+
 import * as THREE from "three";
 import * as dat from "dat.gui";
 import TemplateFor3D from "test/projects/templates/mainTemplate3D";

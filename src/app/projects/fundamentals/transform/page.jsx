@@ -2,11 +2,13 @@
  * Created by Ellyson on 5/11/2018.
  */
 
+"use client";
+
 import * as THREE from "three";
 import * as dat from "dat.gui";
 import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
-export default class PositionRotationScale extends TemplateFor3D {
+export default class Page extends TemplateFor3D {
   componentWillUnmount() {
     super.componentWillUnmount();
     this.gui.destroy();

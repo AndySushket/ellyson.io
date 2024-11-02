@@ -1,12 +1,13 @@
 /**
  * Created by Ellyson on 5/11/2018.
  */
+"use client";
 
 import * as THREE from "three";
 import * as dat from "dat.gui";
 import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
-export default class Matrix extends TemplateFor3D {
+export default class Page extends TemplateFor3D {
   componentWillUnmount() {
     super.componentWillUnmount();
     this.gui.destroy();
@@ -26,10 +27,10 @@ export default class Matrix extends TemplateFor3D {
     this.gui = new dat.GUI();
     const positionFolder = this.gui.addFolder("position");
 
-    this.Matrix = this.cube.matrix.clone();
+    this.Page = this.cube.matrix.clone();
     this.cube.matrixAutoUpdate = false;
-    this.Matrix.elements.forEach((elem, i) => {
-      positionFolder.add(this.Matrix.elements, i, -5, 5, 0.1);
+    this.Page.elements.forEach((elem, i) => {
+      positionFolder.add(this.Page.elements, i, -5, 5, 0.1);
     });
     positionFolder.add(this, "applyMatrix");
 
@@ -45,7 +46,7 @@ export default class Matrix extends TemplateFor3D {
   }
 
   applyMatrix() {
-    this.cube.applyMatrix(this.Matrix);
+    this.cube.applyMatrix(this.Page);
   }
 
   animate() {

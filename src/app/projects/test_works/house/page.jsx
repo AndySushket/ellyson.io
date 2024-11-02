@@ -1,6 +1,8 @@
 /**
  * Created by Ellyson on 5/11/2018.
  */
+"use client";
+
 import React from 'react';
 import * as THREE from 'three';
 import {Button, ProgressBar} from "react-bootstrap";
@@ -19,11 +21,12 @@ import {COLORS, colorsArray} from './components/constants';
 export default class House extends TemplateFor3D {
 
 	state = {
+		isTabActive: true,
 		progress: 0,
 		loaded: false,
-		width: window.innerWidth,
-		height: window.innerHeight,
-		showSkyBox: false
+		showSkyBox: false,
+		width: 0,
+		height: 0
 	}
 
 	constructor(){
@@ -36,6 +39,8 @@ export default class House extends TemplateFor3D {
 		this.additinalFloorArray = [];
 		this.doorLight = new Light(this.currentColor);
 		this.cssScene = new THREE.Scene();
+
+
 	}
 
 	initCamera() {
@@ -95,7 +100,6 @@ export default class House extends TemplateFor3D {
 	handleWindowResize(){
 		super.handleWindowResize();
 		this.cssRenderer?.renderer.setSize(this.WIDTH, this.HEIGHT);
-		this.setState({width: window.innerWidth, height: window.innerHeight})
 	}
 
 	attachMouseMoveEvent() {
@@ -124,8 +128,16 @@ export default class House extends TemplateFor3D {
 		this.saveScreen = new FlyingText(80.0, 25.0, new THREE.Vector3(20.0, 150, 0.0), new THREE.Euler(0, Math.PI / 2, 0), "screen", this);
 	}
 
+	updateWidhtHeight(){
+		this.setState({
+			width: window.innerWidth,
+			height: window.innerHeight
+		})
+	}
+
 	async componentDidMount() {
 		super.componentDidMount()
+		this.updateWidhtHeight();
 		this.init3D({alpha: true,antialias: true, preserveDrawingBuffer: true});
 		this.cssRenderer = new CssRenderer(this.renderer, this.canvasDiv);
 		this.initControls(this.cssRenderer.renderer.domElement);
@@ -156,7 +168,7 @@ export default class House extends TemplateFor3D {
 	}
 
 	render() {
-		const {progress, width, height, loaded} = this.state;
+		const {progress,loaded, width, height} = this.state;
 		return <div>
 			<ProgressBar style={{height: (progress === 100 ? "0" : "9px")}} now={this.state.progress} />
 			<header className={!this.state.loaded ? "buttonInCenter" : ""}

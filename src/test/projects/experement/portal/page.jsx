@@ -1,3 +1,4 @@
+"use client";
 /*! by @vlucendo -- http://vlucendo.com */ ! function(c) {
 	function e(e) {
 		for (var t, n, i = e[0], r = e[1], a = e[2], o = 0, s = []; o < i.length; o++) n = i[o], l[n] && s.push(l[n][0]), l[n] = 0;
