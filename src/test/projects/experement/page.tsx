@@ -1,4 +1,4 @@
 "use client";
 
-import Portal from "./portal/page";
-export default Portal;
+// import * as Portal from "./portal/page.js";
+export default {  };
