@@ -8,7 +8,7 @@ import "../styles/App.scss";
 import Background3D from '@/test/projects/Main/Background3D/Background3D';
 import { usePathname } from 'next/navigation';
 
-export default function RootLayout({ children }: { children: React.ReactNode , background: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const useBackGround = pathname === '/' || pathname === '/projects';
   return (

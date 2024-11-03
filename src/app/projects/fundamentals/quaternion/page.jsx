@@ -1,11 +1,6 @@
-/**
- * Created by Ellyson on 5/11/2018.
- */
-
 "use client";
 
 import * as THREE from "three";
-import * as dat from "dat.gui";
 import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
 export default class Quaternion extends TemplateFor3D {
@@ -19,7 +14,7 @@ export default class Quaternion extends TemplateFor3D {
     this.camera.position.set(0, 0, 10);
   }
 
-  initPositionRotationScale() {
+ async initPositionRotationScale() {
     const origin = new THREE.Vector3(0, 0, 0);
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshNormalMaterial();
@@ -49,7 +44,7 @@ export default class Quaternion extends TemplateFor3D {
       0xffffff
     );
     this.cube.add(this.afterArrow);
-
+    const dat = await import("dat.gui");
     this.gui = new dat.GUI();
     this.positionFolder = this.gui.addFolder("QuaternionFunc");
     this.rotationFolder = this.gui.addFolder("rotationFunc");
@@ -65,10 +60,10 @@ export default class Quaternion extends TemplateFor3D {
     this.rotationFolder.open();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     super.componentDidMount()
     this.init3D();
-    this.initPositionRotationScale();
+    await this.initPositionRotationScale();
     this.initControls();
     this.animate();
   }
@@ -76,8 +71,8 @@ export default class Quaternion extends TemplateFor3D {
   animate() {
     if (!this.looped || !this.state.isTabActive) return;
     this.afterArrow.quaternion.clone(this.cube.quaternion);
-    this.positionFolder.updateDisplay();
-    this.rotationFolder.updateDisplay();
+    // this.positionFolder.updateDisplay();
+    // this.rotationFolder.updateDisplay();
     super.animate();
   }
 }

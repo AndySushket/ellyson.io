@@ -8,7 +8,59 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "/404{,/**}",
+        "destination": "/404.html"
+      },
+      {
+        "source": "/projects/akella/creeping_stripes{,/**}",
+        "destination": "/projects/akella/creeping_stripes.html"
+      },
+      {
+        "source": "/projects/akella/displaced_box{,/**}",
+        "destination": "/projects/akella/displaced_box.html"
+      },
+      {
+        "source": "/projects/akella/pepyaka{,/**}",
+        "destination": "/projects/akella/pepyaka.html"
+      },
+      {
+        "source": "/projects/akella/triangle_wallpaper{,/**}",
+        "destination": "/projects/akella/triangle_wallpaper.html"
+      },
+      {
+        "source": "/projects/akella{,/**}",
+        "destination": "/projects/akella.html"
+      },
+      {
+        "source": "/projects/fundamentals/matrix{,/**}",
+        "destination": "/projects/fundamentals/matrix.html"
+      },
+      {
+        "source": "/projects/fundamentals/quaternion{,/**}",
+        "destination": "/projects/fundamentals/quaternion.html"
+      },
+      {
+        "source": "/projects/fundamentals/transform{,/**}",
+        "destination": "/projects/fundamentals/transform.html"
+      },
+      {
+        "source": "/projects/fundamentals{,/**}",
+        "destination": "/projects/fundamentals.html"
+      },
+      {
+        "source": "/projects/test_works/house{,/**}",
+        "destination": "/projects/test_works/house.html"
+      },
+      {
+        "source": "/projects/test_works{,/**}",
+        "destination": "/projects/test_works.html"
+      },
+      {
+        "source": "/projects{,/**}",
+        "destination": "/projects.html"
+      },
+      {
+        "source": "/{,/**}",
         "destination": "/index.html"
       }
     ]

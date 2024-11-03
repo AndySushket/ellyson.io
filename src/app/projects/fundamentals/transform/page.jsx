@@ -1,14 +1,11 @@
-/**
- * Created by Ellyson on 5/11/2018.
- */
+'use client';
 
 "use client";
 
 import * as THREE from "three";
-import * as dat from "dat.gui";
 import TemplateFor3D from "test/projects/templates/mainTemplate3D";
 
-export default class Page extends TemplateFor3D {
+export default class Transform extends TemplateFor3D {
   componentWillUnmount() {
     super.componentWillUnmount();
     this.gui.destroy();
@@ -19,12 +16,13 @@ export default class Page extends TemplateFor3D {
     this.camera.position.set(0, 0, 10);
   }
 
-  initPositionRotationScale() {
+  async initPositionRotationScale() {
     const geometry = new THREE.BoxGeometry(5, 5, 5);
     const material = new THREE.MeshNormalMaterial();
     this.cube = new THREE.Mesh(geometry, material);
     this.scene.add(this.cube);
 
+    const dat = await import("dat.gui");
     this.gui = new dat.GUI();
     const positionFolder = this.gui.addFolder("position");
     const rotationFolder = this.gui.addFolder("rotation");
@@ -43,10 +41,10 @@ export default class Page extends TemplateFor3D {
     scaleFolder.open();
   }
 
-  componentDidMount() {
-    super.componentDidMount()
+  async componentDidMount() {
+    super.componentDidMount();
     this.init3D();
-    this.initPositionRotationScale();
+    await this.initPositionRotationScale();
     this.initControls();
     this.animate();
   }
