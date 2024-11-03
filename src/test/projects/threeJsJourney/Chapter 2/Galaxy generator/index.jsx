@@ -3,7 +3,7 @@
  */
 
 import * as THREE from 'three';
-import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
+import TemplateFor3D from 'components/common/mainTemplate3D';
 // @ts-ignore
 import * as dat from "dat.gui";
 

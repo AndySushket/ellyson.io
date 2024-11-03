@@ -6,7 +6,7 @@
 // import { Color, DoubleSide, NormalBlending, ShaderMaterial, Vector2 } from 'three';
 // import vertexShader from './vert.glsl';
 // import fragmentShader from './frag.glsl';
-// import TemplateFor3D from "src/app/templates/mainTemplate3D";
+// import TemplateFor3D from 'components/common/mainTemplate3D';
 //
 // const rimColorImpl = new Color("#fff");
 // const shieldColorImpl = new Color("#f00");

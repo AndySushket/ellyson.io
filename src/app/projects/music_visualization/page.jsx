@@ -3,7 +3,7 @@
 import React from "react";
 import * as THREE from "three";
 import { Button } from "react-bootstrap";
-import TemplateFor3D from "test/projects/templates/mainTemplate3D";
+import TemplateFor3D from 'components/common/mainTemplate3D';
 import fragmentShader from "./shader.frag";
 import vertexShader from "./shader.vert";
 

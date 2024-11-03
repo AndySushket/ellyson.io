@@ -1,11 +1,8 @@
-/**
- * Created by Ellyson on 5/11/2018.
- */
 'use client';
 
 import React from 'react';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
+import TemplateFor3D from 'components/common/mainTemplate3D';
 import * as THREE from 'utils/libs/threejs/three_v0.120';
 import fragmentShader from './Shaders/shader.frag';
 import vertexShader from './Shaders/shader.vert';

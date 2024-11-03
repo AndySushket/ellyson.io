@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomLink from '@/test/projects/templates/CustomLink';
+import CustomLink from '@/components/common/CustomLink';
 
 export default function Header () {
   return (

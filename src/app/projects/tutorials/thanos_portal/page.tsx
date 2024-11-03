@@ -3,7 +3,7 @@
 import React from "react";
 import * as THREE from "three";
 import {InterleavedBufferAttribute} from "three";
-import TemplateFor3D from "test/projects/templates/mainTemplate3D";
+import TemplateFor3D from 'components/common/mainTemplate3D';
 
 import smoke from "assets/img/smoke.png";
 

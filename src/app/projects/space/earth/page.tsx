@@ -10,7 +10,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 
-import TemplateFor3D from "test/projects/templates/mainTemplate3D";
+import TemplateFor3D from 'components/common/mainTemplate3D';
 import vert from "./Shaders/vert.vert";
 import waterVert from "./Shaders/water.vert";
 import atmosphereVert from "./Shaders/atmosphereVert.vert";

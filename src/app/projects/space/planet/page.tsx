@@ -5,7 +5,7 @@
 'use client';
 
 import * as THREE from "three";
-import TemplateFor3D from "test/projects/templates/mainTemplate3D";
+import TemplateFor3D from 'components/common/mainTemplate3D';
 
 import xpos from "assets/img/skyBox/planet/nebula-xpos.png";
 import xneg from "assets/img/skyBox/planet/nebula-xneg.png";

@@ -3,7 +3,7 @@
  */
 
 import * as THREE from 'three';
-import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
+import TemplateFor3D from 'components/common/mainTemplate3D';
 import * as dat from "dat.gui";
 import React from 'react';
 import './styles.scss';

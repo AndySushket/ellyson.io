@@ -12,7 +12,7 @@ import { BokehPass } from "three/examples/jsm/postprocessing/BokehPass";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass";
 
 import AnimationUtil from "utils/Animation";
-import TemplateFor3D from "test/projects/templates/mainTemplate3D";
+import TemplateFor3D from 'components/common/mainTemplate3D';
 
 class Background3D extends TemplateFor3D {
   private postprocessing: any | undefined = {};
