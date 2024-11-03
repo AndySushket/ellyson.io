@@ -1,21 +1,21 @@
 import {Row} from "react-bootstrap";
 import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
+import Link from 'next/link';
 import React from "react";
 
 export default () => <Row>
     <div>
         <Button>
-            <Link to="/Shaders/Shader1">Shader1</Link>
+            <Link href="/projects/shaders/shader1">Shader1</Link>
         </Button>
         <Button>
-            <Link to="/Shaders/Shader2">Shader2</Link>
+            <Link href="/projects/shaders/shader2">Shader2</Link>
         </Button>
         <Button>
-            <Link to="/Shaders/Shader3">Shader3</Link>
+            <Link href="/projects/shaders/shader3">Shader3</Link>
         </Button>
         <Button>
-            <Link to="/Shaders/Shader4">Shader4</Link>
+            <Link href="/projects/shaders/shader4">Shader4</Link>
         </Button>
     </div>
 </Row>;

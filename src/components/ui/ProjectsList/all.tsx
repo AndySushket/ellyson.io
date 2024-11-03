@@ -14,6 +14,7 @@ import Shaders from "./category/Shaders";
 import Test from "./category/Test";
 import UpdatingPerformance from "./category/UpdatingPerformance";
 import Basics from "./category/Basics";
+import { useGlobalState } from 'state/GlobalStateProvider';
 
 
 const projectsList = <Col>
@@ -27,8 +28,10 @@ const projectsList = <Col>
     <Basics/>
 </Col>;
 
-function Projects({location}: {location: string}) {
+function Projects() {
   const [exit, setExit] = React.useState(false);
+  const { state } = useGlobalState();
+  const { location } = state;
 
   useEffect(() => {
     if (location !== "/projects2") setExit(true);

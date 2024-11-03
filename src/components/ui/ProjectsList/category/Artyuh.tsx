@@ -1,23 +1,23 @@
 import {Row} from "react-bootstrap";
 import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
+import Link from 'next/link';
 import React from "react";
 
 export default () => <Row>
     <div>
         <Button>
-            <Link to="/akella/Pepyaka">Pepyaka</Link>
+            <Link href="/projects/akella/pepyaka">Pepyaka</Link>
         </Button>
         <Button>
-            <Link to="/akella/DisplacedBox">Displaced Box</Link>
+            <Link href="/projects/akella/displaced_box">Displaced Box</Link>
         </Button>
         <Button>
-            <Link to="/akella/TriangleWallpaper">
+            <Link href="/projects/akella/triangle_wallpaper">
                 TriangleWallpaper
             </Link>
         </Button>
         <Button>
-            <Link to="/akella/CreepingStripes">Creeping stripes</Link>
+            <Link href="/projects/akella/creeping_stripes">Creeping stripes</Link>
         </Button>
     </div>
 </Row>;

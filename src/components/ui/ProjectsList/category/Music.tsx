@@ -1,12 +1,12 @@
 import {Row} from "react-bootstrap";
 import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
+import Link from 'next/link';
 import React from "react";
 
 export default () => <Row>
     <div>
         <Button>
-            <Link to="/musicVisualization/MusicVisualization">
+            <Link href="/projects/music_visualization">
                 MusicVisualization
             </Link>
         </Button>

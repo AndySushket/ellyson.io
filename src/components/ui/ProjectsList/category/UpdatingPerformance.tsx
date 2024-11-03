@@ -1,17 +1,17 @@
 import {Row} from "react-bootstrap";
 import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
+import Link from 'next/link';
 import React from "react";
 
 export default () => <Row>
     <div>
         <Button>
-            <Link to="/remakeTutorialWorks/thanosPortal">
+            <Link href="/projects/tutorials/thanos_portal">
                 Thanos Portal
             </Link>
         </Button>
         <Button>
-            <Link to="/remakeTutorialWorks/rain">Rain</Link>
+            <Link href="/projects/tutorials/rain">Rain</Link>
         </Button>
     </div>
 </Row>;

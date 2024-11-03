@@ -1,18 +1,18 @@
 import {Row} from "react-bootstrap";
 import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
+import Link from 'next/link';
 import React from "react";
 
 export default () => <Row>
     <div>
         <Button>
-            <Link to="/Space/Galaxy">Galaxy</Link>
+            <Link href="/projects/space/galaxy">Galaxy</Link>
         </Button>
         <Button>
-            <Link to="/Space/Earth">Earth</Link>
+            <Link href="/projects/space/earth">Earth</Link>
         </Button>
         <Button>
-            <Link to="/Space/Planet">Planet</Link>
+            <Link href="/projects/space/planet">Planet</Link>
         </Button>
     </div>
 </Row>;

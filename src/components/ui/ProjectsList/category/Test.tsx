@@ -1,21 +1,18 @@
 import {Row} from "react-bootstrap";
 import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
+import Link from 'next/link';
 import React from "react";
 
 export default () => <Row>
     <div>
         <Button>
-            <Link to="/SomeWorks/Aviator">Aviator</Link>
+            <Link href="/projects/some_works/aviator">Aviator</Link>
         </Button>
         <Button>
-            <Link to="/SomeWorks/PointLights">PointLights</Link>
+            <Link href="/projects/some_works/point_lights">PointLights</Link>
         </Button>
         <Button>
-            <Link to="/testWork/House">House</Link>
-        </Button>
-        <Button>
-            <Link to="/ThreeJsJourney/Texture">Texture</Link>
+            <Link href="/projects/test_works/house">House</Link>
         </Button>
     </div>
 </Row>
