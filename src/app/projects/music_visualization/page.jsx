@@ -1,18 +1,16 @@
-/**
- * Created by Ellyson on 5/11/2018.
- */
+"use client";
 
 import React from "react";
 import * as THREE from "three";
 import { Button } from "react-bootstrap";
 import TemplateFor3D from "test/projects/templates/mainTemplate3D";
-import fragmentShader from "./shaders/shader.frag";
-import vertexShader from "./shaders/shader.vert";
+import fragmentShader from "./shader.frag";
+import vertexShader from "./shader.vert";
 
-const trek4 = require("assets/sounds/music/music4.mp3");
-const trek2 = require("assets/sounds/music/music.mp3");
-const trek1 = require("assets/sounds/music/04_Heaven.flac");
-const trek3 = require("assets/sounds/music/Snow Patrol - What If This Storm Ends.mp3");
+import trek4 from "assets/sounds/music/music4.mp3";
+import trek2 from "assets/sounds/music/music.mp3";
+import trek1 from "assets/sounds/music/04_Heaven.flac";
+import trek3 from "assets/sounds/music/Snow Patrol - What If This Storm Ends.mp3";
 
 export default class MusicVisualization extends TemplateFor3D {
   static CUBE_COUNT = 464;
@@ -21,7 +19,7 @@ export default class MusicVisualization extends TemplateFor3D {
     super();
     this.state = {
       checked: false,
-      isTabActive: !document.hidden,
+      isTabActive: true,
       treks: [trek1, trek2, trek3, trek4],
     };
   }
@@ -112,17 +110,18 @@ export default class MusicVisualization extends TemplateFor3D {
     });
 
     this.waveFormMesh = new THREE.Mesh(instancedBoxGeo, shaderMaterial);
+
     this.scene?.add(this.waveFormMesh);
   }
 
   async componentDidMount() {
     super.componentDidMount()
-    await this.init3D(undefined, {});
+    this.init3D(undefined, {});
     await this.initObjects();
     // await super.initControls();
-    await this.camera.position.set(86 / 2, 88 / 3, 84 * 1.2);
-    await this.camera.lookAt(new THREE.Vector3(86 / 2, 0, 88 / 2));
-    await this.animate();
+    this.camera.position.set(86 / 2, 88 / 3, 84 * 1.2);
+    this.camera.lookAt(new THREE.Vector3(86 / 2, 0, 88 / 2));
+    this.animate();
   }
 
   componentWillUnmount() {
@@ -132,6 +131,7 @@ export default class MusicVisualization extends TemplateFor3D {
   }
 
   animate() {
+    console.log("animate");
     if (!this.looped || !this.state.isTabActive) return;
     super.animate();
     this.analyser?.getByteFrequencyData(this.dataArray); // frequency

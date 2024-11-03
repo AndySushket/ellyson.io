@@ -11,19 +11,10 @@ const nextConfig = {
         use: 'raw-loader',
       },
       {
-        test: /\.(mp3|wav|ogg|flac)$/, // Расширьте список, если нужно обрабатывать другие типы аудиофайлов
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: '[path][name].[ext]', // Настройка имени выходных файлов
-          },
-        },
-      },
-      {
-        test: /\.fbx$/i, // Обработка файлов .fbx
+        test: /\.(fbx|mp3|wav|ogg|flac)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'static/media/[name].[hash][ext]', // Путь, куда будет помещен файл
+          filename: 'static/media/[name].[hash][ext]',
         },
       },
       {
