@@ -7,7 +7,8 @@ import React from 'react';
 import * as THREE from 'three';
 import {Button, ProgressBar} from "react-bootstrap";
 
-import * as TWEEN from '@tweenjs/tween.js';
+import gsap from "gsap";
+
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import TemplateFor3D from 'test/projects/templates/mainTemplate3D';
 import getInterectiveMeshes from './components/interactiveMeshes';
@@ -39,8 +40,6 @@ export default class House extends TemplateFor3D {
 		this.additinalFloorArray = [];
 		this.doorLight = new Light(this.currentColor);
 		this.cssScene = new THREE.Scene();
-
-
 	}
 
 	initCamera() {
@@ -90,6 +89,7 @@ export default class House extends TemplateFor3D {
 
 	initDoorLight() {
 		this.scene.add(this.doorLight.spotLight, this.doorLight.pointLight);
+		console.log("add light");
 		this.light.position.set(700 ,2000,500);
 	}
 
@@ -120,7 +120,12 @@ export default class House extends TemplateFor3D {
 	}
 
 	changeLight(color) {
-		new TWEEN.Tween(this.currentColor.color).to({r: color.r, g: color.g ,b: color.b}, 300).start();
+		gsap.to(this.currentColor.color, {
+			r: color.r,
+			g: color.g,
+			b: color.b,
+			duration: 0.3,
+		});
 	}
 
 	loadModals(){
@@ -139,6 +144,7 @@ export default class House extends TemplateFor3D {
 		super.componentDidMount()
 		this.updateWidhtHeight();
 		this.init3D({alpha: true,antialias: true, preserveDrawingBuffer: true});
+		this.renderer.physicallyCorrectLights = true;
 		this.cssRenderer = new CssRenderer(this.renderer, this.canvasDiv);
 		this.initControls(this.cssRenderer.renderer.domElement);
 		super.initRaycaster();
@@ -162,7 +168,6 @@ export default class House extends TemplateFor3D {
 		this.controls.update();
 		this.linkObject?.animate(this.time);
 		this.saveScreen?.animate(this.time);
-		TWEEN.update();
 		super.animate();
 		this.cssRenderer.renderer.render(this.cssScene, this.camera);
 	}

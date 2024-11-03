@@ -87,6 +87,7 @@ export function click(e) {
 		switch (this.aimedObjectName) {
 			case "green": {
 				this.currentColor.index = this.currentColor.index > 1 ? 0 : (this.currentColor.index + 1);
+				console.log("changeLight", this.currentColor.index);
 				this.changeLight(colorsArray[this.currentColor.index]);
 				break;
 			}
