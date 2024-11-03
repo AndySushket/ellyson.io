@@ -1,5 +1,5 @@
 "use client";
 
-import House from "./House/page";
+import House from "./house/page";
 
 export default House;
