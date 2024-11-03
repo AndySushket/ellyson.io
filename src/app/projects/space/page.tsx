@@ -1,5 +1,5 @@
 'use client';
 
-import Galaxy from "./Galaxy/page";
+import Galaxy from "./galaxy/page";
 
 export default Galaxy;

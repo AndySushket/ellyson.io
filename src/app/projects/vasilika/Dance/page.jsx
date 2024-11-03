@@ -1,6 +1,4 @@
-/**
- * Created by Ellyson on 5/11/2018.
- */
+'use client';
 
 import * as THREE from "three";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
@@ -13,7 +11,7 @@ let hitTestSource = null;
 let hitTestSourceRequested = false;
 let reticle = null;
 
-export default class Index extends TemplateFor3D {
+export default class Dance extends TemplateFor3D {
 
     constructor(props) {
         super(props);

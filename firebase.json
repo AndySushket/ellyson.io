@@ -48,6 +48,50 @@
         "destination": "/projects/fundamentals.html"
       },
       {
+        "source": "/projects/music_visualization{,/**}",
+        "destination": "/projects/music_visualization.html"
+      },
+      {
+        "source": "/projects/other_peoples_work/benares{,/**}",
+        "destination": "/projects/other_peoples_work/benares.html"
+      },
+      {
+        "source": "/projects/other_peoples_work/portal{,/**}",
+        "destination": "/projects/other_peoples_work/portal.html"
+      },
+      {
+        "source": "/projects/other_peoples_work{,/**}",
+        "destination": "/projects/other_peoples_work.html"
+      },
+      {
+        "source": "/projects/some_works/aviator{,/**}",
+        "destination": "/projects/some_works/aviator.html"
+      },
+      {
+        "source": "/projects/some_works/point_lights{,/**}",
+        "destination": "/projects/some_works/point_lights.html"
+      },
+      {
+        "source": "/projects/some_works{,/**}",
+        "destination": "/projects/some_works.html"
+      },
+      {
+        "source": "/projects/space/earth{,/**}",
+        "destination": "/projects/space/earth.html"
+      },
+      {
+        "source": "/projects/space/galaxy{,/**}",
+        "destination": "/projects/space/galaxy.html"
+      },
+      {
+        "source": "/projects/space/planet{,/**}",
+        "destination": "/projects/space/planet.html"
+      },
+      {
+        "source": "/projects/space{,/**}",
+        "destination": "/projects/space.html"
+      },
+      {
         "source": "/projects/test_works/house{,/**}",
         "destination": "/projects/test_works/house.html"
       },
@@ -56,8 +100,32 @@
         "destination": "/projects/test_works.html"
       },
       {
+        "source": "/projects/tutorials/rain{,/**}",
+        "destination": "/projects/tutorials/rain.html"
+      },
+      {
+        "source": "/projects/tutorials/thanos_portal{,/**}",
+        "destination": "/projects/tutorials/thanos_portal.html"
+      },
+      {
+        "source": "/projects/tutorials{,/**}",
+        "destination": "/projects/tutorials.html"
+      },
+      {
+        "source": "/projects/vasilika/Dance{,/**}",
+        "destination": "/projects/vasilika/Dance.html"
+      },
+      {
+        "source": "/projects/vasilika{,/**}",
+        "destination": "/projects/vasilika.html"
+      },
+      {
         "source": "/projects{,/**}",
         "destination": "/projects.html"
+      },
+      {
+        "source": "/projects2{,/**}",
+        "destination": "/projects2.html"
       },
       {
         "source": "/{,/**}",
