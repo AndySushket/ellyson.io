@@ -1,3 +1,5 @@
+// FIXED ISSUE WITH ROUTING
+
 const fs = require('fs');
 const path = require('path');
 

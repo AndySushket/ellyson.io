@@ -1,4 +1,7 @@
 node_modules/
 build/
-config/
-scripts/
+out/
+.next/
+public/
+.github/
+.firebase/

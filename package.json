@@ -1,6 +1,6 @@
 {
   "name": "ellyson.io",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "dependencies": {
     "next": "^15.0.2",
@@ -43,7 +43,7 @@
 
     "gsap": "^3.5.1",
     "cannon-es": "^0.20.0",
-    "three": "^0.169.0",
+    "three": "latest",
     "three_106": "npm:three@0.106.2",
     "three_120": "npm:three@0.120.0",
     "@tweenjs/tween.js": "^25.0.0",
@@ -152,7 +152,7 @@
         "eslint-plugin-react": "^7.22.0",
         "eslint-watch": "^7.0.0",
         "@types/jest": "^26.0.24",
-        "@types/three": "^0.169.0",
+        "@types/three": "latest",
         "@types/next": "^9.0.0",
         "@types/firebase": "^3.2.3",
         "@types/react-dom": "^18.3.0",
