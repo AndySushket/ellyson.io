@@ -1,7 +1,5 @@
-/**
- * Created by Ellyson on 5/11/2018.
- */
 'use client';
+
 import * as THREE from 'three';
 import TemplateFor3D from 'components/common/mainTemplate3D';
 import vertexShader from "./shaders/vertexShader.vert";

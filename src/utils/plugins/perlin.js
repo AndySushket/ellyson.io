@@ -1,6 +1,4 @@
-/**
- * Created by Ellyson on 5/11/2018.
- */
+
 export default function noise(x, y, z) {
   const p = new Array(512);
   const permutation = [

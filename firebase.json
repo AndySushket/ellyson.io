@@ -64,6 +64,26 @@
         "destination": "/projects/other_peoples_work.html"
       },
       {
+        "source": "/projects/shaders/shader1{,/**}",
+        "destination": "/projects/shaders/shader1.html"
+      },
+      {
+        "source": "/projects/shaders/shader2{,/**}",
+        "destination": "/projects/shaders/shader2.html"
+      },
+      {
+        "source": "/projects/shaders/shader3{,/**}",
+        "destination": "/projects/shaders/shader3.html"
+      },
+      {
+        "source": "/projects/shaders/shader4{,/**}",
+        "destination": "/projects/shaders/shader4.html"
+      },
+      {
+        "source": "/projects/shaders{,/**}",
+        "destination": "/projects/shaders.html"
+      },
+      {
         "source": "/projects/some_works/aviator{,/**}",
         "destination": "/projects/some_works/aviator.html"
       },
@@ -98,6 +118,78 @@
       {
         "source": "/projects/test_works{,/**}",
         "destination": "/projects/test_works.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter1/materials{,/**}",
+        "destination": "/projects/threeJsJourney/chapter1/materials.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter1/texture{,/**}",
+        "destination": "/projects/threeJsJourney/chapter1/texture.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter1{,/**}",
+        "destination": "/projects/threeJsJourney/chapter1.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter2/galaxy_generator{,/**}",
+        "destination": "/projects/threeJsJourney/chapter2/galaxy_generator.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter2/haunted_house{,/**}",
+        "destination": "/projects/threeJsJourney/chapter2/haunted_house.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter2/particles{,/**}",
+        "destination": "/projects/threeJsJourney/chapter2/particles.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter2/scroll_based_animation{,/**}",
+        "destination": "/projects/threeJsJourney/chapter2/scroll_based_animation.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter2{,/**}",
+        "destination": "/projects/threeJsJourney/chapter2.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter3/envMap{,/**}",
+        "destination": "/projects/threeJsJourney/chapter3/envMap.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter3/import_models{,/**}",
+        "destination": "/projects/threeJsJourney/chapter3/import_models.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter3/physics{,/**}",
+        "destination": "/projects/threeJsJourney/chapter3/physics.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter3/raycaster{,/**}",
+        "destination": "/projects/threeJsJourney/chapter3/raycaster.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter3/realistic_render{,/**}",
+        "destination": "/projects/threeJsJourney/chapter3/realistic_render.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter3{,/**}",
+        "destination": "/projects/threeJsJourney/chapter3.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter4/first_shader{,/**}",
+        "destination": "/projects/threeJsJourney/chapter4/first_shader.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter4/shader_patterns{,/**}",
+        "destination": "/projects/threeJsJourney/chapter4/shader_patterns.html"
+      },
+      {
+        "source": "/projects/threeJsJourney/chapter4{,/**}",
+        "destination": "/projects/threeJsJourney/chapter4.html"
+      },
+      {
+        "source": "/projects/threeJsJourney{,/**}",
+        "destination": "/projects/threeJsJourney.html"
       },
       {
         "source": "/projects/tutorials/rain{,/**}",

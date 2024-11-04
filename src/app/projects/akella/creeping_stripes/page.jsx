@@ -1,6 +1,3 @@
-/**
- * Created by Ellyson on 5/11/2018.
- */
 "use client";
 
 import * as THREE from 'three';
