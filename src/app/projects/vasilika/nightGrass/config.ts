@@ -8,8 +8,8 @@ const config = {
       z: 0,
     },
     distance: {
-      xMin: -30, xMax: 30, // границы по оси X
-      zMin: -30, zMax: 30, // границы по оси Y
+      xMin: -40, xMax: 10, // границы по оси X
+      zMin: -10, zMax: 30, // границы по оси Y
     },
     speed: 0.02,
   },
