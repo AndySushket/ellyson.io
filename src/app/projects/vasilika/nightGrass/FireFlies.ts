@@ -105,15 +105,15 @@ class FireFlies {
       this.velocities[index].z *= -1; // Reverse Y direction
     }
 
-    // const posArray = this.grassMesh?.geometry.attributes.position.array;
+    const posArray = this.context?.meadow.groundMesh.geometry.attributes.position.array;
 
-    const height = 1;
+    const height = this.getHeightAtPosition(mesh.position.x, mesh.position.z, posArray, 3, 4);
 
     mesh.position.set(mesh.position.x + this.velocities[index].x, height + 1, mesh.position.z + this.velocities[index].z);
 
   }
 
-  getHeightAtPosition(x, y, posArray, fieldWidth, fieldDepth) {
+  getHeightAtPosition(x: number, y: number, posArray: [], fieldWidth: number, fieldDepth: number) {
     const distance = this.config.distance;
     const gridX = Math.floor(((x - distance.xMin) / (distance.xMax - distance.xMin)) * (fieldWidth - 1));
     const gridY = Math.floor(((y - distance.zMin) / (distance.zMax - distance.zMin)) * (fieldDepth - 1));
@@ -124,7 +124,7 @@ class FireFlies {
     return posArray[index] || 0; // Возвращаем высоту или 0, если вне границ
   }
 
-  updateVelocity(index) {
+  updateVelocity(index: number) {
     const { speed } = this.config;
     const velocity = this.velocities[index];
 
