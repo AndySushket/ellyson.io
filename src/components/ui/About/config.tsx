@@ -7,6 +7,7 @@ export const MY_SKILLS = [
   "GLSL",
   "React",
   "Redux",
+  "Next.js",
   "Saga",
   "Reflux",
   "SASS",

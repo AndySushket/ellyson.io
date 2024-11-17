@@ -6,7 +6,11 @@ module.exports = {
   settings: {
     "import/resolver": {
       node: {
-        paths: [path.resolve(__dirname, "src")]
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
+      },
+      typescript: {
+        alwaysTryTypes: true,
+        project: path.resolve(__dirname, './tsconfig.json'),
       }
     }
   },
