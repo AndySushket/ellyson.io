@@ -5,6 +5,7 @@ export const MY_SKILLS = [
   "TypeScript",
   "Three.js",
   "GLSL",
+  "GSAP",
   "React",
   "Redux",
   "Next.js",
@@ -22,9 +23,9 @@ export const MY_SKILLS = [
   "SQL",
   "PHP",
   "jQuery",
-  "Agile",
   "Jira",
   "Blender",
+  "Unreal Engine",
 ];
 
 export const CONTACTS = {

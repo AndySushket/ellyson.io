@@ -8,13 +8,11 @@ import Fade from '@mui/material/Fade';
 import { useGlobalState } from 'state/GlobalStateProvider';
 
 import { Facebook, Instagram, LinkedIn, Mail, Twitter, ContactPage } from '@mui/icons-material';
-// @ts-ignore
+
 import { AnimatePresence, motion } from 'framer-motion';
 import './AboutStyles.scss';
 import { Col, Row } from 'react-bootstrap';
 
-// @ts-ignore
-import pdf from 'assets/Andrii_Sushket_CV.pdf';
 import photo from 'assets/avatar.jpg';
 import { CONTACTS, Education, Experience, MY_SKILLS, Summary } from './config';
 
@@ -94,12 +92,12 @@ function About() {
                       </IconButton>
                     </Tooltip>
                     <Tooltip TransitionComponent={Fade} enterNextDelay={300} title="CV">
-                      <IconButton href={pdf} target="_blank">
+                      <IconButton href='/CV.pdf' target="_blank">
                         <ContactPage />
                       </IconButton>
                     </Tooltip>
                     <Tooltip TransitionComponent={Fade} enterNextDelay={300} title="Email">
-                      <IconButton href={`mailto:${CONTACTS.EMAIL}`} target="_blank">
+                      <IconButton href={`mailto:${CONTACTS.EMAIL}`}>
                         <Mail />
                       </IconButton>
                     </Tooltip>
@@ -113,7 +111,7 @@ function About() {
 
                 <Col xs={12} lg={8}>
                   <Row>
-                    <h1> Andy Sushket</h1>
+                    <h1>Andy Sushket</h1>
                   </Row>
                   <Row className="summary">{Summary()}</Row>
                   <Row className="experience">{Experience()}</Row>

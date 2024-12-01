@@ -40,7 +40,7 @@ export default class NightGrass extends TemplateFor3D {
     this.meadow = new Meadow(config, this);
     if (this.meadow) {
       const { groundMesh, grassMesh } = this.meadow;
-      this.scene?.add(groundMesh, grassMesh);
+      this.scene?.add(groundMesh);
     }
   }
 

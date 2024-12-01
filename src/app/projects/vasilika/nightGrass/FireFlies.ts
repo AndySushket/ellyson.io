@@ -107,7 +107,7 @@ class FireFlies {
 
     const posArray = this.context?.meadow.groundMesh.geometry.attributes.position.array;
 
-    const height = this.getHeightAtPosition(mesh.position.x, mesh.position.z, posArray, 3, 4);
+    const height = this.getHeightAtPosition(mesh.position.x, mesh.position.z, posArray, 32, 32);
 
     mesh.position.set(mesh.position.x + this.velocities[index].x, height + 1, mesh.position.z + this.velocities[index].z);
 
