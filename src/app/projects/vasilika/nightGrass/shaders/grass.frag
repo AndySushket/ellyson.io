@@ -19,7 +19,9 @@ struct PointLight {
 };
 
 uniform DirectionalLight directionalLights[1];
+#if NUM_POINT_LIGHTS > 0
 uniform PointLight pointLights[NUM_POINT_LIGHTS];
+#endif
 uniform vec3 ambientLightColor;
 
 varying vec3 vNormal;
@@ -38,16 +40,18 @@ void main() {
 
     // Point Lights calculations with attenuation
     vec3 pointLightEffect = vec3(0.0);
-    for (int i = 0; i < NUM_POINT_LIGHTS; i++) {
-        // Используем мировую позицию pointLights[i].position и vWorldPosition
-        vec3 pointLightDir = normalize(pointLights[i].position - vWorldPosition);
-        float distance = length(pointLights[i].position - vWorldPosition);
-        float attenuation = 1.0 / (1.0 + pointLights[i].decay * distance * distance);
-        float pointDiff = max(dot(vNormal, pointLightDir), 0.0);
 
-        pointLightEffect += pointLights[i].color * pointDiff * attenuation;
-    }
+    #if NUM_POINT_LIGHTS > 0
+        for (int i = 0; i < NUM_POINT_LIGHTS; i++) {
 
+                vec3 pointLightDir = normalize(pointLights[i].position - vWorldPosition);
+                float distance = length(pointLights[i].position - vWorldPosition);
+                float attenuation = 1.0 / (1.0 + pointLights[i].decay * distance * distance);
+                float pointDiff = max(dot(vNormal, pointLightDir), 0.0);
+
+                pointLightEffect += pointLights[i].color * pointDiff * attenuation;
+        }
+    #endif
     // Проверка прозрачности с alpha карты
     float alpha = texture2D(alphaMap, vUv).r;
     if (alpha < 0.15) discard;

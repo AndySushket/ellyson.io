@@ -32,7 +32,7 @@ class Robot {
         });
 
         group.scale.set(10, 10, 10);
-        group.position.set(-10, 1.4, 0);
+        group.position.set(-25, 1.4, 0);
 
         scene?.add(group);
 

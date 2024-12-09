@@ -31,7 +31,7 @@ class Meadow {
 
     this.groundMesh = new THREE.Mesh(
       groundGeom,
-      new THREE.MeshStandardMaterial({ color: 0x000f00,wireframe: true }),
+      new THREE.MeshStandardMaterial({ color: 0x000f00 }),
     );
   }
 

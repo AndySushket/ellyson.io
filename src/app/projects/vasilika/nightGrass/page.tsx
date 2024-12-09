@@ -10,6 +10,11 @@ import config from './config';
 import { initSkyBox } from '@/app/projects/vasilika/nightGrass/skyBox';
 import Robot from './Robot';
 import * as THREE from 'three';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+const BLOOM_SCENE = 1;
 
 export default class NightGrass extends TemplateFor3D {
 
@@ -19,20 +24,22 @@ export default class NightGrass extends TemplateFor3D {
 
   meadow: Meadow | undefined;
 
+  private composer: EffectComposer | undefined;
+
   componentWillUnmount() {
     super.componentWillUnmount();
   }
 
   initLight(): void {
-    this.light = new THREE.DirectionalLight(0xffffff, .7);
+    this.light = new THREE.DirectionalLight(0xffffff, .2);
     this.light.position.set(5, 5, 5);
     this.light.castShadow = true;
-    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
     this.scene?.add(this.light, this.ambientLight);
   }
 
   setCameraConfig() {
-    this.camera?.position.set(-25.9932, 3.9375, 5.5187);
+    this.camera?.position.set(-37.1715, 5.6308, 7.8920);
     this.camera?.rotation.set(-0.61972, -1.3156, -0.6042);
   }
 
@@ -40,7 +47,7 @@ export default class NightGrass extends TemplateFor3D {
     this.meadow = new Meadow(config, this);
     if (this.meadow) {
       const { groundMesh, grassMesh } = this.meadow;
-      this.scene?.add(groundMesh);
+      this.scene?.add(groundMesh, grassMesh);
     }
   }
 
@@ -77,6 +84,29 @@ export default class NightGrass extends TemplateFor3D {
 
     this.init3D({ antialias: true, alpha: true });
 
+    if (!this.renderer || !this.scene || !this.camera) return;
+
+    const params = {
+      threshold: 0,
+      strength: .1,
+      radius: 0.01,
+      exposure: 1
+    };
+
+    const renderScene = new RenderPass( this.scene, this.camera );
+
+    const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+    bloomPass.threshold = params.threshold;
+    bloomPass.strength = params.strength;
+    bloomPass.radius = params.radius;
+
+    const outputPass = new OutputPass();
+
+    this.composer = new EffectComposer( this.renderer );
+    this.composer.addPass( renderScene );
+    this.composer.addPass( bloomPass );
+    this.composer.addPass( outputPass );
+
     this.initProject();
 
     this.initControls();
@@ -87,7 +117,9 @@ export default class NightGrass extends TemplateFor3D {
   animate() {
     if (!this.looped || !this.state.isTabActive) return;
 
-    super.animate();
+    this.time++;
+
+    this.composer?.render();
 
     this.fireFlies?.moveFireFlies();
 
@@ -96,6 +128,8 @@ export default class NightGrass extends TemplateFor3D {
     this.meadow?.updateGrass(this.clock.getElapsedTime() * 0.3);
 
     this.controls?.update();
+
+    requestAnimationFrame(() => this.animate());
   }
 
   render() {

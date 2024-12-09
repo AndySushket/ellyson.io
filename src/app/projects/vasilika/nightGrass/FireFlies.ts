@@ -18,38 +18,45 @@ class FireFlies {
   }
 
   initFireFlies(config: any) {
-    const { speed, distance } = config;
-
-    const textureLoader = new THREE.TextureLoader();
-    const fireflyTexture = textureLoader.load(fireFlySprite.src);
+    const { speed, distance, count, spotLight } = config;
 
     const fireFlies = new THREE.Group();
 
-    for (let i = 0; i < 10; i++) {
-      const fireFly = new THREE.Points(
-        new THREE.BufferGeometry().setFromPoints([new THREE.Vector3()]),
-        new THREE.PointsMaterial({
-          size: 0.2,
-          sizeAttenuation: true,
-          map: fireflyTexture,
+    for (let i = 0; i < count; i++) {
+
+      const fireFly = new THREE.Mesh(
+        new THREE.SphereGeometry(0.1, 32, 32),
+        new THREE.MeshStandardMaterial({
+          color: 0xffff00,
+          emissive: 0xffff00,
+          emissiveIntensity: 100,
           transparent: true,
+          opacity: 0.5,
         }),
       );
 
-      const light = new THREE.PointLight(0xffff00, 20, 3);
-      light.castShadow = true;
-      light.shadow.mapSize.width = 256;
-      light.shadow.mapSize.height = 256;
-      light.shadow.camera.far = 10;
-      fireFly.add(light);
-      light.position.set(Math.random() * 10, 2, Math.random() * 10);
+      if (spotLight.use) {
+        const { color, intensity, distance: lightDistance, shadow: {
+          mapSize: { width, height },
+          camera: { far },
+          castShadow,
+        } } = spotLight;
+        const light = new THREE.PointLight(color, intensity, lightDistance);
+        light.castShadow = castShadow;
+        light.shadow.mapSize.width = width;
+        light.shadow.mapSize.height = height;
+        light.shadow.camera.far = far;
+        fireFly.add(light);
+      }
+
       fireFlies.add(fireFly);
-      const helper = new THREE.PointLightHelper(light, 1);
-      this.context.scene?.add(helper);
+
       this.velocities[i] = {
         x: (Math.random() - 0.5) * speed,
         z: (Math.random() - 0.5) * speed,
+        yOffset: Math.random() * Math.PI * 2,
       };
+
       // random location of mesh
       fireFly.position.set(
         THREE.MathUtils.randFloat(distance.xMin, distance.xMax),
@@ -106,22 +113,18 @@ class FireFlies {
     }
 
     const posArray = this.context?.meadow.groundMesh.geometry.attributes.position.array;
+    const sinWaveHeight = 0.5;
+    const baselineHeight = 2;
+    const oscillationFrequency = 0.5;
+    const height = .1
+    const time = this.context.time || 0;
+    const newY =
+      baselineHeight +
+      sinWaveHeight * Math.sin(time * oscillationFrequency + this.velocities[index].yOffset);
 
-    const height = this.getHeightAtPosition(mesh.position.x, mesh.position.z, posArray, 32, 32);
+    mesh.position.set(mesh.position.x + this.velocities[index].x, height, mesh.position.z + this.velocities[index].z);
+    // mesh.position.set(mesh.position.x + this.velocities[index].x, .3, mesh.position.z + this.velocities[index].z);
 
-    mesh.position.set(mesh.position.x + this.velocities[index].x, height + 1, mesh.position.z + this.velocities[index].z);
-
-  }
-
-  getHeightAtPosition(x: number, y: number, posArray: [], fieldWidth: number, fieldDepth: number) {
-    const distance = this.config.distance;
-    const gridX = Math.floor(((x - distance.xMin) / (distance.xMax - distance.xMin)) * (fieldWidth - 1));
-    const gridY = Math.floor(((y - distance.zMin) / (distance.zMax - distance.zMin)) * (fieldDepth - 1));
-
-    // Находим индекс в posArray (предполагаем [x, y, z] для каждой вершины)
-    const index = (gridY * fieldWidth + gridX) * 3 + 1; // +2 для Y значения
-
-    return posArray[index] || 0; // Возвращаем высоту или 0, если вне границ
   }
 
   updateVelocity(index: number) {
