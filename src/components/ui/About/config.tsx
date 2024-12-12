@@ -83,7 +83,7 @@ export function Experience() {
       <p>
         <span>
           <span className="underline">Frontend 3D Developer</span> | Logivations
-          - Remote/Office, Ukraine
+          - Hybrid, Ukraine
         </span>{" "}
         <span>10/2017 - 10/2021</span>
       </p>
