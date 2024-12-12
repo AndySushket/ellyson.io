@@ -17,7 +17,11 @@
         ]
       }
     ],
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "/404{,/**}",
@@ -218,6 +222,10 @@
       {
         "source": "/projects/vasilika/Dance{,/**}",
         "destination": "/projects/vasilika/Dance.html"
+      },
+      {
+        "source": "/projects/vasilika/nightGrass{,/**}",
+        "destination": "/projects/vasilika/nightGrass.html"
       },
       {
         "source": "/projects/vasilika{,/**}",

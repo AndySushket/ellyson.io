@@ -18,8 +18,6 @@ export default class Planet extends TemplateFor3D {
 
   initScene(): void  {
     super.initScene();
-    if (!this.scene) return;
-    this.scene.background = new THREE.Color(0x000000);
   }
 
   initLight(): void  {
