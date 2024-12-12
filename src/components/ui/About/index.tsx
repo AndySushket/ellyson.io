@@ -55,44 +55,28 @@ function About() {
                 <Col xs={12} lg={4}>
                   <Avatar alt="Hi" src={photo.src} sx={{ width: 300, height: 300 }} />
                   <div>
-                    <Tooltip
-                      TransitionComponent={Fade}
-                      enterNextDelay={300}
-                      title={CONTACTS.INSTAGRAM}
-                    >
+                    <Tooltip TransitionComponent={Fade} enterNextDelay={300} title={'Instagram'}>
                       <IconButton href={CONTACTS.INSTAGRAM} target="_blank">
                         <Instagram />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip
-                      TransitionComponent={Fade}
-                      enterNextDelay={300}
-                      title={CONTACTS.FACEBOOK}
-                    >
+                    <Tooltip TransitionComponent={Fade} enterNextDelay={300} title={'Facebook'}>
                       <IconButton href={CONTACTS.FACEBOOK} target="_blank">
                         <Facebook />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip
-                      TransitionComponent={Fade}
-                      enterNextDelay={300}
-                      title={CONTACTS.TWITTER}
-                    >
+                    <Tooltip TransitionComponent={Fade} enterNextDelay={300} title={'Twitter'}>
                       <IconButton href={CONTACTS.TWITTER} target="_blank">
                         <Twitter />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip
-                      TransitionComponent={Fade}
-                      enterNextDelay={300}
-                      title={CONTACTS.LINKEDIN}
-                    >
+                    <Tooltip TransitionComponent={Fade} enterNextDelay={300} title={'Linkedin'}>
                       <IconButton href={CONTACTS.LINKEDIN} target="_blank">
                         <LinkedIn />
                       </IconButton>
                     </Tooltip>
                     <Tooltip TransitionComponent={Fade} enterNextDelay={300} title="CV">
-                      <IconButton href='/CV.pdf' target="_blank">
+                      <IconButton href="/CV.pdf" target="_blank">
                         <ContactPage />
                       </IconButton>
                     </Tooltip>
