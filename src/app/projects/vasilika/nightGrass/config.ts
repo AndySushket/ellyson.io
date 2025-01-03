@@ -10,10 +10,10 @@ const config = {
     }
   },
   fireflies: {
-    count: 25, // не работает если больше 10 и стоит каст шедоу
+    count: 100, // не работает если больше 10 и стоит каст шедоу
     size: 1,
     spotLight: {
-      use: true,
+      use: false,
       color: 0xffff00,
       intensity: 10,
       distance: 1,

@@ -14,7 +14,12 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+
+import { acceleratedRaycast } from 'three-mesh-bvh';
+
 const BLOOM_SCENE = 1;
+
+THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 export default class NightGrass extends TemplateFor3D {
 

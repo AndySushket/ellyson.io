@@ -1,5 +1,10 @@
 import * as THREE from 'three';
 import { getAttributeData, getYPosition } from './utils';
+import { MeshBVH, computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
+
+THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
+THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
+THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 import grassDiffTexture from './assets/blade_diffuse.jpg';
 import grassAlphaTexture from './assets/blade_alpha.jpg';
@@ -28,6 +33,10 @@ class Meadow {
       posArray[i3 + 1] = getYPosition(posArray[i3], posArray[i3 + 2]);
     }
     groundGeom.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+    groundGeom.computeBoundsTree();
+
+    groundGeom.boundsTree = new MeshBVH(groundGeom);
 
     this.groundMesh = new THREE.Mesh(
       groundGeom,

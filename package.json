@@ -46,6 +46,7 @@
     "three": "latest",
     "three_106": "npm:three@0.106.2",
     "three_120": "npm:three@0.120.0",
+    "three-mesh-bvh": "^0.8.3",
     "@tweenjs/tween.js": "^25.0.0",
     "@react-three/drei": "^9.112.0",
     "@react-three/fiber": "^8.17.7",

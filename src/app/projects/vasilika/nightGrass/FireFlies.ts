@@ -1,3 +1,4 @@
+import { MeshBVH } from 'three-mesh-bvh';
 import * as THREE from 'three';
 import fireFlySprite from './assets/firefly.png';
 
@@ -8,6 +9,8 @@ class FireFlies {
 
   private readonly config: any;
 
+  private bvh: MeshBVH | undefined;
+
   public group: THREE.Group<THREE.Object3DEventMap> | undefined;
 
   constructor(config: any, context: any) {
@@ -15,6 +18,14 @@ class FireFlies {
     this.context = context;
     this.velocities = {};
     this.initFireFlies(config);
+
+
+    if (this.context.meadow?.groundMesh?.geometry) {
+      const geometry = this.context.meadow.groundMesh.geometry;
+
+      if (!geometry.boundsTree) geometry.computeBoundsTree(); // Если нужно, пересчитать BVH
+      this.bvh = new MeshBVH(geometry);
+    }
   }
 
   initFireFlies(config: any) {
@@ -112,18 +123,24 @@ class FireFlies {
       this.velocities[index].z *= -1; // Reverse Y direction
     }
 
-    const posArray = this.context?.meadow.groundMesh.geometry.attributes.position.array;
-    const sinWaveHeight = 0.5;
-    const baselineHeight = 2;
-    const oscillationFrequency = 0.5;
-    const height = .1
-    const time = this.context.time || 0;
-    const newY =
-      baselineHeight +
-      sinWaveHeight * Math.sin(time * oscillationFrequency + this.velocities[index].yOffset);
+    let groundY = 0;
 
-    mesh.position.set(mesh.position.x + this.velocities[index].x, height, mesh.position.z + this.velocities[index].z);
-    // mesh.position.set(mesh.position.x + this.velocities[index].x, .3, mesh.position.z + this.velocities[index].z);
+
+      const ray = new THREE.Ray(
+        new THREE.Vector3(mesh.position.x, 100, mesh.position.z),
+        new THREE.Vector3(0, -1, 0)
+      );
+
+      if (this.bvh) {
+        const hit = this.bvh.raycastFirst(ray);
+        if (hit) {
+          groundY = hit.point.y;
+        }
+      }
+
+      const newY = groundY + Math.sin(this.velocities[index].yOffset) * 2;
+
+    mesh.position.set(mesh.position.x + this.velocities[index].x, newY, mesh.position.z + this.velocities[index].z);
 
   }
 
