@@ -160,6 +160,20 @@ class FireFlies {
     this.velocities[index].x = (newVelocityX / length) * speed;
     this.velocities[index].z = (newVelocityZ / length) * speed;
   }
+
+  getFireflyPositions(): Float32Array {
+
+    if (!this.group || !this.group?.children) return new Float32Array(0);
+
+    const positions = new Float32Array(this.group.children.length * 3); // [x, y, z, x, y, z, ...]
+    this.group?.children.forEach((mesh, index) => {
+      const i = index * 3;
+      positions[i] = mesh.position.x;
+      positions[i + 1] = mesh.position.y;
+      positions[i + 2] = mesh.position.z;
+    });
+    return positions;
+  }
 }
 
 export default FireFlies;

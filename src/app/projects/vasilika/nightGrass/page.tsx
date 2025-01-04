@@ -128,6 +128,12 @@ export default class NightGrass extends TemplateFor3D {
 
     this.fireFlies?.moveFireFlies();
 
+    const fireflyPositions = this.fireFlies?.getFireflyPositions();
+
+    if (fireflyPositions && this.meadow?.grassMesh.material) {
+      (this.meadow.grassMesh.material as any).uniforms.fireflyPositions.value = fireflyPositions;
+    }
+
     this.robot?.updateAnimation(this.clock.getElapsedTime());
 
     this.meadow?.updateGrass(this.clock.getElapsedTime() * 0.3);

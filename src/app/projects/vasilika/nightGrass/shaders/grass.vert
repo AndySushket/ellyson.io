@@ -111,7 +111,7 @@ void main() {
     pos = rotateVectorByQuaternion(pos, normalize(vec4(sin(halfAngle), 0.0, -sin(halfAngle), cos(halfAngle))));
 
     // Вычисление мировой позиции вертекса для освещения
-    vWorldPosition = (modelViewMatrix * vec4(pos + offset, 1.0)).xyz;
+    vWorldPosition = (modelMatrix * vec4(pos + offset, 1.0)).xyz;
 
     // Трансформируем нормали с учетом всех вращений и преобразуем в пространство камеры
     vNormal = normalize(normalMatrix * rotateNormalByQuaternion(normal, direction));
@@ -120,5 +120,5 @@ void main() {
     vUv = uv;
 
     // Установка финальной позиции в clip space
-    gl_Position = projectionMatrix  * vec4(vWorldPosition, 1.0);
+    gl_Position = projectionMatrix  * viewMatrix  *vec4(vWorldPosition, 1.0);
 }

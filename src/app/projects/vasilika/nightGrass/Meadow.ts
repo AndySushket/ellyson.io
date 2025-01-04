@@ -84,13 +84,14 @@ class Meadow {
 
     this.grassMesh = new THREE.Mesh(
       instancedGeometry,
-      this.getGrassMaterial(context.light, context.ambientLight),
+      this.getGrassMaterial(context.light, context.ambientLight, config.fireflies.count),
     );
   }
 
   getGrassMaterial(
     directionalLight: THREE.DirectionalLight,
     ambientLight: THREE.AmbientLight,
+    fireflyMaxCount = 100,
   ) {
     const loader = new THREE.TextureLoader();
     const map = loader.load(grassDiffTexture.src);
@@ -98,6 +99,8 @@ class Meadow {
 
     return new THREE.ShaderMaterial({
       uniforms: {
+        fireflyPositions: { value: new Float32Array(fireflyMaxCount * 3) },
+        fireflyCount: { value: fireflyMaxCount },
         bladeHeight: { value: 1 },
         map: { value: map },
         alphaMap: { value: alphaMap },
@@ -108,8 +111,14 @@ class Meadow {
         uLightIntensity: { value: directionalLight.intensity },
         ambientLightColor: { value: ambientLight.color.clone().convertSRGBToLinear() },
       },
-      vertexShader,
-      fragmentShader,
+      vertexShader: `
+        #define NUM_FIREFLIES ${fireflyMaxCount}
+        ${vertexShader}
+        `,
+      fragmentShader: `
+       #define NUM_FIREFLIES ${fireflyMaxCount}
+        ${fragmentShader}
+       `,
       side: THREE.DoubleSide,
       lights: true,
     });
