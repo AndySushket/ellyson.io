@@ -30,6 +30,8 @@ export default class NightGrass extends TemplateFor3D {
   meadow: Meadow | undefined;
 
   private composer: EffectComposer | undefined;
+  private cubeCamera: THREE.CubeCamera | undefined;
+  private cubeRenderTarget: THREE.WebGLCubeRenderTarget | undefined;
 
   componentWillUnmount() {
     super.componentWillUnmount();

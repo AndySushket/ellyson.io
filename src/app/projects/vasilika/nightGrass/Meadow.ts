@@ -42,6 +42,7 @@ class Meadow {
       groundGeom,
       new THREE.MeshStandardMaterial({ color: 0x000f00 }),
     );
+
   }
 
   initGrass(
@@ -86,6 +87,7 @@ class Meadow {
       instancedGeometry,
       this.getGrassMaterial(context.light, context.ambientLight, config.fireflies.count),
     );
+    this.grassMesh.frustumCulled = false
   }
 
   getGrassMaterial(

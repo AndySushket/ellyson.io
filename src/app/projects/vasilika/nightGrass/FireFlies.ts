@@ -138,7 +138,7 @@ class FireFlies {
         }
       }
 
-      const newY = groundY + Math.sin(this.velocities[index].yOffset) * 2;
+      const newY = groundY + Math.abs(Math.sin(this.velocities[index].yOffset) * 2);
 
     mesh.position.set(mesh.position.x + this.velocities[index].x, newY, mesh.position.z + this.velocities[index].z);
 
