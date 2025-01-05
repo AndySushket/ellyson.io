@@ -4,7 +4,6 @@ import React from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
-// import { logCustomEvent } from "../../firebase/firebaseConfig";
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -53,6 +52,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
 
   protected canvasDiv: HTMLDivElement | null = null;
 
+  protected isMobile: boolean;
+
   constructor(props: any) {
     super(props);
     this.state = {
@@ -73,11 +74,19 @@ export default class TemplateFor3D extends React.Component<any, any> {
       this.HEIGHT = 0;
       this.WIDTH = 0;
     }
+
+    this.isMobile = this.checkIfMobile();
   }
 
   handleVisibilityChange = () => {
     this.setState({ isTabActive: !document.hidden });
   };
+
+  checkIfMobile(): boolean {
+    return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent || ''
+    );
+  }
 
   componentDidMount() {
     if (typeof window === 'undefined') return;

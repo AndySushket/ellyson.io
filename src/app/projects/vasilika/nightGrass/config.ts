@@ -46,7 +46,7 @@ const config = {
   },
   robot: {
     color: 0x0000ff,
-    position: { x: 25, y: -1, z: 20 },
+    position: { x: 23, y: -2, z: 25 },
     rotationY: Math.PI / 8,
     scale: 10,
   },
