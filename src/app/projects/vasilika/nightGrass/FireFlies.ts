@@ -135,7 +135,7 @@ class FireFlies {
     const sinY = Math.sin(-rotation.y); // sin угла вращения вокруг Y
     const cosY = Math.cos(-rotation.y); // cos угла вращения вокруг Y
 
-    const { x, y, z } = mesh.position;
+    const { x, z } = mesh.position;
 
     const rotatedX = x * cosY - z * sinY;
     const rotatedZ = x * sinY + z * cosY;

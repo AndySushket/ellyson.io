@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 // @ts-ignore
-import robot from './assets/models/robot.glb';
+import robot from './assets/models/robot2.glb';
 
 class Robot {
   mesh: THREE.Group;
@@ -32,6 +32,8 @@ class Robot {
             child.receiveShadow = true;
           }
         });
+
+        // group.children[1].rotation.x -= Math.PI / 2;
 
         const { scale, position, rotationY } = config;
 
@@ -67,6 +69,25 @@ class Robot {
     this.mesh.children[3].position.y = Math.sin(delta+ 7) * 0.01;
 
 
+  }
+
+  updateHeadRotation(targetX: number  = 0, targetY: number = 0) {
+    if (!this.mesh || this.mesh.children.length === 0) return;
+
+    const head = this.mesh.children[1];
+    if (!head) return;
+
+    const maxRotationX = Math.PI / 6;
+    const maxRotationY = Math.PI / 6;
+
+    let desiredX = -maxRotationX * targetY;
+    let desiredY = maxRotationY * targetX;
+
+    desiredX = THREE.MathUtils.clamp(desiredX, -maxRotationX, maxRotationX);
+    desiredY = THREE.MathUtils.clamp(desiredY, -maxRotationY, maxRotationY);
+
+    head.rotation.x = THREE.MathUtils.lerp(head.rotation.x, desiredX, 0.1);
+    head.rotation.y = THREE.MathUtils.lerp(head.rotation.y, desiredY, 0.1);
   }
 }
 

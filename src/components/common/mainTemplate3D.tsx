@@ -80,7 +80,6 @@ export default class TemplateFor3D extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    console.log("componentDidMount");
     if (typeof window === 'undefined') return;
     if (isBrowser) {
       this.HEIGHT = window.innerHeight;
@@ -94,7 +93,6 @@ export default class TemplateFor3D extends React.Component<any, any> {
   }
 
   componentWillUnmount(): void {
-    console.log("componentWillUnmount");
     if (this.scene) {
       TemplateFor3D.deleteScene(this.scene);
       this.scene.children.length = 0;
@@ -154,14 +152,17 @@ export default class TemplateFor3D extends React.Component<any, any> {
   init3D(
     param?: THREE.WebGLRendererParameters | undefined,
     cameraParam?: any,
-    additionalParam?: any
+    additionalParam?: any,
+    activeControls?: boolean
   ): void {
     this.initRenderer(param);
     this.initScene();
     this.initCamera(cameraParam);
     this.initLight();
 
-    this.initControls();
+    if (activeControls) {
+      this.initControls();
+    }
 
     if (additionalParam && additionalParam.ar && this.renderer instanceof THREE.WebGLRenderer) {
       this.renderer.xr.enabled = true;

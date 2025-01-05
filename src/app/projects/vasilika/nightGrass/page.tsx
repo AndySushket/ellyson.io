@@ -37,7 +37,7 @@ export default class NightGrass extends TemplateFor3D {
 
   initLight(): void {
     this.light = new THREE.DirectionalLight(0xffffff, .2);
-    this.light.position.set(-5, 5, 5);
+    this.light.position.set(-5, 5, 15);
     this.light.castShadow = true;
     this.ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
     this.scene?.add(this.light, this.ambientLight);
@@ -115,7 +115,7 @@ export default class NightGrass extends TemplateFor3D {
 
     this.initProject();
 
-    this.initControls();
+    this.attachMouseMoveEvent(this.canvasDiv);
 
     this.animate();
   }
@@ -137,9 +137,10 @@ export default class NightGrass extends TemplateFor3D {
 
     this.robot?.updateAnimation(this.clock.getElapsedTime());
 
+    this.robot?.updateHeadRotation(this.mouse?.x, this.mouse?.y);
+
     this.meadow?.updateGrass(this.clock.getElapsedTime() * 0.3);
 
-    this.controls?.update();
     requestAnimationFrame(() => this.animate());
   }
 
