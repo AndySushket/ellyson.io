@@ -7,13 +7,15 @@ import robot from './assets/models/robot.glb';
 
 class Robot {
   mesh: THREE.Group;
+  config: any;
 
-  constructor(scene: THREE.Scene | undefined) {
+  constructor(scene: THREE.Scene | undefined, config: any) {
     this.mesh = new THREE.Group();
-    this.initFbxModel(scene);
+    this.config = config;
+    this.initFbxModel(scene, config);
   }
 
-  initFbxModel(scene: THREE.Scene | undefined) {
+  initFbxModel(scene: THREE.Scene | undefined, config: any) {
     const loader = new GLTFLoader();
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
@@ -31,8 +33,11 @@ class Robot {
           }
         });
 
-        group.scale.set(10, 10, 10);
-        group.position.set(-25, 1.4, 0);
+        const { scale, position, rotationY } = config;
+
+        group.scale.set(scale, scale, scale);
+        group.position.set(position.x, position.y, position.z);
+        group.rotation.y = rotationY;
 
         scene?.add(group);
 
@@ -49,8 +54,10 @@ class Robot {
   updateAnimation(delta: number) {
     if (!this.mesh.children.length) return;
 
+    const { position: { y } } = this.config;
+
     // move robot
-    this.mesh.position.y = 2 + Math.sin(delta + 3) * 0.5;
+    this.mesh.position.y = y + Math.sin(delta + 3) * 0.5;
 
     // head
     this.mesh.children[1].position.y = .4+ Math.sin(delta+ 7) * 0.007;

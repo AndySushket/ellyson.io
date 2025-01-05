@@ -19,7 +19,6 @@ class FireFlies {
     this.velocities = {};
     this.initFireFlies(config);
 
-
     if (this.context.meadow?.groundMesh?.geometry) {
       const geometry = this.context.meadow.groundMesh.geometry;
 
@@ -29,12 +28,13 @@ class FireFlies {
   }
 
   initFireFlies(config: any) {
-    const { speed, distance, count, spotLight } = config;
+    const { speed, distance, count, spotLight, rotateParticles } = config;
 
     const fireFlies = new THREE.Group();
 
-    for (let i = 0; i < count; i++) {
+    fireFlies.rotation.y = rotateParticles;
 
+    for (let i = 0; i < count; i++) {
       const fireFly = new THREE.Mesh(
         new THREE.SphereGeometry(0.1, 32, 32),
         new THREE.MeshStandardMaterial({
@@ -47,11 +47,16 @@ class FireFlies {
       );
 
       if (spotLight.use) {
-        const { color, intensity, distance: lightDistance, shadow: {
-          mapSize: { width, height },
-          camera: { far },
-          castShadow,
-        } } = spotLight;
+        const {
+          color,
+          intensity,
+          distance: lightDistance,
+          shadow: {
+            mapSize: { width, height },
+            camera: { far },
+            castShadow,
+          },
+        } = spotLight;
         const light = new THREE.PointLight(color, intensity, lightDistance);
         light.castShadow = castShadow;
         light.shadow.mapSize.width = width;
@@ -79,7 +84,7 @@ class FireFlies {
   }
 
   updateFireFlies() {
-    for (let i = 0; i < 10; i+=1) {
+    for (let i = 0; i < 10; i += 1) {
       const fireFly = this.group?.children[i];
       if (fireFly) {
         const velocity = this.velocities[i];
@@ -108,12 +113,13 @@ class FireFlies {
   }
 
   moveFirefly(mesh: THREE.Object3D<THREE.Object3DEventMap>, index: number) {
+    if(!this.group) return;
+
     const distance = this.config.distance;
     // Update the velocity slightly to change direction
     this.updateVelocity(index);
 
     // Apply velocity to position
-
 
     // Check and reflect if the firefly goes out of bounds
     if (mesh.position.x < distance.xMin || mesh.position.x > distance.xMax) {
@@ -125,23 +131,34 @@ class FireFlies {
 
     let groundY = 0;
 
+    const { rotation } = this.group;
+    const sinY = Math.sin(-rotation.y); // sin угла вращения вокруг Y
+    const cosY = Math.cos(-rotation.y); // cos угла вращения вокруг Y
 
-      const ray = new THREE.Ray(
-        new THREE.Vector3(mesh.position.x, 100, mesh.position.z),
-        new THREE.Vector3(0, -1, 0)
-      );
+    const { x, y, z } = mesh.position;
 
-      if (this.bvh) {
-        const hit = this.bvh.raycastFirst(ray);
-        if (hit) {
-          groundY = hit.point.y;
-        }
+    const rotatedX = x * cosY - z * sinY;
+    const rotatedZ = x * sinY + z * cosY;
+
+    const ray = new THREE.Ray(
+      new THREE.Vector3(rotatedX, 100, rotatedZ),
+      new THREE.Vector3(0, -1, 0),
+    );
+
+    if (this.bvh) {
+      const hit = this.bvh.raycastFirst(ray);
+      if (hit) {
+        groundY = hit.point.y;
       }
+    }
 
-      const newY = groundY + Math.abs(Math.sin(this.velocities[index].yOffset) * 2);
+    const newY = groundY + Math.abs(Math.sin(this.velocities[index].yOffset) * 2);
 
-    mesh.position.set(mesh.position.x + this.velocities[index].x, newY, mesh.position.z + this.velocities[index].z);
-
+    mesh.position.set(
+      mesh.position.x + this.velocities[index].x,
+      newY,
+      mesh.position.z + this.velocities[index].z,
+    );
   }
 
   updateVelocity(index: number) {
@@ -162,15 +179,29 @@ class FireFlies {
   }
 
   getFireflyPositions(): Float32Array {
-
-    if (!this.group || !this.group?.children) return new Float32Array(0);
+    if (!this.group || !this.group.children) return new Float32Array(0);
 
     const positions = new Float32Array(this.group.children.length * 3); // [x, y, z, x, y, z, ...]
-    this.group?.children.forEach((mesh, index) => {
+
+    // Получаем матрицу вращения группы
+    const { rotation } = this.group;
+    const sinY = Math.sin(-rotation.y); // sin угла вращения вокруг Y
+    const cosY = Math.cos(-rotation.y); // cos угла вращения вокруг Y
+
+    this.group.children.forEach((mesh, index) => {
       const i = index * 3;
-      positions[i] = mesh.position.x;
-      positions[i + 1] = mesh.position.y;
-      positions[i + 2] = mesh.position.z;
+
+      // Локальные позиции светлячков (относительно группы)
+      const { x, y, z } = mesh.position;
+
+      // Преобразуем с учётом вращения группы по оси Y (формула вращения вокруг оси Y)
+      const rotatedX = x * cosY - z * sinY;
+      const rotatedZ = x * sinY + z * cosY;
+
+      // Записываем в буфер с учётом вращения
+      positions[i] = rotatedX;    // Новое положение X с учётом вращения
+      positions[i + 1] = y;      // Y остаётся неизменным
+      positions[i + 2] = rotatedZ; // Новое положение Z с учётом вращения
     });
     return positions;
   }

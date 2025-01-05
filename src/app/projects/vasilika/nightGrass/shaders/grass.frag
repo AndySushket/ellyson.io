@@ -35,7 +35,7 @@ varying float frc;
 
 void main() {
     vec3 vGlowEffect = vec3(0.); // Изначальное значение эффекта
-    float decay = 2.;
+    float decay = .4;
     for (int i = 0; i < fireflyCount; i++) {
 
         int i3 = i * 3;
@@ -46,6 +46,8 @@ void main() {
 
         // Расстояние от точки поверхности (vWorldPosition) до светлячка
         float distance = length(fireflyPos - vWorldPosition);
+
+        if (distance > 5.0) continue;
 
         float attenuation = 1.0 / (1.0 + decay * distance * distance);
         // Можно увеличить `decay` для более быстрого ослабления

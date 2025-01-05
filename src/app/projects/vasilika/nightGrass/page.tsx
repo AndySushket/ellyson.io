@@ -30,8 +30,6 @@ export default class NightGrass extends TemplateFor3D {
   meadow: Meadow | undefined;
 
   private composer: EffectComposer | undefined;
-  private cubeCamera: THREE.CubeCamera | undefined;
-  private cubeRenderTarget: THREE.WebGLCubeRenderTarget | undefined;
 
   componentWillUnmount() {
     super.componentWillUnmount();
@@ -39,15 +37,16 @@ export default class NightGrass extends TemplateFor3D {
 
   initLight(): void {
     this.light = new THREE.DirectionalLight(0xffffff, .2);
-    this.light.position.set(5, 5, 5);
+    this.light.position.set(-5, 5, 5);
     this.light.castShadow = true;
     this.ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
     this.scene?.add(this.light, this.ambientLight);
   }
 
   setCameraConfig() {
-    this.camera?.position.set(-37.1715, 5.6308, 7.8920);
-    this.camera?.rotation.set(-0.61972, -1.3156, -0.6042);
+    const { camera: {position, rotation} } = config;
+    this.camera?.position.set(position.x, position.y, position.z);
+    this.camera?.rotation.set(rotation.x, rotation.y, rotation.z);
   }
 
   initMeadow() {
@@ -64,7 +63,7 @@ export default class NightGrass extends TemplateFor3D {
   }
 
   initRobot() {
-    this.robot = new Robot(this.scene);
+    this.robot = new Robot(this.scene, config.robot);
   }
 
   initFireFlies() {
@@ -141,7 +140,6 @@ export default class NightGrass extends TemplateFor3D {
     this.meadow?.updateGrass(this.clock.getElapsedTime() * 0.3);
 
     this.controls?.update();
-
     requestAnimationFrame(() => this.animate());
   }
 

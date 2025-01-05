@@ -114,11 +114,11 @@ class Meadow {
         ambientLightColor: { value: ambientLight.color.clone().convertSRGBToLinear() },
       },
       vertexShader: `
-        #define NUM_FIREFLIES ${fireflyMaxCount}
+        #define NUM_FIREFLIES ${fireflyMaxCount * 3}
         ${vertexShader}
         `,
       fragmentShader: `
-       #define NUM_FIREFLIES ${fireflyMaxCount}
+       #define NUM_FIREFLIES ${fireflyMaxCount * 3}
         ${fragmentShader}
        `,
       side: THREE.DoubleSide,

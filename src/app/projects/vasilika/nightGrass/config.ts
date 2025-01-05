@@ -29,10 +29,11 @@ const config = {
       z: 0,
     },
     distance: {
-      xMin: -40, xMax: 10, // границы по оси X
-      zMin: -10, zMax: 30, // границы по оси Y
+      xMin: -33, xMax: 40, // границы по оси X
+      zMin: -50, zMax: 35, // границы по оси Y
     },
-    speed: 0.005,
+    rotateParticles: Math.PI / 1.5,
+    speed: 0.01,
   },
   meadow: {
     width: 100,
@@ -43,6 +44,16 @@ const config = {
       joints: 5,
     },
   },
+  robot: {
+    color: 0x0000ff,
+    position: { x: 25, y: -1, z: 20 },
+    rotationY: Math.PI / 8,
+    scale: 10,
+  },
+  camera: {
+    position: { x: 30.5398, y: 0.9661, z: 40.1273 },
+    rotation: { x: -0.0240, y: 0.6504, z: 0.0145 },
+  }
 }
 
 config.fireflies.velocity = {

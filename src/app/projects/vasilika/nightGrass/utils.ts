@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { createNoise2D } from 'simplex-noise';
 
-const noise2D = createNoise2D(() => 0.8); // same form of hills
+const noise2D = createNoise2D(() => 0.32); // same form of hills
 
 function multiplyQuaternions(q1: THREE.Quaternion | THREE.Vector4, q2: THREE.Quaternion | THREE.Vector4) {
   const x = q1.x * q2.w + q1.y * q2.z - q1.z * q2.y + q1.w * q2.x;
@@ -12,9 +12,9 @@ function multiplyQuaternions(q1: THREE.Quaternion | THREE.Vector4, q2: THREE.Qua
 }
 
 function getYPosition(x: number, z: number) {
-  var y = 2 * noise2D(x / 50, z / 50);
-  y += 4 * noise2D(x / 100, z / 100);
-  y += 0.2 * noise2D(x / 10, z / 10);
+  var y = 3 * noise2D(x / 50, z / 50);
+  y += 14 * noise2D(x / 100, z / 100);
+  y += 0.5 * noise2D(x / 10, z / 10);
   return y;
 }
 
