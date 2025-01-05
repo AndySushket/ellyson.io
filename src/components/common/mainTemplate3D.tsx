@@ -52,8 +52,6 @@ export default class TemplateFor3D extends React.Component<any, any> {
 
   protected canvasDiv: HTMLDivElement | null = null;
 
-  protected isMobile: boolean;
-
   constructor(props: any) {
     super(props);
     this.state = {
