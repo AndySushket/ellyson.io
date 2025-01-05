@@ -74,19 +74,11 @@ export default class TemplateFor3D extends React.Component<any, any> {
       this.HEIGHT = 0;
       this.WIDTH = 0;
     }
-
-    this.isMobile = this.checkIfMobile();
   }
 
   handleVisibilityChange = () => {
     this.setState({ isTabActive: !document.hidden });
   };
-
-  checkIfMobile(): boolean {
-    return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent || ''
-    );
-  }
 
   componentDidMount() {
     if (typeof window === 'undefined') return;
