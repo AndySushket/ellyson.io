@@ -36,7 +36,7 @@ export default class NightGrass extends TemplateFor3D {
   }
 
   initLight(): void {
-    this.light = new THREE.DirectionalLight(0xffffff, .2);
+    this.light = new THREE.DirectionalLight(0xffffff, .5 );
     this.light.position.set(-5, 5, 15);
     this.light.castShadow = true;
     this.ambientLight = new THREE.AmbientLight(0xffffff, 0.05);

@@ -4,6 +4,7 @@ import React from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
+import CameraManager from 'core/CameraManager';
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -27,7 +28,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
   }
 
   state: { checked: boolean; isTabActive: boolean };
-
+  protected cameraManager: CameraManager | undefined;
   protected time: number;
   protected looped: boolean;
   protected clock: THREE.Clock;
@@ -85,9 +86,9 @@ export default class TemplateFor3D extends React.Component<any, any> {
       this.WIDTH = window.innerWidth;
       this.resolution.set(this.WIDTH, this.HEIGHT);
 
-      document.addEventListener("visibilitychange", this.handleVisibilityChange);
+      document.addEventListener('visibilitychange', this.handleVisibilityChange);
 
-      window.addEventListener("resize", this.handleWindowResize, false);
+      window.addEventListener('resize', this.handleWindowResize, false);
     }
   }
 
@@ -108,8 +109,8 @@ export default class TemplateFor3D extends React.Component<any, any> {
     }
 
     this.looped = false;
-    document.removeEventListener("visibilitychange", this.handleVisibilityChange);
-    window.removeEventListener("resize", this.handleWindowResize);
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+    window.removeEventListener('resize', this.handleWindowResize);
   }
 
   initScene(): void {
@@ -132,8 +133,9 @@ export default class TemplateFor3D extends React.Component<any, any> {
       cameraParam?.fov || 75,
       this.WIDTH / this.HEIGHT,
       0.1,
-      1000000
+      1000000,
     );
+    this.cameraManager = new CameraManager(this.camera);
   }
 
   initLight(): void {
@@ -152,7 +154,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
     param?: THREE.WebGLRendererParameters | undefined,
     cameraParam?: any,
     additionalParam?: any,
-    activeControls?: boolean
+    activeControls?: boolean,
   ): void {
     this.initRenderer(param);
     this.initScene();
@@ -168,7 +170,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
       this.renderer.setClearColor(0x000000, 0);
 
       const arButton = ARButton.createButton(this.renderer, {
-        requiredFeatures: ["hit-test"],
+        requiredFeatures: ['hit-test'],
       });
       document.body.appendChild(arButton);
     }
@@ -194,22 +196,19 @@ export default class TemplateFor3D extends React.Component<any, any> {
 
   attachMouseMoveEvent(element?: any): void {
     (element || this.renderer?.domElement)?.addEventListener(
-      "mousemove",
-      this.onMouseMove.bind(this)
+      'mousemove',
+      this.onMouseMove.bind(this),
     );
   }
 
   attachKeydownEvent(): void {
     if (isBrowser) {
-      window.addEventListener("keydown", this.onKeydown.bind(this));
+      window.addEventListener('keydown', this.onKeydown.bind(this));
     }
   }
 
   attachMouseClickEvent(): void {
-    this.renderer?.domElement?.addEventListener(
-      "click",
-      this.onClick.bind(this)
-    );
+    this.renderer?.domElement?.addEventListener('click', this.onClick.bind(this));
   }
 
   onMouseMove(e: MouseEvent): void {
