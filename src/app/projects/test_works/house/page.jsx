@@ -62,7 +62,7 @@ export default class House extends TemplateFor3D {
 			this.scene.add(...this.interectiveMeshes);
 			this.controls.enabled = true;
 			await loadHouse.call(this);
-			await this.setState({loaded: true});
+			await this.setState({ loaded: true });
 		} else {
 			this.scene.remove(this.house, ...this.interectiveMeshes, this.saveScreen.plane, this.linkObject.plane);
 			this.cssScene.remove(this.linkObject.cssObject, this.saveScreen.cssObject);

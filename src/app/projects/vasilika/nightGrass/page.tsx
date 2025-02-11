@@ -16,6 +16,7 @@ import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 
 import { acceleratedRaycast } from 'three-mesh-bvh';
+import LightMap from '@/app/projects/vasilika/nightGrass/LightMap';
 
 const BLOOM_SCENE = 1;
 
@@ -30,6 +31,7 @@ export default class NightGrass extends TemplateFor3D {
   meadow: Meadow | undefined;
 
   private composer: EffectComposer | undefined;
+  private lightMap: LightMap | undefined;
 
   componentWillUnmount() {
     super.componentWillUnmount();
@@ -44,7 +46,11 @@ export default class NightGrass extends TemplateFor3D {
   }
 
   setCameraConfig() {
-    const { camera: {position, rotation} } = config;
+    const {
+      camera: {
+        main: { position, rotation },
+      },
+    } = config;
     this.camera?.position.set(position.x, position.y, position.z);
     this.camera?.rotation.set(rotation.x, rotation.y, rotation.z);
   }
@@ -68,9 +74,13 @@ export default class NightGrass extends TemplateFor3D {
 
   initFireFlies() {
     this.fireFlies = new FireFlies(config.fireflies, this);
-    if (this.fireFlies?.group) {
-      this.scene?.add(this.fireFlies.group);
+    if (this.fireFlies?.fireFlies) {
+      this.scene?.add(this.fireFlies.fireFlies);
     }
+  }
+
+  initLightMap() {
+    this.lightMap = new LightMap(512, config.meadow.width, config.fireflies.count);
   }
 
   initProject() {
@@ -83,6 +93,8 @@ export default class NightGrass extends TemplateFor3D {
     this.setCameraConfig();
 
     this.initFireFlies();
+
+    this.initLightMap();
   }
 
   componentDidMount() {
@@ -121,9 +133,10 @@ export default class NightGrass extends TemplateFor3D {
   }
 
   animate() {
-    if (!this.looped || !this.state.isTabActive) return;
+    if (!this.looped) return;
+    if (!this.renderer || !this.scene || !this.camera) return;
 
-    this.time++;
+    this.time += 1;
 
     this.composer?.render();
 
@@ -132,7 +145,11 @@ export default class NightGrass extends TemplateFor3D {
     const fireflyPositions = this.fireFlies?.getFireflyPositions();
 
     if (fireflyPositions && this.meadow?.grassMesh.material) {
-      (this.meadow.grassMesh.material as any).uniforms.fireflyPositions.value = fireflyPositions;
+      this.lightMap?.update(this.renderer as THREE.WebGLRenderer, fireflyPositions);
+
+      // Обновляем униформу в материале травы
+      (this.meadow.grassMesh.material as THREE.ShaderMaterial).uniforms.lightMap.value =
+        this.lightMap?.getTexture();
     }
 
     this.robot?.updateAnimation(this.clock.getElapsedTime());

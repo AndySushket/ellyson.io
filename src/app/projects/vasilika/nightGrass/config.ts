@@ -2,7 +2,7 @@ const config = {
   light: {
     directional: {
       color: 0xffffff,
-      intensity: 0.2,
+      intensity: 0.4,
       position: { x: 5, y: 5, z: 5 },
     }, ambient: {
       color: 0xffffff,
@@ -12,47 +12,46 @@ const config = {
   fireflies: {
     count: 100, // не работает если больше 10 и стоит каст шедоу
     size: 1,
-    spotLight: {
-      use: false,
-      color: 0xffff00,
-      intensity: 10,
-      distance: 1,
-      shadow: {
-        mapSize: { width: 256, height: 256 },
-        camera: { far: 10 },
-        castShadow: false,
-      }
-    },
     color: 0x00ff00,
     velocity: {
       x: 0,
       z: 0,
     },
     distance: {
-      xMin: -33, xMax: 40, // границы по оси X
-      zMin: -50, zMax: 35, // границы по оси Y
+      xMin: -50, xMax: 70, // границы по оси X
+      zMin: -30, zMax: 75, // границы по оси Y
     },
     rotateParticles: Math.PI / 1.5,
     speed: 0.01,
   },
   meadow: {
-    width: 100,
+    width: 200,
     grass: {
-      instances: 100000,
-      bladeWidth: 0.12,
-      bladeHeight: 1,
+      windSpeed: {x: 50, y: 50},
+      windStrength: 0.15,
+      instances: 200000,
+      bladeWidth: .15  ,
+      bladeHeight: 1.2,
       joints: 5,
     },
   },
   robot: {
     color: 0x0000ff,
-    position: { x: 23, y: -2, z: 25 },
-    rotationY: Math.PI / 8,
+    position: { x: 28, y: -2, z: 20 },
+    mobilePosition: { x: 23, y: -2, z: 25 },
+    rotationY: - Math.PI / 10,
+    mobileRotationY: Math.PI / 8,
     scale: 10,
   },
   camera: {
-    position: { x: 30.5398, y: 0.9661, z: 40.1273 },
-    rotation: { x: -0.0240, y: 0.6504, z: 0.0145 },
+    activeControls: false,
+    main: {
+      position: { x: 30.5398, y: 0.9661, z: 40.1273 },
+      rotation: { x: -0.0240, y: 0.6504, z: 0.0145 },
+    },
+    project: {
+      rotation: { x: -0.0240, y: 1.3008, z: 0.0145 },
+    },
   }
 }
 

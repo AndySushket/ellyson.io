@@ -2,30 +2,34 @@ import { Camera } from 'three';
 import { uuidv4 } from '@firebase/util';
 
 class CameraManager {
-  private cameras: Map<string, Camera>;
+  private cameras: Map<string, Camera> = new Map();
+  private activeCameraName: string | undefined;
 
-    constructor(camera: Camera,) {
-      this.cameras = new Map();
-      this.cameras.set('main', camera);
+  constructor(camera: Camera) {
+    if (camera) {
+      const cameraName = uuidv4();
+      this.cameras.set(cameraName, camera);
+      this.activeCameraName = cameraName;
     }
+  }
 
-    getMainCamera(): Camera {
-      return this.cameras.get('main') as Camera;
-    }
+  getActiveCamera(): Camera | undefined {
+    return this.cameras.get(<string>this.activeCameraName);
+  }
 
-    addCamera(name: string, camera: Camera): string {
-      if(!name) name = uuidv4();
-      this.cameras.set(name, camera);
-      return name;
-    }
+  addCamera(name: string, camera: Camera): string {
+    if (!name) name = uuidv4();
+    this.cameras.set(name, camera);
+    return name;
+  }
 
-    removeCamera(name: string): void {
-      this.cameras.delete(name);
-    }
+  removeCamera(name: string): void {
+    this.cameras.delete(name);
+  }
 
-    getCamera(name: string): Camera | undefined {
-      return this.cameras.get(name);
-    }
+  getCamera(name: string): Camera | undefined {
+    return this.cameras.get(name);
+  }
 }
 
 export default CameraManager;

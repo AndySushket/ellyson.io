@@ -1,6 +1,9 @@
 import { MeshBVH } from 'three-mesh-bvh';
 import * as THREE from 'three';
-import fireFlySprite from './assets/firefly.png';
+import { BufferAttribute, InterleavedBufferAttribute } from 'three';
+
+import vertexShader from './shaders/fireflies.vert';
+import fragmentShader from './shaders/fireflies.frag';
 
 class FireFlies {
   velocities: any;
@@ -11,7 +14,7 @@ class FireFlies {
 
   private bvh: MeshBVH | undefined;
 
-  public group: THREE.Group<THREE.Object3DEventMap> | undefined;
+  public fireFlies: THREE.InstancedMesh | undefined;
 
   constructor(config: any, context: any) {
     this.config = config;
@@ -28,114 +31,95 @@ class FireFlies {
   }
 
   initFireFlies(config: any) {
-    const { speed, distance, count, spotLight, rotateParticles } = config;
+    const { speed, distance, count, rotateParticles } = config;
 
-    const fireFlies = new THREE.Group();
-
-    fireFlies.rotation.y = rotateParticles;
+    const sphereGeom: any = new THREE.SphereGeometry(0.1, 32, 32);
+    const sphereInstanceGeom = new THREE.InstancedBufferGeometry().copy(sphereGeom);
+    const offsetArray = new Float32Array(count * 3);
 
     for (let i = 0; i < count; i++) {
-      const fireFly = new THREE.Mesh(
-        new THREE.SphereGeometry(0.1, 32, 32),
-        new THREE.MeshStandardMaterial({
-          color: 0xffff00,
-          emissive: 0xffff00,
-          emissiveIntensity: 100,
-          transparent: true,
-          opacity: 0.5,
-        }),
-      );
-
-      if (spotLight.use) {
-        const {
-          color,
-          intensity,
-          distance: lightDistance,
-          shadow: {
-            mapSize: { width, height },
-            camera: { far },
-            castShadow,
-          },
-        } = spotLight;
-        const light = new THREE.PointLight(color, intensity, lightDistance);
-        light.castShadow = castShadow;
-        light.shadow.mapSize.width = width;
-        light.shadow.mapSize.height = height;
-        light.shadow.camera.far = far;
-        fireFly.add(light);
-      }
-
-      fireFlies.add(fireFly);
+      offsetArray[i * 3] = THREE.MathUtils.randFloat(distance.xMin, distance.xMax);
+      offsetArray[i * 3 + 1] = 2;
+      offsetArray[i * 3 + 2] = THREE.MathUtils.randFloat(distance.zMin, distance.zMax);
 
       this.velocities[i] = {
         x: (Math.random() - 0.5) * speed,
         z: (Math.random() - 0.5) * speed,
         yOffset: Math.random() * Math.PI * 2,
       };
-
-      // random location of mesh
-      fireFly.position.set(
-        THREE.MathUtils.randFloat(distance.xMin, distance.xMax),
-        2,
-        THREE.MathUtils.randFloat(distance.zMin, distance.zMax),
-      );
     }
-    this.group = fireFlies;
-  }
 
-  updateFireFlies() {
-    for (let i = 0; i < 10; i += 1) {
-      const fireFly = this.group?.children[i];
-      if (fireFly) {
-        const velocity = this.velocities[i];
-        fireFly.position.x += velocity.x;
-        fireFly.position.z += velocity.z;
-        if (
-          fireFly.position.x < this.config.distance.xMin ||
-          fireFly.position.x > this.config.distance.xMax
-        ) {
-          this.updateVelocity(i);
-        }
-        if (
-          fireFly.position.z < this.config.distance.zMin ||
-          fireFly.position.z > this.config.distance.zMax
-        ) {
-          this.updateVelocity(i);
-        }
-      }
-    }
+    sphereInstanceGeom.setAttribute('offset', new THREE.InstancedBufferAttribute(offsetArray, 3));
+    sphereInstanceGeom.instanceCount = count;
+
+    const fireFliesMaterial = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: {
+        emissiveColor: { value: new THREE.Color(0xffff00) }, // Желтый свет
+        emissiveIntensity: { value: 100.0 }, // Интенсивность свечения
+      },
+      transparent: true,
+    });
+
+    const fireFlies = new THREE.InstancedMesh(
+      sphereInstanceGeom,
+      fireFliesMaterial,
+      count
+    );
+
+    fireFlies.castShadow = false;
+    fireFlies.receiveShadow = false;
+
+    fireFlies.frustumCulled = false;
+
+    fireFlies.rotation.y = rotateParticles;
+
+
+    this.fireFlies = fireFlies;
   }
 
   moveFireFlies() {
-    this.group?.children.forEach((mesh, index) => {
-      this.moveFirefly(mesh, index);
-    });
+    if (!this.fireFlies) return;
+    const count = this.config.count;
+    const offsetAttr = this.fireFlies.geometry.attributes.offset;
+    for (let i = 0; i < count; i++) {
+      this.moveFirefly(offsetAttr, i);
+    }
+    offsetAttr.needsUpdate = true;
   }
 
-  moveFirefly(mesh: THREE.Object3D<THREE.Object3DEventMap>, index: number) {
-    if(!this.group) return;
+  moveFirefly(offsetArray: BufferAttribute | InterleavedBufferAttribute, index: number) {
+    if (!(offsetArray instanceof THREE.BufferAttribute)) return;
 
     const distance = this.config.distance;
     // Update the velocity slightly to change direction
     this.updateVelocity(index);
 
+    const array = offsetArray.array as Float32Array;
+
+    const i = index * 3;
+
+    const x = array[i];
+    const y = array[i + 1];
+    const z = array[i + 2];
+
     // Apply velocity to position
 
     // Check and reflect if the firefly goes out of bounds
-    if (mesh.position.x < distance.xMin || mesh.position.x > distance.xMax) {
+    if (x < distance.xMin || x > distance.xMax) {
       this.velocities[index].x *= -1; // Reverse X direction
     }
-    if (mesh.position.z < distance.zMin || mesh.position.z > distance.zMax) {
+    if (z < distance.zMin || z > distance.zMax) {
       this.velocities[index].z *= -1; // Reverse Y direction
     }
 
     let groundY = 0;
 
-    const { rotation } = this.group;
+    const rotation = this.fireFlies?.rotation;
+    if (!rotation) return;
     const sinY = Math.sin(-rotation.y); // sin угла вращения вокруг Y
     const cosY = Math.cos(-rotation.y); // cos угла вращения вокруг Y
-
-    const { x, z } = mesh.position;
 
     const rotatedX = x * cosY - z * sinY;
     const rotatedZ = x * sinY + z * cosY;
@@ -154,11 +138,7 @@ class FireFlies {
 
     const newY = groundY + Math.abs(Math.sin(this.velocities[index].yOffset) * 2);
 
-    mesh.position.set(
-      mesh.position.x + this.velocities[index].x,
-      newY,
-      mesh.position.z + this.velocities[index].z,
-    );
+    offsetArray.set([x + this.velocities[index].x, newY, z + this.velocities[index].z], i);
   }
 
   updateVelocity(index: number) {
@@ -179,30 +159,29 @@ class FireFlies {
   }
 
   getFireflyPositions(): Float32Array {
-    if (!this.group || !this.group.children) return new Float32Array(0);
+    if (!this.fireFlies) return new Float32Array(0);
+    const count = this.config.count;
 
-    const positions = new Float32Array(this.group.children.length * 3); // [x, y, z, x, y, z, ...]
+    const positions = new Float32Array(count * 3); // [x, y, z, x, y, z, ...]
 
     // Получаем матрицу вращения группы
-    const { rotation } = this.group;
+    const { rotation } = this.fireFlies;
     const sinY = Math.sin(-rotation.y); // sin угла вращения вокруг Y
     const cosY = Math.cos(-rotation.y); // cos угла вращения вокруг Y
 
-    this.group.children.forEach((mesh, index) => {
-      const i = index * 3;
+    for (let i = 0; i < count; i++) {
+      const x = this.fireFlies.geometry.attributes.offset.getX(i);
+      const y = this.fireFlies.geometry.attributes.offset.getY(i);
+      const z = this.fireFlies.geometry.attributes.offset.getZ(i);
 
-      // Локальные позиции светлячков (относительно группы)
-      const { x, y, z } = mesh.position;
-
-      // Преобразуем с учётом вращения группы по оси Y (формула вращения вокруг оси Y)
       const rotatedX = x * cosY - z * sinY;
       const rotatedZ = x * sinY + z * cosY;
 
-      // Записываем в буфер с учётом вращения
-      positions[i] = rotatedX;    // Новое положение X с учётом вращения
-      positions[i + 1] = y;      // Y остаётся неизменным
-      positions[i + 2] = rotatedZ; // Новое положение Z с учётом вращения
-    });
+      positions[i * 3] = rotatedX;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = rotatedZ;
+    }
+
     return positions;
   }
 }

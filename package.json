@@ -56,6 +56,7 @@
 
     "simplex-noise": "4.0.3",
     "delaunator": "^5.0.1",
+
     "react-device-detect": "^2.2.3",
     "react-select": "^5.8.0",
     "react-syntax-highlighter": "^15.5.0",
@@ -70,7 +71,7 @@
   "scripts": {
     "start": "npx serve@latest ./build",
     "build": "DISABLE_ESLINT_PLUGIN=true next build && node updateFirebaseRewrites.js",
-    "dev": "DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS='--inspect' next dev",
+    "dev": "DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS='--inspect' next dev -p 3001",
     "test": "react-app-rewired test",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
   },
@@ -140,9 +141,9 @@
         "resetMocks": true
       },
       "devDependencies": {
-        "@babel/preset-env": "^7.25.4",
-        "@babel/core": "^7.25.2",
-        "@babel/eslint-parser": "^7.13.10",
+        "@babel/preset-env": "^7.26.8",
+        "@babel/core": "^7.26.8",
+        "@babel/eslint-parser": "^7.26.8",
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "eslint": "^7.22.0",
         "eslint-config-airbnb": "^18.2.1",

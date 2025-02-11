@@ -1,10 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { ARButton } from "three/examples/jsm/webxr/ARButton";
+import React from 'react';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { ARButton } from 'three/examples/jsm/webxr/ARButton';
 import CameraManager from 'core/CameraManager';
+import Renderer from 'core/Renderer';
+import Scene from 'core/Scene';
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -114,11 +116,11 @@ export default class TemplateFor3D extends React.Component<any, any> {
   }
 
   initScene(): void {
-    this.scene = new THREE.Scene();
+    this.scene = new Scene();
   }
 
   initRenderer(param: THREE.WebGLRendererParameters | undefined): void {
-    this.renderer = new THREE.WebGLRenderer(param);
+    this.renderer = new Renderer(param);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setClearColor(0x000000);
     this.renderer.setSize(this.WIDTH, this.HEIGHT);

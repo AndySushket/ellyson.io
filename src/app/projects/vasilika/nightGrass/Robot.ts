@@ -35,11 +35,19 @@ class Robot {
 
         // group.children[1].rotation.x -= Math.PI / 2;
 
-        const { scale, position, rotationY } = config;
+        const { scale, position, rotationY, mobilePosition, mobileRotationY } = config;
+
+        //check if mobile
+
+        if (window.innerWidth < 768) {
+          group.position.set(mobilePosition.x, mobilePosition.y, mobilePosition.z);
+          group.rotation.y = mobileRotationY;
+        } else {
+          group.position.set(position.x, position.y, position.z);
+          group.rotation.y = rotationY;
+        }
 
         group.scale.set(scale, scale, scale);
-        group.position.set(position.x, position.y, position.z);
-        group.rotation.y = rotationY;
 
         scene?.add(group);
 

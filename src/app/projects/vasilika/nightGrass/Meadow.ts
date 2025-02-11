@@ -50,7 +50,7 @@ class Meadow {
     context: any,
   ) {
     const { meadow: {
-      grass: { bladeWidth, bladeHeight, joints, instances },
+      grass: { bladeWidth, bladeHeight, joints, instances, windSpeed, windStrength},
       width,
     }} = config;
     const attributeData = getAttributeData(instances, width);
@@ -85,15 +85,18 @@ class Meadow {
 
     this.grassMesh = new THREE.Mesh(
       instancedGeometry,
-      this.getGrassMaterial(context.light, context.ambientLight, config.fireflies.count),
+      this.getGrassMaterial(context.light, context.ambientLight, config.fireflies.count, width, windSpeed, windStrength),
     );
-    this.grassMesh.frustumCulled = false
+    this.grassMesh.frustumCulled = false;
   }
 
   getGrassMaterial(
     directionalLight: THREE.DirectionalLight,
     ambientLight: THREE.AmbientLight,
     fireflyMaxCount = 100,
+    width = 100,
+    windSpeed = { x: 50, y: 50 },
+    windStrength = 0.15,
   ) {
     const loader = new THREE.TextureLoader();
     const map = loader.load(grassDiffTexture.src);
@@ -101,7 +104,10 @@ class Meadow {
 
     return new THREE.ShaderMaterial({
       uniforms: {
-        fireflyPositions: { value: new Float32Array(fireflyMaxCount * 3) },
+        windSpeed: { value: windSpeed },
+        windStrength: { value: windStrength },
+        groundSize: { value: width },
+        lightMap: { value: null },
         fireflyCount: { value: fireflyMaxCount },
         bladeHeight: { value: 1 },
         map: { value: map },
@@ -113,20 +119,12 @@ class Meadow {
         uLightIntensity: { value: directionalLight.intensity },
         ambientLightColor: { value: ambientLight.color.clone().convertSRGBToLinear() },
       },
-      vertexShader: `
-        #define NUM_FIREFLIES ${fireflyMaxCount * 3}
-        ${vertexShader}
-        `,
-      fragmentShader: `
-       #define NUM_FIREFLIES ${fireflyMaxCount * 3}
-        ${fragmentShader}
-       `,
+      vertexShader,
+      fragmentShader,
       side: THREE.DoubleSide,
       lights: true,
     });
   }
-
-
 
   updateGrass(delta: number) {
     if (!this.grassMesh) return;

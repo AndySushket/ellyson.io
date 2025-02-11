@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import React from 'react';
 import TemplateFor3D from 'components/common/mainTemplate3D';
 
-export default class Dance extends TemplateFor3D {
+export default class Template extends TemplateFor3D {
   constructor(props: any) {
     super(props);
   }

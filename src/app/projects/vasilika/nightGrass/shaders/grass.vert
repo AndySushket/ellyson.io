@@ -1,16 +1,29 @@
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
 precision mediump float;
+#endif
+
 attribute vec3 offset;
 attribute vec4 orientation;
 attribute float halfRootAngleSin;
 attribute float halfRootAngleCos;
 attribute float stretch;
+
+uniform vec2 windSpeed;
+uniform float windStrength;
 uniform float time;
 uniform float bladeHeight;
+uniform float groundSize;
+
+const float FRUSTUM_MARGIN = 1.0;
 
 varying vec2 vUv;
 varying vec3 vNormal;
-varying vec3 vWorldPosition; // Мировая позиция вертекса
+varying vec3 vWorldPosition;
 varying float frc;
+varying float isClipped;
+varying vec2 vLightMapUv;
 
 //WEBGL-NOISE FROM https://github.com/stegu/webgl-noise
 //Description : Array and textureless GLSL 2D simplex noise function. Author : Ian McEwan, Ashima Arts. Maintainer : stegu Lastmod : 20110822 (ijm) License : Copyright (C) 2011 Ashima Arts. All rights reserved. Distributed under the MIT License. See LICENSE file. https://github.com/ashima/webgl-noise https://github.com/stegu/webgl-noise
@@ -92,33 +105,45 @@ vec3 rotateNormalByQuaternion(vec3 normal, vec4 q) {
 
 
 void main() {
-    // Расчет относительной позиции вдоль высоты травинки
-    frc = position.y / float(bladeHeight);
+    // Frustum culling
+    vec4 projected = projectionMatrix * viewMatrix * modelMatrix * vec4(position + offset, 1.0);
 
-    // Генерация шума для эффекта ветра
-    float noise = 1.0 - (snoise(vec2((time - offset.x / 50.0), (time - offset.z / 50.0))));
+    if (abs(projected.x) > projected.w + FRUSTUM_MARGIN ||
+    abs(projected.y) > projected.w + FRUSTUM_MARGIN ||
+    abs(projected.z) > projected.w + FRUSTUM_MARGIN) {
+        isClipped = 1.0;
+        gl_Position = projected;
+        return;
+    }
 
-    // Определение начального направления травинки
+    isClipped = 0.0;
+    frc = position.y / bladeHeight;
+
+    // Wind effect
+    vec2 windTime = vec2(
+    time - offset.x / windSpeed.x,
+    time - offset.z / windSpeed.y
+    );
+    float noise = 1.0 - snoise(windTime);
+
+    // Initial direction
     vec4 direction = vec4(0.0, halfRootAngleSin, 0.0, halfRootAngleCos);
     direction = slerp(direction, orientation, frc);
 
-    // Базовая позиция с учетом растяжения
-    vec3 pos = vec3(position.x, position.y + position.y * stretch, position.z);
+    // Position calculation
+    vec3 pos = vec3(position.x, position.y * (1.0 + stretch), position.z);
     pos = rotateVectorByQuaternion(pos, direction);
 
-    // Применение эффекта ветра
-    float halfAngle = noise * 0.15;
-    pos = rotateVectorByQuaternion(pos, normalize(vec4(sin(halfAngle), 0.0, -sin(halfAngle), cos(halfAngle))));
+    // Wind application
+    float halfAngle = noise * windStrength;
+    vec4 windQuat = normalize(vec4(sin(halfAngle), 0.0, -sin(halfAngle), cos(halfAngle)));
+    pos = rotateVectorByQuaternion(pos, windQuat);
 
-    // Вычисление мировой позиции вертекса для освещения
+    // World position and normal
     vWorldPosition = (modelMatrix * vec4(pos + offset, 1.0)).xyz;
-
-    // Трансформируем нормали с учетом всех вращений и преобразуем в пространство камеры
     vNormal = normalize(normalMatrix * rotateNormalByQuaternion(normal, direction));
-
-    // Передача UV координат
     vUv = uv;
+    vLightMapUv = vWorldPosition.xz / groundSize + 0.5;
 
-    // Установка финальной позиции в clip space
-    gl_Position = projectionMatrix  * viewMatrix  *vec4(vWorldPosition, 1.0);
+    gl_Position = projectionMatrix * viewMatrix * vec4(vWorldPosition, 1.0);
 }
