@@ -7,6 +7,13 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     config.module.rules.push(
       {
+        test: /\.m?js$/,
+        type: "javascript/auto",
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+    {
         test: /\.(shader|vert|frag|glsl|fnt)$/,
         use: 'raw-loader',
       },
