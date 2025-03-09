@@ -233,12 +233,23 @@ const GLSLEditor = () => {
     setFragmentShader(e.target.value);
   };
 
+  const handleScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
+    const textarea = e.currentTarget;
+    const pre = textarea.nextElementSibling as HTMLPreElement;
+    if (pre) {
+      pre.scrollTop = textarea.scrollTop;
+      pre.scrollLeft = textarea.scrollLeft;
+    }
+  };
+
+
   return (
     <EditorContainer>
       <CodeEditorWrapper>
         <textarea
           value={fragmentShader}
           onChange={handleShaderChange}
+          onScroll={handleScroll}
           spellCheck="false"
         />
         <Highlight
@@ -247,12 +258,16 @@ const GLSLEditor = () => {
           language="cpp"
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <pre className={className} style={{
-              ...style,
-              margin: 0,
-              backgroundColor: '#1e1e1e',
-              color: '#d4d4d4',
-            }}>
+            <pre
+              className={className}
+              style={{
+                ...style,
+                margin: 0,
+                backgroundColor: '#1e1e1e',
+                color: '#d4d4d4',
+                overflow: 'auto',  // Убедимся что overflow установлен
+              }}
+            >
               {tokens.map((line, i) => (
                 <div key={i} {...getLineProps({ line })}>
                   {line.map((token, key) => (
