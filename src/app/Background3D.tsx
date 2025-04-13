@@ -102,7 +102,7 @@ class Background3D extends TemplateFor3D {
         }
       });
     }
-    requestAnimationFrame(this.animate.bind(this));
+    // requestAnimationFrame(this.animate.bind(this));
   }
 
   render(): React.ReactNode {
