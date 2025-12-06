@@ -29,14 +29,23 @@ declare global {
 
 export default class WebAssemblySphere extends TemplateFor3D {
   private wasmModule: SphereModule | null = null;
+
   private sphereGeometry: THREE.BufferGeometry | null = null;
+
   private sphereMesh: THREE.Mesh | null = null;
+
   private verticesPtr: number = 0;
+
   private colorsPtr: number = 0;
+
   private vertexCount: number = 0;
+
   private resolutionSphere: number = 30;
+
   private radius: number = 1;
+
   private verticesArray: Float32Array | null = null;
+
   private colorsArray: Float32Array | null = null;
 
   state: {
@@ -102,7 +111,9 @@ export default class WebAssemblySphere extends TemplateFor3D {
 
     // Check if HEAPF32 is available
     if (!this.wasmModule.HEAPF32) {
-      console.error('HEAPF32 is not available in the WebAssembly module. Make sure it is properly exported.');
+      console.error(
+        'HEAPF32 is not available in the WebAssembly module. Make sure it is properly exported.',
+      );
       return;
     }
 
@@ -175,7 +186,9 @@ export default class WebAssemblySphere extends TemplateFor3D {
 
     // Check if HEAPF32 is available before proceeding
     if (!this.wasmModule.HEAPF32) {
-      console.error('HEAPF32 is not available in the WebAssembly module. Make sure it is properly exported.');
+      console.error(
+        'HEAPF32 is not available in the WebAssembly module. Make sure it is properly exported.',
+      );
       return;
     }
 
