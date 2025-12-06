@@ -39,10 +39,18 @@ export default class WebAssemblySphere extends TemplateFor3D {
   private verticesArray: Float32Array | null = null;
   private colorsArray: Float32Array | null = null;
 
+  state: {
+    checked: boolean;
+    isTabActive: boolean;
+    wasmLoaded: boolean;
+  };
+
   constructor(props: any) {
     super(props);
+
     this.state = {
-      ...this.state,
+      isTabActive: true,
+      checked: false,
       wasmLoaded: false,
     };
   }
