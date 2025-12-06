@@ -1,3 +1,5 @@
+$accent-color: #64ffda;
+
 * {
   padding: 0;
   margin: 0;
@@ -296,6 +298,48 @@ div.header {
       //color: wheat;
       //text-decoration: none;
     }
+
+    .glitch-text {
+      position: relative;
+      display: inline-block;
+
+      &:hover {
+        animation: glitch 1s infinite;
+
+        &::before {
+          animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        &::after {
+          animation: glitch-anim2 5s infinite linear alternate-reverse;
+          animation-delay: 0.3s;
+        }
+      }
+
+      &::before,
+      &::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.8;
+      }
+
+      &::before {
+        left: 2px;
+        text-shadow: -1px 0 $accent-color;
+        clip: rect(44px, 450px, 56px, 0);
+      }
+
+      &::after {
+        left: -2px;
+        text-shadow: -1px 0 rgba(255, 0, 255, 0.7);
+        clip: rect(44px, 450px, 56px, 0);
+      }
+    }
+
   }
 
   .rightHeader {
@@ -326,6 +370,47 @@ div.header {
     //
     > :last-child {
       margin-right: 15px;
+    }
+
+    .glitch-text {
+      position: relative;
+      display: inline-block;
+
+      &:hover {
+        animation: glitch 1s infinite;
+
+        &::before {
+          animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        &::after {
+          animation: glitch-anim2 5s infinite linear alternate-reverse;
+          animation-delay: 0.3s;
+        }
+      }
+
+      &::before,
+      &::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.8;
+      }
+
+      &::before {
+        left: 2px;
+        text-shadow: -1px 0 $accent-color;
+        clip: rect(44px, 450px, 56px, 0);
+      }
+
+      &::after {
+        left: -2px;
+        text-shadow: -1px 0 rgba(255, 0, 255, 0.7);
+        clip: rect(44px, 450px, 56px, 0);
+      }
     }
   }
 }
@@ -380,4 +465,54 @@ div[role='tooltip'] > div {
   border: 1px solid #ffffff;
   padding: 10px;
   border-radius: 5px;
+}
+
+// Glitch effect animations
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 $accent-color, -0.05em -0.025em 0 rgba(255, 0, 255, 0.75),
+                -0.025em 0.05em 0 rgba(0, 255, 255, 0.75);
+  }
+  14% {
+    text-shadow: 0.05em 0 0 $accent-color, -0.05em -0.025em 0 rgba(255, 0, 255, 0.75),
+                -0.025em 0.05em 0 rgba(0, 255, 255, 0.75);
+  }
+  15% {
+    text-shadow: -0.05em -0.025em 0 $accent-color, 0.025em 0.025em 0 rgba(255, 0, 255, 0.75),
+                -0.05em -0.05em 0 rgba(0, 255, 255, 0.75);
+  }
+  49% {
+    text-shadow: -0.05em -0.025em 0 $accent-color, 0.025em 0.025em 0 rgba(255, 0, 255, 0.75),
+                -0.05em -0.05em 0 rgba(0, 255, 255, 0.75);
+  }
+  50% {
+    text-shadow: 0.025em 0.05em 0 $accent-color, 0.05em 0 0 rgba(255, 0, 255, 0.75),
+                0 -0.05em 0 rgba(0, 255, 255, 0.75);
+  }
+  99% {
+    text-shadow: 0.025em 0.05em 0 $accent-color, 0.05em 0 0 rgba(255, 0, 255, 0.75),
+                0 -0.05em 0 rgba(0, 255, 255, 0.75);
+  }
+  100% {
+    text-shadow: -0.025em 0 0 $accent-color, -0.025em -0.025em 0 rgba(255, 0, 255, 0.75),
+                -0.025em -0.05em 0 rgba(0, 255, 255, 0.75);
+  }
+}
+
+@keyframes glitch-anim {
+  $steps: 20;
+  @for $i from 0 through $steps {
+    #{percentage($i / ($steps - 1))} {
+      clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+    }
+  }
+}
+
+@keyframes glitch-anim2 {
+  $steps: 20;
+  @for $i from 0 through $steps {
+    #{percentage($i / ($steps - 1))} {
+      clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+    }
+  }
 }

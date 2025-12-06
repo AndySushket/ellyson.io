@@ -4,14 +4,20 @@ import CustomLink from '@/components/common/CustomLink';
 export default function Header () {
   return (
     <div className="header">
-      <div className="leftHeader">Andy Sushket</div>
+      <div className="leftHeader">
+        <span data-text="Andy Sushket" className="glitch-text">Andy Sushket</span>
+      </div>
       <div className="rightHeader">
         <div>
-          <CustomLink dest="/" >Home</CustomLink>
+          <CustomLink dest="/">
+            <span data-text="Home" className="glitch-text">Home</span>
+          </CustomLink>
         </div>
         /
         <div>
-          <CustomLink dest="/projects" >Projects</CustomLink>
+          <CustomLink dest="/projects">
+            <span data-text="Projects" className="glitch-text">Projects</span>
+          </CustomLink>
         </div>
       </div>
     </div>
