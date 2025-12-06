@@ -6,7 +6,7 @@ import TemplateFor3D from 'components/common/mainTemplate3D';
 import vertexShader from './shaders/vertexShader.vert';
 import fragmentShader from './shaders/fragmentShader.frag';
 
-import texture from './static/textures/flag-french.jpg';
+import texture from './static/textures/flag-ukrain.png';
 
 export default class Particles extends TemplateFor3D {
 	constructor(props) {
