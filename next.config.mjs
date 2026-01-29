@@ -1,3 +1,9 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -5,6 +11,12 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   webpack: (config, { isServer }) => {
+    // Add alias for GLSL imports
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'glsl': path.resolve(__dirname, 'src/utils/shaderUtils'),
+    };
+
     config.module.rules.push(
       {
         test: /\.m?js$/,
@@ -15,7 +27,7 @@ const nextConfig = {
       },
     {
         test: /\.(shader|vert|frag|glsl|fnt)$/,
-        use: 'raw-loader',
+        use: ['raw-loader', 'glslify-loader'],
       },
       {
         test: /\.(fbx|gltf|glb|hdr|mp3|wav|ogg|flac)$/i,
