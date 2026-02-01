@@ -16,7 +16,7 @@ const engine = require('./engine.glb');
 // THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 export default class NightGrass extends TemplateFor3D {
-  private gui: GUI | any;
+  private gui: any;
 
   private cameraTarget: THREE.Vector3 = new THREE.Vector3(-52, -2, 97);
   // private targetHelper: THREE.Mesh | null = null;
