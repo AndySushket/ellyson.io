@@ -29,9 +29,16 @@ export default class NightGrass extends TemplateFor3D {
 
   private customUniforms = {
     uTime: { value: 0.0 },
-    uBaseColor: { value: new THREE.Color(0xffffff) },
-    uMetalness: { value: 0.9 },
+    uBaseColor: { value: new THREE.Color(0xc9c9c9) },
+    uMetalness: { value: 1. },
     uRoughness: { value: 0.67 },
+    uEffectIntensity: { value: 1.93 },
+    uGlowColor1: { value: new THREE.Color(0x000000) }, // Red/Pink
+    uGlowColor2: { value: new THREE.Color(0xcd4e4e) }, // Teal
+    uGlowColor3: { value: new THREE.Color(0x000000) }, // Purple
+    uGlowColor4: { value: new THREE.Color(0x630000) }, // Blue
+    uGlowSpeed: { value: 1. },
+    uGlowScale: { value: .9 },
   };
 
   componentWillUnmount() {
@@ -208,9 +215,19 @@ export default class NightGrass extends TemplateFor3D {
             shader.uniforms.uBaseColor = this.customUniforms.uBaseColor;
             shader.uniforms.uMetalness = this.customUniforms.uMetalness;
             shader.uniforms.uRoughness = this.customUniforms.uRoughness;
+            shader.uniforms.uEffectIntensity = this.customUniforms.uEffectIntensity;
+            shader.uniforms.uGlowColor1 = this.customUniforms.uGlowColor1;
+            shader.uniforms.uGlowColor2 = this.customUniforms.uGlowColor2;
+            shader.uniforms.uGlowColor3 = this.customUniforms.uGlowColor3;
+            shader.uniforms.uGlowColor4 = this.customUniforms.uGlowColor4;
+            shader.uniforms.uGlowSpeed = this.customUniforms.uGlowSpeed;
+            shader.uniforms.uGlowScale = this.customUniforms.uGlowScale;
 
-            // Store reference to update uniforms later
+            // Store reference to shader for debugging
             this.mesh!.userData.shader = shader;
+
+            // Log to verify shader is being modified
+            console.log('Shader being modified for mesh:', child.name);
 
             // Add custom code to vertex shader
             shader.vertexShader = shader.vertexShader.replace(
@@ -219,14 +236,17 @@ export default class NightGrass extends TemplateFor3D {
                 #include <common>
                 uniform float uTime;
                 varying vec3 vWorldPos;
+                varying vec3 vWorldNormal;
                 `,
             );
 
+            // Use project_vertex hook which is more reliable
             shader.vertexShader = shader.vertexShader.replace(
-              '#include <worldpos_vertex>',
+              '#include <project_vertex>',
               `
-                #include <worldpos_vertex>
-                vWorldPos = (modelMatrix * vec4(position, 1.0)).xyz;
+                #include <project_vertex>
+                vWorldPos = (modelMatrix * vec4(transformed, 1.0)).xyz;
+                vWorldNormal = normalize(normalMatrix * normal);
                 `,
             );
 
@@ -240,7 +260,80 @@ export default class NightGrass extends TemplateFor3D {
                 uniform vec3 uBaseColor;
                 uniform float uMetalness;
                 uniform float uRoughness;
+                uniform vec3 uGlowColor1;
+                uniform vec3 uGlowColor2;
+                uniform vec3 uGlowColor3;
+                uniform vec3 uGlowColor4;
+                uniform float uGlowSpeed;
+                uniform float uGlowScale;
                 varying vec3 vWorldPos;
+                varying vec3 vWorldNormal;
+                
+                // Simplex noise functions for smooth gradients
+                vec3 mod289_3(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                vec4 mod289_4(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                vec4 permute(vec4 x) { return mod289_4(((x*34.0)+1.0)*x); }
+                vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+                
+                float snoise(vec3 v) {
+                  const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+                  const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+                  
+                  vec3 i  = floor(v + dot(v, C.yyy));
+                  vec3 x0 = v - i + dot(i, C.xxx);
+                  
+                  vec3 g = step(x0.yzx, x0.xyz);
+                  vec3 l = 1.0 - g;
+                  vec3 i1 = min(g.xyz, l.zxy);
+                  vec3 i2 = max(g.xyz, l.zxy);
+                  
+                  vec3 x1 = x0 - i1 + C.xxx;
+                  vec3 x2 = x0 - i2 + C.yyy;
+                  vec3 x3 = x0 - D.yyy;
+                  
+                  i = mod289_3(i);
+                  vec4 p = permute(permute(permute(
+                    i.z + vec4(0.0, i1.z, i2.z, 1.0))
+                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+                    + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+                  
+                  float n_ = 0.142857142857;
+                  vec3 ns = n_ * D.wyz - D.xzx;
+                  
+                  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+                  
+                  vec4 x_ = floor(j * ns.z);
+                  vec4 y_ = floor(j - 7.0 * x_);
+                  
+                  vec4 x = x_ *ns.x + ns.yyyy;
+                  vec4 y = y_ *ns.x + ns.yyyy;
+                  vec4 h = 1.0 - abs(x) - abs(y);
+                  
+                  vec4 b0 = vec4(x.xy, y.xy);
+                  vec4 b1 = vec4(x.zw, y.zw);
+                  
+                  vec4 s0 = floor(b0)*2.0 + 1.0;
+                  vec4 s1 = floor(b1)*2.0 + 1.0;
+                  vec4 sh = -step(h, vec4(0.0));
+                  
+                  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+                  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+                  
+                  vec3 p0 = vec3(a0.xy, h.x);
+                  vec3 p1 = vec3(a0.zw, h.y);
+                  vec3 p2 = vec3(a1.xy, h.z);
+                  vec3 p3 = vec3(a1.zw, h.w);
+                  
+                  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+                  p0 *= norm.x;
+                  p1 *= norm.y;
+                  p2 *= norm.z;
+                  p3 *= norm.w;
+                  
+                  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                  m = m * m;
+                  return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+                }
                 `,
             );
 
@@ -277,19 +370,55 @@ export default class NightGrass extends TemplateFor3D {
                 `,
             );
 
-            // Add effect hook before output (for future visual effects)
+            // Add effect hook AFTER output - use dithering_fragment which comes after output
             shader.fragmentShader = shader.fragmentShader.replace(
-              '#include <output_fragment>',
+              '#include <dithering_fragment>',
               `
-                // === CUSTOM EFFECTS SECTION ===
-                // Add glitch, noise, distortion effects here
-                // Example: outgoingLight = mix(outgoingLight, effectColor, uEffectIntensity);
+                // === RAYCAST-STYLE GRADIENT GLOW EFFECT ===
+                
+                // Create flowing noise patterns at different scales
+                float glowTime = uTime * uGlowSpeed;
+                vec3 noisePos = vWorldPos * 0.01 * uGlowScale;
+                
+                // Multiple noise layers for organic movement
+                float noise1 = snoise(vec3(noisePos.xy * 1.0, glowTime * 0.5)) * 0.5 + 0.5;
+                float noise2 = snoise(vec3(noisePos.yz * 1.5 + 100.0, glowTime * 0.3)) * 0.5 + 0.5;
+                float noise3 = snoise(vec3(noisePos.xz * 0.8 + 200.0, glowTime * 0.7)) * 0.5 + 0.5;
+                float noise4 = snoise(vec3(noisePos.xy * 2.0 + 300.0, glowTime * 0.4)) * 0.5 + 0.5;
+                
+                // Create smooth gradient transitions between colors
+                float blend1 = smoothstep(0.0, 1.0, noise1);
+                float blend2 = smoothstep(0.0, 1.0, noise2);
+                float blend3 = smoothstep(0.0, 1.0, noise3);
+                float blend4 = smoothstep(0.0, 1.0, noise4);
+                
+                // Mix colors in a flowing pattern
+                vec3 glowColorA = mix(uGlowColor1, uGlowColor2, blend1);
+                vec3 glowColorB = mix(uGlowColor3, uGlowColor4, blend2);
+                vec3 gradientColor = mix(glowColorA, glowColorB, blend3);
+                
+                // Add pulsing intensity
+                float pulse = sin(glowTime * 2.0) * 0.15 + 0.85;
+                
+                // Edge glow effect based on view angle (fresnel-like)
+                vec3 viewDir = normalize(cameraPosition - vWorldPos);
+                float fresnel = pow(1.0 - max(dot(viewDir, normalize(vWorldNormal)), 0.0), 3.0);
+                
+                // Combine effects
+                float glowIntensity = (blend4 * 0.5 + fresnel * 0.5) * pulse * uEffectIntensity;
+                
+                // Apply glow to the output - additive blending for glow effect
+                gl_FragColor.rgb = gl_FragColor.rgb + gradientColor * glowIntensity;
+                
                 // ===============================
 
-                #include <output_fragment>
+                #include <dithering_fragment>
                 `,
             );
           };
+
+          // Force material to recompile with the new shader
+          child.material.needsUpdate = true;
 
           // Assign the new material to the mesh
           // child.material = newMaterial;
@@ -315,9 +444,9 @@ export default class NightGrass extends TemplateFor3D {
     const shaderFolder = this.gui.addFolder('Metallic Shader');
 
     const params = {
-      baseColor: '#ffffff',
-      metalness: 0.9,
-      roughness: 0.67,
+      baseColor: this.customUniforms.uBaseColor.value.getStyle(),
+      metalness: this.customUniforms.uMetalness.value,
+      roughness: this.customUniforms.uRoughness.value,
     };
 
     shaderFolder
@@ -341,6 +470,70 @@ export default class NightGrass extends TemplateFor3D {
         this.customUniforms.uRoughness.value = value;
       });
     shaderFolder.open();
+
+    // Glow Effect Controls
+    const glowFolder = this.gui.addFolder('Raycast Glow Effect');
+
+    const glowParams = {
+      effectIntensity:this.customUniforms.uEffectIntensity.value,
+      glowSpeed: this.customUniforms.uGlowSpeed.value,
+      glowScale: this.customUniforms.uGlowScale.value,
+      glowColor1: this.customUniforms.uGlowColor1.value.getStyle(),
+      glowColor2: this.customUniforms.uGlowColor2.value.getStyle(),
+      glowColor3: this.customUniforms.uGlowColor3.value.getStyle(),
+      glowColor4: this.customUniforms.uGlowColor4.value.getStyle(),
+    };
+
+    glowFolder
+      .add(glowParams, 'effectIntensity', 0, 3, 0.01)
+      .name('Intensity')
+      .onChange((value: number) => {
+        this.customUniforms.uEffectIntensity.value = value;
+      });
+
+    glowFolder
+      .add(glowParams, 'glowSpeed', 0.1, 2.0, 0.1)
+      .name('Speed')
+      .onChange((value: number) => {
+        this.customUniforms.uGlowSpeed.value = value;
+      });
+
+    glowFolder
+      .add(glowParams, 'glowScale', 0.5, 5.0, 0.1)
+      .name('Scale')
+      .onChange((value: number) => {
+        this.customUniforms.uGlowScale.value = value;
+      });
+
+    glowFolder
+      .addColor(glowParams, 'glowColor1')
+      .name('Color 1')
+      .onChange((value: string) => {
+        this.customUniforms.uGlowColor1.value.set(value);
+      });
+
+    glowFolder
+      .addColor(glowParams, 'glowColor2')
+      .name('Color 2')
+      .onChange((value: string) => {
+        this.customUniforms.uGlowColor2.value.set(value);
+      });
+
+    glowFolder
+      .addColor(glowParams, 'glowColor3')
+      .name('Color 3')
+      .onChange((value: string) => {
+        this.customUniforms.uGlowColor3.value.set(value);
+      });
+
+    glowFolder
+      .addColor(glowParams, 'glowColor4')
+      .name('Color 4')
+      .onChange((value: string) => {
+        this.customUniforms.uGlowColor4.value.set(value);
+      });
+
+    glowFolder.open();
   }
 
   componentDidMount() {
@@ -373,6 +566,9 @@ export default class NightGrass extends TemplateFor3D {
     if (!this.renderer || !this.scene || !this.camera) return;
 
     this.time += 1;
+
+    // Update custom uniforms time for the glow effect
+    this.customUniforms.uTime.value = this.time * 0.01;
 
     this.camera.lookAt(this.cameraTarget);
 
