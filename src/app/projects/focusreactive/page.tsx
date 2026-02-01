@@ -5,13 +5,13 @@
 import * as THREE from 'three';
 import TemplateFor3D from 'components/common/mainTemplate3D';
 
-import engine from './engine.glb'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
-import { GUI } from 'dat.gui';
-
 import './style.scss';
+
+const { GUI } =  require('dat.gui').default;
+const engine = require('./engine.glb');
 
 // THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
