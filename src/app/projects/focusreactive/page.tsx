@@ -10,13 +10,12 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 import './style.scss';
 
-const { GUI } =  require('dat.gui').default;
 const engine = require('./engine.glb');
 
 // THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 export default class NightGrass extends TemplateFor3D {
-  private gui: any;
+  private gui: any | undefined;
 
   private cameraTarget: THREE.Vector3 = new THREE.Vector3(-52, -2, 97);
   // private targetHelper: THREE.Mesh | null = null;
@@ -30,16 +29,20 @@ export default class NightGrass extends TemplateFor3D {
   private customUniforms = {
     uTime: { value: 0.0 },
     uBaseColor: { value: new THREE.Color(0xc9c9c9) },
-    uMetalness: { value: 1. },
+    uMetalness: { value: 1 },
     uRoughness: { value: 0.67 },
     uEffectIntensity: { value: 1.93 },
     uGlowColor1: { value: new THREE.Color(0x000000) }, // Red/Pink
     uGlowColor2: { value: new THREE.Color(0xcd4e4e) }, // Teal
     uGlowColor3: { value: new THREE.Color(0x000000) }, // Purple
     uGlowColor4: { value: new THREE.Color(0x630000) }, // Blue
-    uGlowSpeed: { value: 1. },
-    uGlowScale: { value: .9 },
+    uGlowSpeed: { value: 1 },
+    uGlowScale: { value: 0.9 },
   };
+
+  constructor(props: any) {
+    super(props);
+  }
 
   componentWillUnmount() {
     super.componentWillUnmount();
@@ -172,8 +175,6 @@ export default class NightGrass extends TemplateFor3D {
     // Add axes helper to visualize world coordinates
     const axesHelper = new THREE.AxesHelper(500);
     this.scene?.add(axesHelper);
-
-    this.gui = new GUI();
   }
 
   async loadEngineModel() {
@@ -441,7 +442,7 @@ export default class NightGrass extends TemplateFor3D {
   addShaderGUI() {
     if (!this.mesh) return;
 
-    const shaderFolder = this.gui.addFolder('Metallic Shader');
+    const shaderFolder = this.gui!.addFolder('Metallic Shader');
 
     const params = {
       baseColor: this.customUniforms.uBaseColor.value.getStyle(),
@@ -472,10 +473,10 @@ export default class NightGrass extends TemplateFor3D {
     shaderFolder.open();
 
     // Glow Effect Controls
-    const glowFolder = this.gui.addFolder('Raycast Glow Effect');
+    const glowFolder = this.gui!.addFolder('Raycast Glow Effect');
 
     const glowParams = {
-      effectIntensity:this.customUniforms.uEffectIntensity.value,
+      effectIntensity: this.customUniforms.uEffectIntensity.value,
       glowSpeed: this.customUniforms.uGlowSpeed.value,
       glowScale: this.customUniforms.uGlowScale.value,
       glowColor1: this.customUniforms.uGlowColor1.value.getStyle(),
@@ -539,6 +540,16 @@ export default class NightGrass extends TemplateFor3D {
   componentDidMount() {
     super.componentDidMount();
 
+    // Dynamically load dat.gui only in the browser and await the module before creating GUI
+    if (typeof window !== 'undefined') {
+      import('dat.gui').then((module) => {
+        const GUI = module.GUI || module.default;
+        if (!GUI) return;
+
+        this.gui = new GUI();
+      });
+    }
+
     this.init3D(
       { antialias: true, alpha: true, logarithmicDepthBuffer: true },
       {
@@ -551,13 +562,8 @@ export default class NightGrass extends TemplateFor3D {
     if (!this.renderer || !this.scene || !this.camera) return;
 
     this.initProject();
-
     this.initLight();
-
-    // this.initControls();
-
     this.attachMouseMoveEvent(this.canvasDiv);
-
     this.animate();
   }
 
@@ -594,7 +600,7 @@ export default class NightGrass extends TemplateFor3D {
       this.engine.rotation.x += 0.001;
     }
 
-    this.gui.updateDisplay();
+    this.gui?.updateDisplay();
 
     this.renderer.render(this.scene, this.camera);
     // this.controls?.update();
