@@ -20,7 +20,7 @@ export default class NightGrass extends TemplateFor3D {
   private cameraTarget: THREE.Vector3 = new THREE.Vector3(-52, -2, 97);
   private targetHelper: THREE.Mesh | null = null;
   private cameraLine: THREE.Line | null = null;
-  private engine: THREE.Mesh | undefined;
+  private engine: THREE.Group | undefined;
 
   private metallicMaterial: THREE.ShaderMaterial | null = null;
 
