@@ -18,9 +18,9 @@ export default class NightGrass extends TemplateFor3D {
   private gui: any | undefined;
 
   private cameraTarget: THREE.Vector3 = new THREE.Vector3(-52, -2, 97);
-  // private targetHelper: THREE.Mesh | null = null;
-  // private cameraLine: THREE.Line | null = null;
-  private engine: THREE.Group | undefined;
+  private targetHelper: THREE.Mesh | null = null;
+  private cameraLine: THREE.Line | null = null;
+  private engine: THREE.Mesh | undefined;
 
   private metallicMaterial: THREE.ShaderMaterial | null = null;
 
@@ -32,12 +32,8 @@ export default class NightGrass extends TemplateFor3D {
     uMetalness: { value: 1 },
     uRoughness: { value: 0.67 },
     uEffectIntensity: { value: 1.93 },
-    uGlowColor1: { value: new THREE.Color(0x000000) }, // Red/Pink
-    uGlowColor2: { value: new THREE.Color(0xcd4e4e) }, // Teal
-    uGlowColor3: { value: new THREE.Color(0x000000) }, // Purple
-    uGlowColor4: { value: new THREE.Color(0x630000) }, // Blue
-    uGlowSpeed: { value: 1 },
-    uGlowScale: { value: 0.9 },
+    uGlowColor1: { value: new THREE.Color(0xcd4e4e) }, // Primary accent
+    uGlowColor2: { value: new THREE.Color(0x630000) }, // Secondary accent
   };
 
   constructor(props: any) {
@@ -146,22 +142,38 @@ export default class NightGrass extends TemplateFor3D {
     //   if (this.cameraLine) this.cameraLine.visible = value;
     // });
     //
-    // //light changes
-    // const lightFolder = this.gui.addFolder('Directional Light');
-    // lightFolder.add(this.light!, 'intensity', 0, 2, 0.01).name('Intensity');
-    // lightFolder.add(this.light!.position, 'x', -1000, 1000, 1).name('Position X');
-    // lightFolder.add(this.light!.position, 'y', -1000, 1000, 1).name('Position Y');
-    // lightFolder.add(this.light!.position, 'z', -1000, 1000, 1).name('Position Z');
-    // lightFolder.add(this.light!.target.position, 'x', -1000, 1000, 1).name('Target X');
-    // lightFolder.add(this.light!.target.position, 'y', -1000, 1000, 1).name('Target Y');
-    // lightFolder.add(this.light!.target.position, 'z', -1000, 1000, 1).name('Target Z');
-    // lightFolder.open();
+    //light changes
+    const lightFolder = this.gui.addFolder('Directional Light');
+    lightFolder.add(this.light!, 'intensity', 0, 2, 0.01).name('Intensity').onChange((value: number) => {
+      if (this.metallicMaterial) {
+        this.metallicMaterial.uniforms.uLightIntensity.value = value;
+      }
+    });
+    lightFolder.add(this.light!.position, 'x', -1000, 1000, 1).name('Position X').onChange((value: number) => {;
+      if (this.metallicMaterial) {
+        this.metallicMaterial.uniforms.uLightPosition.value.x = value;
+      }
+    });
+    lightFolder.add(this.light!.position, 'y', -1000, 1000, 1).name('Position Y').onChange((value: number) => {;
+      if (this.metallicMaterial) {
+        this.metallicMaterial.uniforms.uLightPosition.value.y = value;
+      }
+    });
+    lightFolder.add(this.light!.position, 'z', -1000, 1000, 1).name('Position Z').onChange((value: number) => {;
+      if (this.metallicMaterial) {
+        this.metallicMaterial.uniforms.uLightPosition.value.z = value;
+      }
+    });
+    lightFolder.add(this.light!.target.position, 'x', -1000, 1000, 1).name('Target X');
+    lightFolder.add(this.light!.target.position, 'y', -1000, 1000, 1).name('Target Y');
+    lightFolder.add(this.light!.target.position, 'z', -1000, 1000, 1).name('Target Z');
+    lightFolder.open();
   }
 
   initLight(): void {
-    this.light = new THREE.DirectionalLight(0xffffff, 0.3);
+    this.light = new THREE.DirectionalLight(0xffffff, 0.9);
     this.light.position.set(90, 24, 15);
-    this.light.castShadow = true;
+    this.light.castShadow = false;
     this.ambientLight = new THREE.AmbientLight(0xffffff, 0.15);
     this.scene?.add(this.light, this.ambientLight);
   }
@@ -175,6 +187,8 @@ export default class NightGrass extends TemplateFor3D {
     // Add axes helper to visualize world coordinates
     const axesHelper = new THREE.AxesHelper(500);
     this.scene?.add(axesHelper);
+
+    this.guiCamera();
   }
 
   async loadEngineModel() {
@@ -201,235 +215,119 @@ export default class NightGrass extends TemplateFor3D {
       this.engine = gltf.scene;
       console.log(gltf);
 
-      // Apply metallic material to all meshes in the scene
+      // Create clean ShaderMaterial with normals and scene lights
+      this.metallicMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: this.customUniforms.uTime,
+          uBaseColor: this.customUniforms.uBaseColor,
+          uMetalness: this.customUniforms.uMetalness,
+          uRoughness: this.customUniforms.uRoughness,
+          uEffectIntensity: this.customUniforms.uEffectIntensity,
+          uGlowColor1: this.customUniforms.uGlowColor1,
+          uGlowColor2: this.customUniforms.uGlowColor2,
+          uLightPosition: { value: this.light ? this.light.position : new THREE.Vector3(100, 100, 100) },
+          uLightColor: { value: this.light ? this.light.color : new THREE.Color(0xffffff) },
+          uLightIntensity: { value: this.light ? this.light.intensity : 1.0 },
+          uAmbientColor: { value: this.ambientLight ? this.ambientLight.color : new THREE.Color(0xffffff) },
+          uAmbientIntensity: { value: this.ambientLight ? this.ambientLight.intensity : 0.2 },
+        },
+        side: THREE.DoubleSide,
+        vertexShader: `
+          varying vec3 vNormal;
+          varying vec3 vWorldPosition;
+          varying vec3 vViewDirection;
+          
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            vec4 worldPos = modelMatrix * vec4(position, 1.0);
+            vWorldPosition = worldPos.xyz;
+            vViewDirection = normalize(cameraPosition - worldPos.xyz);
+            
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          uniform vec3 uBaseColor;
+          uniform float uMetalness;
+          uniform float uRoughness;
+          uniform float uEffectIntensity;
+          uniform vec3 uGlowColor1;
+          uniform vec3 uGlowColor2;
+          uniform vec3 uLightPosition;
+          uniform vec3 uLightColor;
+          uniform float uLightIntensity;
+          uniform vec3 uAmbientColor;
+          uniform float uAmbientIntensity;
+          
+          varying vec3 vNormal;
+          varying vec3 vWorldPosition;
+          varying vec3 vViewDirection;
+          
+          void main() {
+            vec3 viewDir = normalize(vViewDirection);
+            
+            // Flip normal for back faces
+            vec3 normal = normalize(vNormal);
+            if (!gl_FrontFacing) {
+              normal = -normal;
+            }
+            
+            // Directional light calculation
+            vec3 lightDir = normalize(uLightPosition - vWorldPosition);
+            float NdotL = max(dot(normal, lightDir), 0.0);
+            
+            // Specular (Blinn-Phong)
+            vec3 halfDir = normalize(lightDir + viewDir);
+            float NdotH = max(dot(normal, halfDir), 0.0);
+            float shininess = mix(8.0, 128.0, 1.0 - uRoughness);
+            float specular = pow(NdotH, shininess) * uMetalness;
+            
+            // Ambient
+            vec3 ambient = uAmbientColor * uAmbientIntensity * uBaseColor;
+            
+            // Diffuse
+            vec3 diffuse = uLightColor * uLightIntensity * NdotL * uBaseColor * (1.0 - uMetalness * 0.5);
+            
+            // Specular color (metallic surfaces tint specular with base color)
+            vec3 specularColor = mix(vec3(1.0), uBaseColor, uMetalness) * specular * uLightIntensity;
+            
+            // Fresnel for edge glow
+            float fresnel = 1.0 - max(dot(normal, viewDir), 0.0);
+            fresnel = pow(fresnel, 2.0);
+            
+            // Time-based pulse
+            float pulse = sin(uTime * 2.0) * 0.5 + 0.5;
+            vec3 glowColor = mix(uGlowColor1, uGlowColor2, pulse);
+            vec3 glow = glowColor * fresnel * uEffectIntensity;
+            
+            // Final color
+            vec3 finalColor = ambient + diffuse + specularColor;// + glow;
+            
+            gl_FragColor = vec4(finalColor, 1.0);
+          }
+        `,
+      });
+
+      // Apply material to all meshes and disable shadows
       gltf.scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
-          console.log('Found mesh:', child.name, 'Material type:', child.material.type);
+          console.log('Found mesh:', child.name);
           this.mesh = child;
 
-          // Force unique shader cache key to prevent Three.js from using cached shader
-          child.material.customProgramCacheKey = () => 'custom-metallic-shader-' + child.uuid;
+          // Disable shadows
+          child.castShadow = false;
+          child.receiveShadow = false;
 
-          child.material.onBeforeCompile = (shader: any) => {
-            // Add custom uniforms - use class-level uniforms so GUI can update them
-            shader.uniforms.uTime = this.customUniforms.uTime;
-            shader.uniforms.uBaseColor = this.customUniforms.uBaseColor;
-            shader.uniforms.uMetalness = this.customUniforms.uMetalness;
-            shader.uniforms.uRoughness = this.customUniforms.uRoughness;
-            shader.uniforms.uEffectIntensity = this.customUniforms.uEffectIntensity;
-            shader.uniforms.uGlowColor1 = this.customUniforms.uGlowColor1;
-            shader.uniforms.uGlowColor2 = this.customUniforms.uGlowColor2;
-            shader.uniforms.uGlowColor3 = this.customUniforms.uGlowColor3;
-            shader.uniforms.uGlowColor4 = this.customUniforms.uGlowColor4;
-            shader.uniforms.uGlowSpeed = this.customUniforms.uGlowSpeed;
-            shader.uniforms.uGlowScale = this.customUniforms.uGlowScale;
-
-            // Store reference to shader for debugging
-            this.mesh!.userData.shader = shader;
-
-            // Log to verify shader is being modified
-            console.log('Shader being modified for mesh:', child.name);
-
-            // Add custom code to vertex shader
-            shader.vertexShader = shader.vertexShader.replace(
-              '#include <common>',
-              `
-                #include <common>
-                uniform float uTime;
-                varying vec3 vWorldPos;
-                varying vec3 vWorldNormal;
-                `,
-            );
-
-            // Use project_vertex hook which is more reliable
-            shader.vertexShader = shader.vertexShader.replace(
-              '#include <project_vertex>',
-              `
-                #include <project_vertex>
-                vWorldPos = (modelMatrix * vec4(transformed, 1.0)).xyz;
-                vWorldNormal = normalize(normalMatrix * normal);
-                `,
-            );
-
-            // Add custom code to fragment shader - declare uniforms
-            shader.fragmentShader = shader.fragmentShader.replace(
-              '#include <common>',
-              `
-                #include <common>
-                uniform float uTime;
-                uniform float uEffectIntensity;
-                uniform vec3 uBaseColor;
-                uniform float uMetalness;
-                uniform float uRoughness;
-                uniform vec3 uGlowColor1;
-                uniform vec3 uGlowColor2;
-                uniform vec3 uGlowColor3;
-                uniform vec3 uGlowColor4;
-                uniform float uGlowSpeed;
-                uniform float uGlowScale;
-                varying vec3 vWorldPos;
-                varying vec3 vWorldNormal;
-                
-                // Simplex noise functions for smooth gradients
-                vec3 mod289_3(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-                vec4 mod289_4(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-                vec4 permute(vec4 x) { return mod289_4(((x*34.0)+1.0)*x); }
-                vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
-                
-                float snoise(vec3 v) {
-                  const vec2 C = vec2(1.0/6.0, 1.0/3.0);
-                  const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
-                  
-                  vec3 i  = floor(v + dot(v, C.yyy));
-                  vec3 x0 = v - i + dot(i, C.xxx);
-                  
-                  vec3 g = step(x0.yzx, x0.xyz);
-                  vec3 l = 1.0 - g;
-                  vec3 i1 = min(g.xyz, l.zxy);
-                  vec3 i2 = max(g.xyz, l.zxy);
-                  
-                  vec3 x1 = x0 - i1 + C.xxx;
-                  vec3 x2 = x0 - i2 + C.yyy;
-                  vec3 x3 = x0 - D.yyy;
-                  
-                  i = mod289_3(i);
-                  vec4 p = permute(permute(permute(
-                    i.z + vec4(0.0, i1.z, i2.z, 1.0))
-                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))
-                    + i.x + vec4(0.0, i1.x, i2.x, 1.0));
-                  
-                  float n_ = 0.142857142857;
-                  vec3 ns = n_ * D.wyz - D.xzx;
-                  
-                  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-                  
-                  vec4 x_ = floor(j * ns.z);
-                  vec4 y_ = floor(j - 7.0 * x_);
-                  
-                  vec4 x = x_ *ns.x + ns.yyyy;
-                  vec4 y = y_ *ns.x + ns.yyyy;
-                  vec4 h = 1.0 - abs(x) - abs(y);
-                  
-                  vec4 b0 = vec4(x.xy, y.xy);
-                  vec4 b1 = vec4(x.zw, y.zw);
-                  
-                  vec4 s0 = floor(b0)*2.0 + 1.0;
-                  vec4 s1 = floor(b1)*2.0 + 1.0;
-                  vec4 sh = -step(h, vec4(0.0));
-                  
-                  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
-                  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
-                  
-                  vec3 p0 = vec3(a0.xy, h.x);
-                  vec3 p1 = vec3(a0.zw, h.y);
-                  vec3 p2 = vec3(a1.xy, h.z);
-                  vec3 p3 = vec3(a1.zw, h.w);
-                  
-                  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
-                  p0 *= norm.x;
-                  p1 *= norm.y;
-                  p2 *= norm.z;
-                  p3 *= norm.w;
-                  
-                  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-                  m = m * m;
-                  return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
-                }
-                `,
-            );
-
-            // Override the base color (diffuse)
-            shader.fragmentShader = shader.fragmentShader.replace(
-              '#include <color_fragment>',
-              `
-                #include <color_fragment>
-                diffuseColor.rgb = uBaseColor;
-                `,
-            );
-
-            // Override metalness
-            shader.fragmentShader = shader.fragmentShader.replace(
-              '#include <metalnessmap_fragment>',
-              `
-                float metalnessFactor = uMetalness;
-                #ifdef USE_METALNESSMAP
-                  vec4 texelMetalness = texture2D( metalnessMap, vMetalnessMapUv );
-                  metalnessFactor *= texelMetalness.b;
-                #endif
-                `,
-            );
-
-            // Override roughness
-            shader.fragmentShader = shader.fragmentShader.replace(
-              '#include <roughnessmap_fragment>',
-              `
-                float roughnessFactor = uRoughness;
-                #ifdef USE_ROUGHNESSMAP
-                  vec4 texelRoughness = texture2D( roughnessMap, vRoughnessMapUv );
-                  roughnessFactor *= texelRoughness.g;
-                #endif
-                `,
-            );
-
-            // Add effect hook AFTER output - use dithering_fragment which comes after output
-            shader.fragmentShader = shader.fragmentShader.replace(
-              '#include <dithering_fragment>',
-              `
-                // === RAYCAST-STYLE GRADIENT GLOW EFFECT ===
-                
-                // Create flowing noise patterns at different scales
-                float glowTime = uTime * uGlowSpeed;
-                vec3 noisePos = vWorldPos * 0.01 * uGlowScale;
-                
-                // Multiple noise layers for organic movement
-                float noise1 = snoise(vec3(noisePos.xy * 1.0, glowTime * 0.5)) * 0.5 + 0.5;
-                float noise2 = snoise(vec3(noisePos.yz * 1.5 + 100.0, glowTime * 0.3)) * 0.5 + 0.5;
-                float noise3 = snoise(vec3(noisePos.xz * 0.8 + 200.0, glowTime * 0.7)) * 0.5 + 0.5;
-                float noise4 = snoise(vec3(noisePos.xy * 2.0 + 300.0, glowTime * 0.4)) * 0.5 + 0.5;
-                
-                // Create smooth gradient transitions between colors
-                float blend1 = smoothstep(0.0, 1.0, noise1);
-                float blend2 = smoothstep(0.0, 1.0, noise2);
-                float blend3 = smoothstep(0.0, 1.0, noise3);
-                float blend4 = smoothstep(0.0, 1.0, noise4);
-                
-                // Mix colors in a flowing pattern
-                vec3 glowColorA = mix(uGlowColor1, uGlowColor2, blend1);
-                vec3 glowColorB = mix(uGlowColor3, uGlowColor4, blend2);
-                vec3 gradientColor = mix(glowColorA, glowColorB, blend3);
-                
-                // Add pulsing intensity
-                float pulse = sin(glowTime * 2.0) * 0.15 + 0.85;
-                
-                // Edge glow effect based on view angle (fresnel-like)
-                vec3 viewDir = normalize(cameraPosition - vWorldPos);
-                float fresnel = pow(1.0 - max(dot(viewDir, normalize(vWorldNormal)), 0.0), 3.0);
-                
-                // Combine effects
-                float glowIntensity = (blend4 * 0.5 + fresnel * 0.5) * pulse * uEffectIntensity;
-                
-                // Apply glow to the output - additive blending for glow effect
-                gl_FragColor.rgb = gl_FragColor.rgb + gradientColor * glowIntensity;
-                
-                // ===============================
-
-                #include <dithering_fragment>
-                `,
-            );
-          };
-
-          // Force material to recompile with the new shader
-          child.material.needsUpdate = true;
-
-          // Assign the new material to the mesh
-          // child.material = newMaterial;
+          // Replace material with clean ShaderMaterial
+          child.material = this.metallicMaterial!;
         }
       });
 
       this.scene?.add(gltf.scene);
 
       // Add GUI controls for the shader
-      this.addShaderGUI();
+      // this.addShaderGUI();
     });
   }
 
@@ -448,6 +346,9 @@ export default class NightGrass extends TemplateFor3D {
       baseColor: this.customUniforms.uBaseColor.value.getStyle(),
       metalness: this.customUniforms.uMetalness.value,
       roughness: this.customUniforms.uRoughness.value,
+      effectIntensity: this.customUniforms.uEffectIntensity.value,
+      glowColor1: this.customUniforms.uGlowColor1.value.getStyle(),
+      glowColor2: this.customUniforms.uGlowColor2.value.getStyle(),
     };
 
     shaderFolder
@@ -470,84 +371,38 @@ export default class NightGrass extends TemplateFor3D {
       .onChange((value: number) => {
         this.customUniforms.uRoughness.value = value;
       });
-    shaderFolder.open();
 
-    // Glow Effect Controls
-    const glowFolder = this.gui!.addFolder('Raycast Glow Effect');
-
-    const glowParams = {
-      effectIntensity: this.customUniforms.uEffectIntensity.value,
-      glowSpeed: this.customUniforms.uGlowSpeed.value,
-      glowScale: this.customUniforms.uGlowScale.value,
-      glowColor1: this.customUniforms.uGlowColor1.value.getStyle(),
-      glowColor2: this.customUniforms.uGlowColor2.value.getStyle(),
-      glowColor3: this.customUniforms.uGlowColor3.value.getStyle(),
-      glowColor4: this.customUniforms.uGlowColor4.value.getStyle(),
-    };
-
-    glowFolder
-      .add(glowParams, 'effectIntensity', 0, 3, 0.01)
-      .name('Intensity')
+    shaderFolder
+      .add(params, 'effectIntensity', 0, 3, 0.01)
+      .name('Effect Intensity')
       .onChange((value: number) => {
         this.customUniforms.uEffectIntensity.value = value;
       });
 
-    glowFolder
-      .add(glowParams, 'glowSpeed', 0.1, 2.0, 0.1)
-      .name('Speed')
-      .onChange((value: number) => {
-        this.customUniforms.uGlowSpeed.value = value;
-      });
-
-    glowFolder
-      .add(glowParams, 'glowScale', 0.5, 5.0, 0.1)
-      .name('Scale')
-      .onChange((value: number) => {
-        this.customUniforms.uGlowScale.value = value;
-      });
-
-    glowFolder
-      .addColor(glowParams, 'glowColor1')
-      .name('Color 1')
+    shaderFolder
+      .addColor(params, 'glowColor1')
+      .name('Glow Color 1')
       .onChange((value: string) => {
         this.customUniforms.uGlowColor1.value.set(value);
       });
 
-    glowFolder
-      .addColor(glowParams, 'glowColor2')
-      .name('Color 2')
+    shaderFolder
+      .addColor(params, 'glowColor2')
+      .name('Glow Color 2')
       .onChange((value: string) => {
         this.customUniforms.uGlowColor2.value.set(value);
       });
 
-    glowFolder
-      .addColor(glowParams, 'glowColor3')
-      .name('Color 3')
-      .onChange((value: string) => {
-        this.customUniforms.uGlowColor3.value.set(value);
-      });
-
-    glowFolder
-      .addColor(glowParams, 'glowColor4')
-      .name('Color 4')
-      .onChange((value: string) => {
-        this.customUniforms.uGlowColor4.value.set(value);
-      });
-
-    glowFolder.open();
+    shaderFolder.open();
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  async componentDidMount() {
+    await super.componentDidMount();
 
     // Dynamically load dat.gui only in the browser and await the module before creating GUI
     if (typeof window !== 'undefined') {
-      import('dat.gui').then((module) => {
-        const GUI = module.GUI || module.default;
-        if (!GUI) return;
-
-        this.gui = new GUI();
-      });
+      const module = await import('dat.gui');
+      this.gui = new module.GUI({ width: 310 });
     }
 
     this.init3D(
@@ -585,6 +440,14 @@ export default class NightGrass extends TemplateFor3D {
       // Sync light position if light exists
       if (this.light) {
         this.metallicMaterial.uniforms.uLightPosition.value.copy(this.light.position);
+        this.metallicMaterial.uniforms.uLightColor.value.copy(this.light.color);
+        this.metallicMaterial.uniforms.uLightIntensity.value = this.light.intensity;
+      }
+
+      // Sync ambient light if it exists
+      if (this.ambientLight) {
+        this.metallicMaterial.uniforms.uAmbientColor.value.copy(this.ambientLight.color);
+        this.metallicMaterial.uniforms.uAmbientIntensity.value = this.ambientLight.intensity;
       }
     }
 
