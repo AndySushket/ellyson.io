@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 
 import TemplateFor3D from 'components/common/mainTemplate3D';
+import Renderer from 'core/Renderer';
 import vert from "./Shaders/vert.vert";
 import waterVert from "./Shaders/water.vert";
 import atmosphereVert from "./Shaders/atmosphereVert.vert";
@@ -128,7 +129,7 @@ export default class Main extends TemplateFor3D {
   }
 
   initCubeSphere() {
-    if (this.renderer) {
+    if (this.renderer && this.renderer instanceof Renderer) {
       const geometry = new THREE.BoxGeometry(1, 1, 1, 1000, 1000, 1000);
       const textureLoader = new THREE.TextureLoader(this.loadingManager);
 

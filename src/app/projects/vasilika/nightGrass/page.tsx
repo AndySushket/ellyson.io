@@ -17,6 +17,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 
 import { acceleratedRaycast } from 'three-mesh-bvh';
 import LightMap from '@/app/projects/vasilika/nightGrass/LightMap';
+import { WebGLRenderer } from 'three';
 
 const BLOOM_SCENE = 1;
 
@@ -120,10 +121,13 @@ export default class NightGrass extends TemplateFor3D {
 
     const outputPass = new OutputPass();
 
-    this.composer = new EffectComposer( this.renderer );
-    this.composer.addPass( renderScene );
-    this.composer.addPass( bloomPass );
-    this.composer.addPass( outputPass );
+    if (this.renderer instanceof WebGLRenderer) {
+      this.composer = new EffectComposer(this.renderer);
+
+      this.composer.addPass(renderScene);
+      this.composer.addPass(bloomPass);
+      this.composer.addPass(outputPass);
+    }
 
     this.initProject();
 

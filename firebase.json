@@ -47,6 +47,10 @@
         "destination": "/projects/focusreactive.html"
       },
       {
+        "source": "/projects/focusreactiveWebGPU{,/**}",
+        "destination": "/projects/focusreactiveWebGPU.html"
+      },
+      {
         "source": "/projects/fundamentals/matrix{,/**}",
         "destination": "/projects/fundamentals/matrix.html"
       },

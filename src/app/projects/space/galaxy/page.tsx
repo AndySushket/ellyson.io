@@ -28,19 +28,14 @@ const speed = 0.002;
 const n = 500000;
 
 export default class Galaxy extends TemplateFor3D {
-  
   saturn: THREE.Mesh | undefined;
 
-    titano: THREE.Mesh | undefined;
+  titano: THREE.Mesh | undefined;
 
-    externalRing: THREE.Points | undefined;
+  externalRing: THREE.Points | undefined;
 
-    internalRing: THREE.Points | undefined;
+  internalRing: THREE.Points | undefined;
 
-    scene: THREE.Scene | undefined;
-
-    camera: THREE.PerspectiveCamera | undefined;
-    
   initCamera(cameraParam: any): void {
     super.initCamera(cameraParam);
     this.camera?.position.set(-285, 15, -115);
@@ -61,10 +56,7 @@ export default class Galaxy extends TemplateFor3D {
       vertexShader: vertexSaturn,
       fragmentShader: fragSaturn,
     });
-    this.saturn = new THREE.Mesh(
-      new THREE.SphereGeometry(100, 64, 64),
-      saturnMaterial
-    );
+    this.saturn = new THREE.Mesh(new THREE.SphereGeometry(100, 64, 64), saturnMaterial);
     this.scene?.add(this.saturn);
   }
 
@@ -72,18 +64,15 @@ export default class Galaxy extends TemplateFor3D {
     const titanoMaterial = new THREE.ShaderMaterial({
       uniforms: {
         // @ts-ignore
-        titanTexture: { type: "t", value: textureLoader.load(titano) },
+        titanTexture: { type: 't', value: textureLoader.load(titano) },
         // @ts-ignore
-        textureNormal: { type: "t", value: textureLoader.load(titano2) },
+        textureNormal: { type: 't', value: textureLoader.load(titano2) },
         time: { value: 1.0 },
       },
       vertexShader: vertTitan,
       fragmentShader: fragTitan,
     });
-    this.titano = new THREE.Mesh(
-      new THREE.SphereGeometry(20, 64, 64),
-      titanoMaterial
-    );
+    this.titano = new THREE.Mesh(new THREE.SphereGeometry(20, 64, 64), titanoMaterial);
     this.scene?.add(this.titano);
   }
 
@@ -120,22 +109,13 @@ export default class Galaxy extends TemplateFor3D {
     }
 
     internalRingGeometry
-      .setAttribute("base_angle", new THREE.BufferAttribute(thetas, 1))
-      .setAttribute("offsetX", new THREE.BufferAttribute(delayX, 1))
-      .setAttribute("offsetZ", new THREE.BufferAttribute(delayZ, 1))
-      .setAttribute(
-        "position",
-        new THREE.BufferAttribute(new Float32Array(n * 3), 3)
-      );
+      .setAttribute('base_angle', new THREE.BufferAttribute(thetas, 1))
+      .setAttribute('offsetX', new THREE.BufferAttribute(delayX, 1))
+      .setAttribute('offsetZ', new THREE.BufferAttribute(delayZ, 1))
+      .setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
 
-    this.externalRing = new THREE.Points(
-      internalRingGeometry,
-      externalRingMaterial
-    );
-    this.internalRing = new THREE.Points(
-      internalRingGeometry.clone(),
-      internalRingMaterial
-    );
+    this.externalRing = new THREE.Points(internalRingGeometry, externalRingMaterial);
+    this.internalRing = new THREE.Points(internalRingGeometry.clone(), internalRingMaterial);
     this.scene?.add(this.internalRing);
     this.scene?.add(this.externalRing);
   }
@@ -152,12 +132,12 @@ export default class Galaxy extends TemplateFor3D {
     const textureCube = new THREE.CubeTextureLoader().load(imageURLs);
     textureCube.mapping = THREE.CubeRefractionMapping;
     if (this.scene) {
-        this.scene.background = textureCube;
+      this.scene.background = textureCube;
     }
   }
 
   componentDidMount(): void {
-    super.componentDidMount()
+    super.componentDidMount();
     this.init3D();
     this.Saturn();
     this.initControls();

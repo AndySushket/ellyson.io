@@ -40,7 +40,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
   protected HEIGHT: number;
   protected WIDTH: number;
   protected scene: THREE.Scene | undefined;
-  protected renderer: WebGPURenderer | THREE.WebGLRenderer | undefined;
+  protected renderer: WebGPURenderer | Renderer | undefined;
   protected camera: THREE.PerspectiveCamera | undefined;
   protected light: THREE.DirectionalLight | undefined;
   protected controls: any;
@@ -103,8 +103,10 @@ export default class TemplateFor3D extends React.Component<any, any> {
     }
 
     if (this.renderer) {
-      this.renderer.renderLists.dispose();
-      this.renderer.forceContextLoss();
+      if (this.renderer instanceof Renderer) {
+        this.renderer.renderLists.dispose();
+        this.renderer.forceContextLoss();
+      }
       this.renderer = undefined;
     }
 
