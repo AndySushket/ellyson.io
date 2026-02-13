@@ -1,0 +1,40 @@
+[debug] [2026-02-13T13:29:13.165Z] ----------------------------------------------------------------------
+[debug] [2026-02-13T13:29:13.166Z] Command:       /Users/andysushket/.nvm/versions/node/v18.18.2/bin/node /usr/local/bin/firebase deploy
+[debug] [2026-02-13T13:29:13.166Z] CLI Version:   11.8.1
+[debug] [2026-02-13T13:29:13.166Z] Platform:      darwin
+[debug] [2026-02-13T13:29:13.166Z] Node Version:  v18.18.2
+[debug] [2026-02-13T13:29:13.172Z] Time:          Fri Feb 13 2026 14:29:13 GMT+0100 (GMT+01:00)
+[debug] [2026-02-13T13:29:13.172Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-02-13T13:29:13.174Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-02-13T13:29:13.227Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-13T13:29:13.228Z] > authorizing via signed-in user (ellyson00@gmail.com)
+[debug] [2026-02-13T13:29:13.228Z] [iam] checking project ellyson-project for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-02-13T13:29:13.228Z] > refreshing access token with scopes: []
+[debug] [2026-02-13T13:29:13.229Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-13T13:29:13.229Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-13T13:29:13.346Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2026-02-13T13:29:13.346Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-13T13:29:13.346Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ellyson-project:testIamPermissions [none]
+[debug] [2026-02-13T13:29:13.347Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ellyson-project:testIamPermissions x-goog-quota-user=projects/ellyson-project
+[debug] [2026-02-13T13:29:13.347Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ellyson-project:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-02-13T13:29:13.535Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-02-13T13:29:13.535Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2026-02-13T13:29:14.097Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ellyson-project:testIamPermissions 401
+[debug] [2026-02-13T13:29:14.097Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ellyson-project:testIamPermissions {"error":{"code":401,"message":"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.","status":"UNAUTHENTICATED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"ACCESS_TOKEN_TYPE_UNSUPPORTED","metadata":{"method":"google.cloudresourcemanager.v1.Projects.TestIamPermissions","service":"cloudresourcemanager.googleapis.com"}}]}}
+[debug] [2026-02-13T13:29:14.099Z] [iam] error while checking permissions, command may fail: FirebaseError: HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+[debug] [2026-02-13T13:29:14.099Z] > refreshing access token with scopes: []
+[debug] [2026-02-13T13:29:14.100Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-13T13:29:14.100Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-13T13:29:14.199Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2026-02-13T13:29:14.199Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-13T13:29:14.200Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ellyson-project [none]
+[debug] [2026-02-13T13:29:14.331Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ellyson-project 401
+[debug] [2026-02-13T13:29:14.331Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ellyson-project {"error":{"code":401,"message":"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.","status":"UNAUTHENTICATED"}}
+[debug] [2026-02-13T13:29:14.331Z] HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+[debug] [2026-02-13T13:29:14.468Z] FirebaseError: HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at responseToError (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:49:12)
+    at RetryOperation._fn (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:288:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to get Firebase project ellyson-project. Please make sure the project exists and your account has permission to access it.
