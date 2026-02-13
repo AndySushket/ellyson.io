@@ -2,7 +2,29 @@
 
 // import React from 'react';
 
-import * as THREE from 'three';
+import * as THREE from 'three/webgpu';
+import { NodeMaterial } from 'three/webgpu';
+
+// Disable color management BEFORE any colors are created
+// This matches WebGL ShaderMaterial behavior where colors are passed as raw values
+THREE.ColorManagement.enabled = false;
+
+import {
+  uniform,
+  float,
+  vec3,
+  vec4,
+  normalView,
+  positionWorld,
+  cameraPosition,
+  normalize,
+  max,
+  dot,
+  pow,
+  mix,
+  sin,
+  faceDirection,
+} from 'three/tsl';
 import TemplateFor3D from 'components/common/mainTemplate3D';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -22,19 +44,35 @@ export default class FocusReactive extends TemplateFor3D {
   private cameraLine: THREE.Line | null = null;
   private engine: THREE.Group | undefined;
 
-  private metallicMaterial: THREE.ShaderMaterial | null = null;
+  private metallicMaterial: NodeMaterial | null = null;
 
   private mesh: THREE.Mesh | null = null;
 
-  private customUniforms = {
-    uTime: { value: 0.0 },
-    uBaseColor: { value: new THREE.Color(0xc9c9c9) },
-    uMetalness: { value: 1 },
-    uRoughness: { value: 0.67 },
-    uEffectIntensity: { value: 1.93 },
-    uGlowColor1: { value: new THREE.Color(0xcd4e4e) }, // Primary accent
-    uGlowColor2: { value: new THREE.Color(0x630000) }, // Secondary accent
-  };
+  // TSL uniforms (matching WebGL customUniforms)
+  // With ColorManagement disabled, colors are passed as raw values like in WebGL ShaderMaterial
+  private uTime = uniform(0);
+
+  private uBaseColor = uniform(new THREE.Color(0x595959));
+
+  private uMetalness = uniform(1.0);
+
+  private uRoughness = uniform(1.0);
+
+  private uEffectIntensity = uniform(1.93);
+
+  private uGlowColor1 = uniform(new THREE.Color(0xcd4e4e));
+
+  private uGlowColor2 = uniform(new THREE.Color(0x630000));
+
+  private uLightPosition = uniform(new THREE.Vector3(90, 24, 15));
+
+  private uLightColor = uniform(new THREE.Color(0xffffff));
+
+  private uLightIntensity = uniform(0.9);
+
+  private uAmbientColor = uniform(new THREE.Color(0xffffff));
+
+  private uAmbientIntensity = uniform(0.15);
 
   constructor(props: any) {
     super(props);
@@ -144,26 +182,30 @@ export default class FocusReactive extends TemplateFor3D {
     //
     //light changes
     const lightFolder = this.gui.addFolder('Directional Light');
-    lightFolder.add(this.light!, 'intensity', 0, 2, 0.01).name('Intensity').onChange((value: number) => {
-      if (this.metallicMaterial) {
-        this.metallicMaterial.uniforms.uLightIntensity.value = value;
-      }
-    });
-    lightFolder.add(this.light!.position, 'x', -1000, 1000, 1).name('Position X').onChange((value: number) => {;
-      if (this.metallicMaterial) {
-        this.metallicMaterial.uniforms.uLightPosition.value.x = value;
-      }
-    });
-    lightFolder.add(this.light!.position, 'y', -1000, 1000, 1).name('Position Y').onChange((value: number) => {;
-      if (this.metallicMaterial) {
-        this.metallicMaterial.uniforms.uLightPosition.value.y = value;
-      }
-    });
-    lightFolder.add(this.light!.position, 'z', -1000, 1000, 1).name('Position Z').onChange((value: number) => {;
-      if (this.metallicMaterial) {
-        this.metallicMaterial.uniforms.uLightPosition.value.z = value;
-      }
-    });
+    lightFolder
+      .add(this.light!, 'intensity', 0, 2, 0.01)
+      .name('Intensity')
+      .onChange((value: number) => {
+        this.uLightIntensity.value = value;
+      });
+    lightFolder
+      .add(this.light!.position, 'x', -1000, 1000, 1)
+      .name('Position X')
+      .onChange((value: number) => {
+        this.uLightPosition.value.x = value;
+      });
+    lightFolder
+      .add(this.light!.position, 'y', -1000, 1000, 1)
+      .name('Position Y')
+      .onChange((value: number) => {
+        this.uLightPosition.value.y = value;
+      });
+    lightFolder
+      .add(this.light!.position, 'z', -1000, 1000, 1)
+      .name('Position Z')
+      .onChange((value: number) => {
+        this.uLightPosition.value.z = value;
+      });
     lightFolder.add(this.light!.target.position, 'x', -1000, 1000, 1).name('Target X');
     lightFolder.add(this.light!.target.position, 'y', -1000, 1000, 1).name('Target Y');
     lightFolder.add(this.light!.target.position, 'z', -1000, 1000, 1).name('Target Z');
@@ -199,13 +241,14 @@ export default class FocusReactive extends TemplateFor3D {
 
     // Create a simple environment map for metallic reflections
     // const pmremGenerator = new THREE.PMREMGenerator(this.renderer!);
-    // pmremGenerator.compileEquirectangularShader();
     //
     // // Create a simple gradient environment
     // const envScene = new THREE.Scene();
     // envScene.background = new THREE.Color(0x111111);
-    // const envMap = pmremGenerator.fromScene(envScene).texture;
-    // // this.scene!.environment = envMap;
+    // // In WebGPU, fromScene returns a Promise
+    // const envMapRenderTarget = await pmremGenerator.fromScene(envScene);
+    // this.scene!.environment = envMapRenderTarget.texture;
+    // pmremGenerator.dispose();
 
     gltfLoader.load(engine, (gltf) => {
       gltf.scene.scale.set(10, 10, 10);
@@ -215,99 +258,78 @@ export default class FocusReactive extends TemplateFor3D {
       this.engine = gltf.scene;
       console.log(gltf);
 
-      // Create clean ShaderMaterial with normals and scene lights
-      this.metallicMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-          uTime: this.customUniforms.uTime,
-          uBaseColor: this.customUniforms.uBaseColor,
-          uMetalness: this.customUniforms.uMetalness,
-          uRoughness: this.customUniforms.uRoughness,
-          uEffectIntensity: this.customUniforms.uEffectIntensity,
-          uGlowColor1: this.customUniforms.uGlowColor1,
-          uGlowColor2: this.customUniforms.uGlowColor2,
-          uLightPosition: { value: this.light ? this.light.position : new THREE.Vector3(100, 100, 100) },
-          uLightColor: { value: this.light ? this.light.color : new THREE.Color(0xffffff) },
-          uLightIntensity: { value: this.light ? this.light.intensity : 1.0 },
-          uAmbientColor: { value: this.ambientLight ? this.ambientLight.color : new THREE.Color(0xffffff) },
-          uAmbientIntensity: { value: this.ambientLight ? this.ambientLight.intensity : 0.2 },
-        },
-        side: THREE.DoubleSide,
-        vertexShader: `
-          varying vec3 vNormal;
-          varying vec3 vWorldPosition;
-          varying vec3 vViewDirection;
-          
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            vec4 worldPos = modelMatrix * vec4(position, 1.0);
-            vWorldPosition = worldPos.xyz;
-            vViewDirection = normalize(cameraPosition - worldPos.xyz);
-            
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform float uTime;
-          uniform vec3 uBaseColor;
-          uniform float uMetalness;
-          uniform float uRoughness;
-          uniform float uEffectIntensity;
-          uniform vec3 uGlowColor1;
-          uniform vec3 uGlowColor2;
-          uniform vec3 uLightPosition;
-          uniform vec3 uLightColor;
-          uniform float uLightIntensity;
-          uniform vec3 uAmbientColor;
-          uniform float uAmbientIntensity;
-          
-          varying vec3 vNormal;
-          varying vec3 vWorldPosition;
-          varying vec3 vViewDirection;
-          
-          void main() {
-            vec3 viewDir = normalize(vViewDirection);
-            
-            // Flip normal for back faces
-            vec3 normal = normalize(vNormal);
-            if (!gl_FrontFacing) {
-              normal = -normal;
-            }
-            
-            // Directional light calculation
-            vec3 lightDir = normalize(uLightPosition - vWorldPosition);
-            float NdotL = max(dot(normal, lightDir), 0.0);
-            
-            // Specular (Blinn-Phong)
-            vec3 halfDir = normalize(lightDir + viewDir);
-            float NdotH = max(dot(normal, halfDir), 0.0);
-            float shininess = mix(8.0, 128.0, 1.0 - uRoughness);
-            float specular = pow(NdotH, shininess) * uMetalness;
-            
-            // Ambient
-            vec3 ambient = uAmbientColor * uAmbientIntensity * uBaseColor;
-            
-            // Diffuse
-            vec3 diffuse = uLightColor * uLightIntensity * NdotL * uBaseColor * (1.0 - uMetalness * 0.5);
-            
-            // Specular color (metallic surfaces tint specular with base color)
-            vec3 specularColor = mix(vec3(1.0), uBaseColor, uMetalness) * specular * uLightIntensity;
-            
-            // Fresnel for edge glow
-            float fresnel = 1.0 - max(dot(normal, viewDir), 0.0);
-            fresnel = pow(fresnel, 2.0);
-            
-            // Time-based pulse
-            float pulse = sin(uTime * 2.0) * 0.5 + 0.5;
-            vec3 glowColor = mix(uGlowColor1, uGlowColor2, pulse);
-            vec3 glow = glowColor * fresnel * uEffectIntensity;
-            
-            // Final color
-            vec3 finalColor = ambient + diffuse + specularColor;// + glow;
-            
-            gl_FragColor = vec4(finalColor, 1.0);
-          }
-        `,
-      });
+      // Create TSL-based NodeMaterial for WebGPU
+      // Using NodeMaterial with fragmentNode - this is the direct equivalent of ShaderMaterial's gl_FragColor
+      this.metallicMaterial = new NodeMaterial();
+      this.metallicMaterial.side = THREE.DoubleSide;
+
+      // CRITICAL: WebGL shader uses normalMatrix which transforms to VIEW space
+      // But then uses world-space light directions. We must replicate this EXACT behavior.
+      //
+      // WebGL vertex shader:
+      //   vNormal = normalize(normalMatrix * normal);  // VIEW space
+      //   vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;  // WORLD space
+      //   vViewDirection = normalize(cameraPosition - worldPos.xyz);  // WORLD space
+      //
+      // WebGL fragment shader:
+      //   vec3 lightDir = normalize(uLightPosition - vWorldPosition);  // WORLD space
+      //   float NdotL = max(dot(normal, lightDir), 0.0);  // VIEW dot WORLD (mixed!)
+
+      // normalView in TSL is already: normalize(normalMatrix * normal) - VIEW space
+      // Flip for back faces (matches: if (!gl_FrontFacing) normal = -normal;)
+      const normal = normalView.mul(faceDirection);
+
+      // View direction in WORLD space (matches vViewDirection)
+      const viewDir = normalize(cameraPosition.sub(positionWorld));
+
+      // Light direction in WORLD space (matches lightDir)
+      const lightDir = normalize(this.uLightPosition.sub(positionWorld));
+
+      // NdotL: This mixes VIEW-space normal with WORLD-space lightDir
+      // This is technically wrong but it's what the WebGL shader does!
+      const NdotL = max(dot(normal, lightDir), float(0.0));
+
+      // Ambient: uAmbientColor * uAmbientIntensity * uBaseColor
+      const ambient = this.uAmbientColor.mul(this.uAmbientIntensity).mul(this.uBaseColor);
+
+      // Diffuse: uLightColor * uLightIntensity * NdotL * uBaseColor * (1.0 - uMetalness * 0.5)
+      const diffuse = this.uLightColor
+        .mul(this.uLightIntensity)
+        .mul(NdotL)
+        .mul(this.uBaseColor)
+        .mul(float(1.0).sub(this.uMetalness.mul(0.5)));
+
+      // Specular (Blinn-Phong)
+      // halfDir = normalize(lightDir + viewDir) - both in WORLD space
+      const halfDir = normalize(lightDir.add(viewDir));
+      // NdotH: VIEW-space normal dot WORLD-space halfDir (mixed, same as WebGL)
+      const NdotH = max(dot(normal, halfDir), float(0.0));
+
+      // shininess = mix(8.0, 128.0, 1.0 - uRoughness)
+      const shininess = float(8.0).add(float(120.0).mul(float(1.0).sub(this.uRoughness)));
+
+      // specular = pow(NdotH, shininess) * uMetalness
+      const specular = pow(NdotH, shininess).mul(this.uMetalness);
+
+      // specularColor = mix(vec3(1.0), uBaseColor, uMetalness) * specular * uLightIntensity
+      const specularColor = mix(vec3(1.0, 1.0, 1.0), this.uBaseColor, this.uMetalness)
+        .mul(specular)
+        .mul(this.uLightIntensity);
+
+      // Fresnel: VIEW-space normal dot WORLD-space viewDir (mixed, same as WebGL)
+      const fresnel = float(1.0).sub(max(dot(normal, viewDir), float(0.0)));
+      const fresnelPow = pow(fresnel, float(2.0));
+
+      // Time-based pulse
+      const pulse = sin(this.uTime.mul(2.0)).mul(0.5).add(0.5);
+      const glowColor = mix(this.uGlowColor1, this.uGlowColor2, pulse);
+      const glow = glowColor.mul(fresnelPow).mul(this.uEffectIntensity);
+
+      // Final color = ambient + diffuse + specularColor (+ glow commented out to match WebGL)
+      const finalColor = ambient.add(diffuse).add(specularColor).add(glow);
+
+      // fragmentNode is the direct equivalent of gl_FragColor = vec4(finalColor, 1.0);
+      this.metallicMaterial.fragmentNode = vec4(finalColor, 1.0);
 
       // Apply material to all meshes and disable shadows
       gltf.scene.traverse((child) => {
@@ -319,15 +341,15 @@ export default class FocusReactive extends TemplateFor3D {
           child.castShadow = false;
           child.receiveShadow = false;
 
-          // Replace material with clean ShaderMaterial
+          // Replace material with TSL NodeMaterial
           child.material = this.metallicMaterial!;
         }
       });
 
       this.scene?.add(gltf.scene);
 
-      // Add GUI controls for the shader
-      // this.addShaderGUI();
+      // Add shader GUI controls after model is loaded
+      this.addShaderGUI();
     });
   }
 
@@ -343,54 +365,54 @@ export default class FocusReactive extends TemplateFor3D {
     const shaderFolder = this.gui!.addFolder('Metallic Shader');
 
     const params = {
-      baseColor: this.customUniforms.uBaseColor.value.getStyle(),
-      metalness: this.customUniforms.uMetalness.value,
-      roughness: this.customUniforms.uRoughness.value,
-      effectIntensity: this.customUniforms.uEffectIntensity.value,
-      glowColor1: this.customUniforms.uGlowColor1.value.getStyle(),
-      glowColor2: this.customUniforms.uGlowColor2.value.getStyle(),
+      baseColor: '#c9c9c9',
+      metalness: this.uMetalness.value,
+      roughness: this.uRoughness.value,
+      effectIntensity: this.uEffectIntensity.value,
+      glowColor1: '#cd4e4e',
+      glowColor2: '#630000',
     };
 
     shaderFolder
       .addColor(params, 'baseColor')
       .name('Base Color')
       .onChange((value: string) => {
-        this.customUniforms.uBaseColor.value.set(value);
+        this.uBaseColor.value.set(value);
       });
 
     shaderFolder
       .add(params, 'metalness', 0, 1, 0.01)
       .name('Metalness')
       .onChange((value: number) => {
-        this.customUniforms.uMetalness.value = value;
+        this.uMetalness.value = value;
       });
 
     shaderFolder
       .add(params, 'roughness', 0, 1, 0.01)
       .name('Roughness')
       .onChange((value: number) => {
-        this.customUniforms.uRoughness.value = value;
+        this.uRoughness.value = value;
       });
 
     shaderFolder
       .add(params, 'effectIntensity', 0, 3, 0.01)
       .name('Effect Intensity')
       .onChange((value: number) => {
-        this.customUniforms.uEffectIntensity.value = value;
+        this.uEffectIntensity.value = value;
       });
 
     shaderFolder
       .addColor(params, 'glowColor1')
       .name('Glow Color 1')
       .onChange((value: string) => {
-        this.customUniforms.uGlowColor1.value.set(value);
+        this.uGlowColor1.value.set(value);
       });
 
     shaderFolder
       .addColor(params, 'glowColor2')
       .name('Glow Color 2')
       .onChange((value: string) => {
-        this.customUniforms.uGlowColor2.value.set(value);
+        this.uGlowColor2.value.set(value);
       });
 
     shaderFolder.open();
@@ -406,7 +428,7 @@ export default class FocusReactive extends TemplateFor3D {
     }
 
     this.init3D(
-      { antialias: true, alpha: true, logarithmicDepthBuffer: true },
+      { antialias: true, alpha: true },
       {
         fov: 30,
         near: 1,
@@ -414,13 +436,38 @@ export default class FocusReactive extends TemplateFor3D {
       },
       undefined,
       undefined,
-      false,
+      true, // isWebGPU
     );
 
     if (!this.renderer || !this.scene || !this.camera) return;
 
-    this.initProject();
+    // Wait for the WebGPU renderer to initialize before proceeding
+    if ('init' in this.renderer && typeof this.renderer.init === 'function') {
+      await this.renderer.init();
+    }
+
+    // Match WebGL renderer settings
+    this.renderer.toneMapping = THREE.NoToneMapping;
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    await this.initProject();
     this.initLight();
+
+    // Initialize uniforms after light is created (matching WebGL behavior)
+    if (this.light) {
+      this.uLightPosition.value.set(
+        this.light.position.x,
+        this.light.position.y,
+        this.light.position.z,
+      );
+      this.uLightColor.value.copy(this.light.color);
+      this.uLightIntensity.value = this.light.intensity;
+    }
+    if (this.ambientLight) {
+      this.uAmbientColor.value.copy(this.ambientLight.color);
+      this.uAmbientIntensity.value = this.ambientLight.intensity;
+    }
+
     this.attachMouseMoveEvent(this.canvasDiv);
     this.animate();
   }
@@ -430,28 +477,25 @@ export default class FocusReactive extends TemplateFor3D {
     if (!this.renderer || !this.scene || !this.camera) return;
 
     this.time += 1;
-
-    // Update custom uniforms time for the glow effect
-    this.customUniforms.uTime.value = this.time * 0.01;
+    this.uTime.value = this.time * 0.01; // Update time uniform for glow pulse
 
     this.camera.lookAt(this.cameraTarget);
 
-    // Update shader uniforms
-    if (this.metallicMaterial) {
-      this.metallicMaterial.uniforms.uTime.value = this.time * 0.01;
+    // Update light uniforms if light exists
+    if (this.light) {
+      this.uLightPosition.value.set(
+        this.light.position.x,
+        this.light.position.y,
+        this.light.position.z,
+      );
+      this.uLightColor.value.copy(this.light.color);
+      this.uLightIntensity.value = this.light.intensity;
+    }
 
-      // Sync light position if light exists
-      if (this.light) {
-        this.metallicMaterial.uniforms.uLightPosition.value.copy(this.light.position);
-        this.metallicMaterial.uniforms.uLightColor.value.copy(this.light.color);
-        this.metallicMaterial.uniforms.uLightIntensity.value = this.light.intensity;
-      }
-
-      // Sync ambient light if it exists
-      if (this.ambientLight) {
-        this.metallicMaterial.uniforms.uAmbientColor.value.copy(this.ambientLight.color);
-        this.metallicMaterial.uniforms.uAmbientIntensity.value = this.ambientLight.intensity;
-      }
+    // Update ambient light uniforms if ambient light exists
+    if (this.ambientLight) {
+      this.uAmbientColor.value.copy(this.ambientLight.color);
+      this.uAmbientIntensity.value = this.ambientLight.intensity;
     }
 
     // Update camera-to-target line

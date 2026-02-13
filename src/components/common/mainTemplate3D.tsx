@@ -5,8 +5,10 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { ARButton } from 'three/examples/jsm/webxr/ARButton';
 import CameraManager from 'core/CameraManager';
+import WebGPURenderer from 'core/WebGPURenderer';
 import Renderer from 'core/Renderer';
 import Scene from 'core/Scene';
+import { WebGPURendererParameters } from 'three/src/renderers/webgpu/WebGPURenderer.Nodes.js';
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -38,7 +40,7 @@ export default class TemplateFor3D extends React.Component<any, any> {
   protected HEIGHT: number;
   protected WIDTH: number;
   protected scene: THREE.Scene | undefined;
-  protected renderer: THREE.WebGLRenderer | undefined;
+  protected renderer: WebGPURenderer | THREE.WebGLRenderer | undefined;
   protected camera: THREE.PerspectiveCamera | undefined;
   protected light: THREE.DirectionalLight | undefined;
   protected controls: any;
@@ -119,8 +121,11 @@ export default class TemplateFor3D extends React.Component<any, any> {
     this.scene = new Scene();
   }
 
-  initRenderer(param: THREE.WebGLRendererParameters | undefined): void {
-    this.renderer = new Renderer(param);
+  initRenderer(
+    param: THREE.WebGLRendererParameters | WebGPURendererParameters | undefined,
+    isWebGPU: boolean = false,
+  ): void {
+    this.renderer = isWebGPU ? new WebGPURenderer(param as WebGPURendererParameters) : new Renderer(param as THREE.WebGLRendererParameters);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setClearColor(0x000000);
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
@@ -157,8 +162,10 @@ export default class TemplateFor3D extends React.Component<any, any> {
     cameraParam?: any,
     additionalParam?: any,
     activeControls?: boolean,
+    isWebGPU: boolean = false,
   ): void {
-    this.initRenderer(param);
+    console.log("===", "init3D", "===", isWebGPU);
+    this.initRenderer(param, isWebGPU);
     this.initScene();
     this.initCamera(cameraParam);
     this.initLight();

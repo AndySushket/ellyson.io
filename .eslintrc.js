@@ -5,12 +5,12 @@ module.exports = {
   plugins: ["react", "prettier", "only-warn"],
   settings: {
     "import/resolver": {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx']
-      },
       typescript: {
         alwaysTryTypes: true,
-        project: path.resolve(__dirname, './tsconfig.json'),
+        project: './tsconfig.json',
+      },
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
       }
     }
   },

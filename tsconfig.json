@@ -1,17 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES6",
     "baseUrl": "./src",
     "paths": {
-      "@/*": [
-        "*"
-      ]
+      "@/*": ["*"]
     },
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,20 +12,15 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ],
-    "types": [
-      "react",
-      "react-dom"
-    ],
+    "typeRoots": ["node_modules/@types", "types"],
+    "types": ["react", "react-dom"],
     "incremental": true,
     "plugins": [
       {
