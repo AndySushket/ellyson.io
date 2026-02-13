@@ -19,10 +19,6 @@
     ],
     "rewrites": [
       {
-        "source": "/404{,/**}",
-        "destination": "/404.html"
-      },
-      {
         "source": "/projects/akella/creeping_stripes{,/**}",
         "destination": "/projects/akella/creeping_stripes.html"
       },
@@ -267,16 +263,24 @@
         "destination": "/projects/webAssembley.html"
       },
       {
-        "source": "/projects{,/**}",
+        "source": "/projects",
         "destination": "/projects.html"
       },
       {
-        "source": "/projects2{,/**}",
+        "source": "/projects2",
         "destination": "/projects2.html"
       },
       {
-        "source": "/{,/**}",
+        "source": "/404{,/**}",
+        "destination": "/404.html"
+      },
+      {
+        "source": "/",
         "destination": "/index.html"
+      },
+      {
+        "source": "/**",
+        "destination": "/404.html"
       }
     ]
   }

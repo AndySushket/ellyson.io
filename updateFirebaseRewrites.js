@@ -30,16 +30,41 @@ function readHtmlFiles(dir) {
 
 const htmlFiles = readHtmlFiles(outDirectory);
 
-// Generate rewrite rules for each HTML file
-let rewrites = htmlFiles.map(file => ({
+// Separate special pages from other files to handle them specially
+const specialPages = ['/projects', '/projects2', '/404'];
+const projectsRoot = htmlFiles.filter(f => f === '/projects' || f === '/projects2');
+const otherFiles = htmlFiles.filter(f => !specialPages.includes(f));
+
+// Generate rewrite rules for each HTML file (except projects root pages)
+let rewrites = otherFiles.map(file => ({
   source: `${file}{,/**}`,
   destination: `${file}.html`
 }));
 
-// Add the root path rewrite at the end
+// Add projects root pages with exact match only (no catch-all)
+projectsRoot.forEach(route => {
+  rewrites.push({
+    source: route,
+    destination: `${route}.html`
+  });
+});
+
+// Add 404 fallback for unknown routes
 rewrites.push({
-  source: "/{,/**}",
+  source: "/404{,/**}",
+  destination: "/404.html"
+});
+
+// Add exact match for root
+rewrites.push({
+  source: "/",
   destination: "/index.html"
+});
+
+// Fallback for all other unknown routes - serve 404.html
+rewrites.push({
+  source: "/**",
+  destination: "/404.html"
 });
 
 // Read the existing firebase.json configuration
