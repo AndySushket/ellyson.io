@@ -39,12 +39,12 @@
         "destination": "/projects/akella.html"
       },
       {
-        "source": "/projects/focusreactive{,/**}",
-        "destination": "/projects/focusreactive.html"
+        "source": "/projects/focusreactive/webGPU{,/**}",
+        "destination": "/projects/focusreactive/webGPU.html"
       },
       {
-        "source": "/projects/focusreactivewebgpu{,/**}",
-        "destination": "/projects/focusreactivewebgpu.html"
+        "source": "/projects/focusreactive{,/**}",
+        "destination": "/projects/focusreactive.html"
       },
       {
         "source": "/projects/fundamentals/matrix{,/**}",
